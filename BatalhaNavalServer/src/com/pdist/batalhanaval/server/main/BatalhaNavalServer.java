@@ -5,13 +5,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+
 public class BatalhaNavalServer {
 
 	/*Tem de aceitar ligações tcp e responder a multicast UDP 
 	 * */	
 	
 	private static ServerSocket ss;
-	private static ArrayList<Thread> threads = new ArrayList<Thread>();
+	public static ArrayList<Thread> threads = new ArrayList<Thread>();
 	
 	public static void main(String[] args) {
 		
