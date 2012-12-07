@@ -14,14 +14,17 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+
 import javax.swing.Action;
 
-import com.pdist.batalhanaval.client.dialogs.NovoJogo_Dialog;
+import com.pdist.batalhanaval.client.dialogs.NovoJogo;
 
 public class BatalhaNaval_Client {
 
 	private JFrame frmBatalhaNavalV;
-	private final Action action = new SwingAction();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -65,7 +68,6 @@ public class BatalhaNaval_Client {
 		menuBar.add(mnJogo);
 		
 		JMenuItem mntmNovoJogo = new JMenuItem("Novo Jogo");
-		mntmNovoJogo.setAction(action);
 		mnJogo.add(mntmNovoJogo);
 		
 		JMenuItem mntmSair = new JMenuItem("Sair");
@@ -73,25 +75,25 @@ public class BatalhaNaval_Client {
 		
 		JMenu mnOpes = new JMenu("Op\u00E7\u00F5es");
 		menuBar.add(mnOpes);
-	}
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "Novo Jogo");
-			putValue(SHORT_DESCRIPTION, "Some short description");
-		}		
 		
-		public void actionPerformed(ActionEvent e) {			
-			try {			
-				if(!VarsGlobais.NovoJogoThreadCreated){
-					NovoJogo_Dialog dialog = new NovoJogo_Dialog();
-					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-					dialog.setVisible(true);	
+	
+	mntmNovoJogo.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent evt) {	
+			   			   
+			   try {			
+					if(!VarsGlobais.NovoJogoThreadCreated){
+						NovoJogo dialog = new NovoJogo();
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);	
+					}
+					
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
-				
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-			
-		}
+			  
+		   }
+	});
+	
+	
 	}
 }

@@ -6,6 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -21,32 +24,40 @@ public class LoginServidor implements Runnable {
 		protected int servPort;
 		protected String nome;
 		
+		private final JPanel contentPanel = new JPanel();	
 		
 	
 		
 		public LoginServidor(String IP, String nome) throws IOException{
 			
-			servAddr = InetAddress.getByName(IP);
-		    servPort = Integer.parseInt("5001"); //alterar
-		         
-			socket = new Socket(servAddr,servPort);	
-			//socket.setSoTimeout(TIMEOUT);
+			this.servAddr = InetAddress.getByName(IP);
+		    this.servPort = Integer.parseInt("5001"); //alterar?
+		    this.nome = nome;
+		    this.logIn = false;			
 			
-			this.nome = nome;
-			
-			logIn = false;	
-			
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
-				
-			
-		}
-			
+		}			
 	
 
 		
 	@Override
 	public void run() {
+		 try{
+				socket = new Socket(servAddr,servPort);	
+			    }catch(Exception e)
+			    { 
+			    	 JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+					 return; //ja nao estoira e volta ao menu inicial (aparentemente)
+			    }
+				//socket.setSoTimeout(TIMEOUT);
+				
+									
+				
+				try {
+					out = new ObjectOutputStream(socket.getOutputStream());				
+					in = new ObjectInputStream(socket.getInputStream());
+				} catch (IOException e1) {
+					e1.printStackTrace(); }
+		
 		while(true){			
 			try {						
 				if(!logIn){

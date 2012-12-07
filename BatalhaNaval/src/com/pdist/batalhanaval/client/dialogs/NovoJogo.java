@@ -20,13 +20,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class NovoJogo_Dialog extends JDialog {
+public class NovoJogo extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JTextField textField_1;
 
-	public NovoJogo_Dialog() {
+	public NovoJogo() {
 		
 		
 		setResizable(false);
