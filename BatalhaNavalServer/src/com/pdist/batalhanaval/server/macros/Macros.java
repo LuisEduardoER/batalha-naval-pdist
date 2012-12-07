@@ -9,11 +9,14 @@ public class Macros {
 	public static final int TAM_Y = 10;
 	public static int MAX_SIZE = 1000;
 	public static final String askIP = "GIVE_IP";
+	public final static int TIMEOUT = 1500;
 	
 	//MACROS MENSAGENS
-	public static final int MSG_LOGIN_REQUEST = 1;
-	public static final int MSG_LOGIN_RESPONSE = 2;
-	public static final int MSG_LOGIN_FAIL = 3;
+	public static final int MSG_LOGIN_REQUEST = 1; //pedido para o jogador se registar
+	public static final int MSG_LOGIN_FAIL = 2; // aviso de falha
+	public static final int MSG_LOGIN_VALIDATED = 3; // aviso de validação
+	public static final int MSG_LOGIN_CANCEL = 4; //Aviso de que o utilizador já não se quer registar
+	public static final int MSG_LOGIN_LOGGED = 5; //Ja estava logado
 	
 	
 	private Macros(){} //Singleton

@@ -14,58 +14,43 @@ public class AtendeCliente extends Thread{
 	protected Socket socket;
 	protected ObjectOutputStream out;
 	protected ObjectInputStream in;
-	protected boolean logIn = false;
-	protected boolean waitingResponse;
+	protected boolean logIn;
 	protected Cliente cliente;
 	
 	public AtendeCliente(Socket s){
 		socket = s;
-		CriaCliente();
-		
-		waitingResponse = false;
+		criaCliente();				
+		logIn = false;
 		
 		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
 			in = new ObjectInputStream(socket.getInputStream());
-			
-			if(!logIn && !waitingResponse){
-				//enviar confirmação de ligação e pedido de login
-				Mensagem msg = new Mensagem(Macros.MSG_LOGIN_REQUEST);
-				out.flush();
-				out.writeObject(msg);
-				out.flush();
-				waitingResponse = true;
-			}
-			
-			if(waitingResponse){
-				Mensagem msg = (Mensagem) in.readObject();
-				if(msg.getType() == Macros.MSG_LOGIN_RESPONSE){
-					if(!validaLogin(msg)){
-						msg.setType(Macros.MSG_LOGIN_FAIL);
-						out.flush();
-						out.writeObject(msg);
-						out.flush();												
-					}else{
-						logIn = true;
-						waitingResponse = false;
-						VarsGlobais.ClientesOn.add(cliente);
-					}
-				}
-			}
-			
-			
+			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// se o objecto nao for mensagem
-			e.printStackTrace();
+			System.out.println("Conexão falhou");
+			return;
 		}
 		
 	}
 	
 	public void run(){
-		while(true){
+		System.out.println("NOVO CLIENTE");
+		while(true){			
 			//tratar mensagens recebidas e enviar respostas
+			try {					
+				
+				Mensagem msg = (Mensagem) in.readObject();					
+				switch(msg.getType()){
+					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
+						getLoginRequest(msg);
+						break;
+				}					
+			} catch (IOException | NullPointerException e) {
+				System.out.println("Cliente desligou");
+				VarsGlobais.ClientesOn.remove(cliente);
+				break;
+			} catch (ClassNotFoundException  e) {
+				System.out.println("ERR: Não é mensagem");				
+			} 
 		}
 	}
 	
@@ -87,10 +72,38 @@ public class AtendeCliente extends Thread{
 		return result;
 	}
 	
-	private void CriaCliente(){
+	private void criaCliente(){
 		cliente = new Cliente(socket.getInetAddress());
 		cliente.setOnGame(false);		
 	}
 	
-
+	
+	private void getLoginRequest(Mensagem msg) throws IOException{
+		if(!logIn){
+			if(!validaLogin(msg)){
+				msg.setType(Macros.MSG_LOGIN_FAIL);
+				out.flush();
+				out.writeObject(msg);
+				out.flush();		
+				System.out.println("O Login falhou");
+			}else{
+				msg.setType(Macros.MSG_LOGIN_VALIDATED);
+				out.flush();
+				out.writeObject(msg);
+				out.flush();
+				logIn = true;
+				VarsGlobais.ClientesOn.add(cliente);
+				VarsGlobais.nClientes++;
+				
+				System.out.println("O cliente "+VarsGlobais.ClientesOn.get(VarsGlobais.nClientes-1).getNome()+" esta logado.");
+				System.out.println("Estão logados "+VarsGlobais.nClientes+" clientes");
+			}
+		}else{
+			msg.setType(Macros.MSG_LOGIN_LOGGED);
+			out.flush();
+			out.writeObject(msg);
+			out.flush();
+			System.out.println("Ja esta logado");
+		}
+	}
 }

@@ -1,10 +1,12 @@
 package com.pdist.batalhanaval.server.mensagens;
 
+import java.io.Serializable;
+
 import com.pdist.batalhanaval.server.controlo.Cliente;
 import com.pdist.batalhanaval.server.controlo.Letra;
 import com.pdist.batalhanaval.server.controlo.Numero;
 
-public class Mensagem {
+public class Mensagem implements Serializable {
 
 		private int type;
 		private String msg_text;
