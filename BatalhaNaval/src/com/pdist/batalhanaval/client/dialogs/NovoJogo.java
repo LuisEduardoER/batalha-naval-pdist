@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
@@ -22,6 +21,10 @@ import java.io.IOException;
 
 public class NovoJogo extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1578538003101261327L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JTextField textField_1;

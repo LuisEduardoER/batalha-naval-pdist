@@ -8,6 +8,10 @@ import com.pdist.batalhanaval.server.controlo.Numero;
 
 public class Mensagem implements Serializable {
 
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3510385339259903686L;
 		private int type;
 		private String msg_text;
 		private Letra letra;
