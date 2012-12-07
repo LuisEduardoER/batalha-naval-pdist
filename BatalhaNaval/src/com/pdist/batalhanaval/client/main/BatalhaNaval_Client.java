@@ -1,4 +1,4 @@
-package com.pdist.batalhanaval.main;
+package com.pdist.batalhanaval.client.main;
 
 import java.awt.EventQueue;
 
@@ -16,9 +16,9 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
-import com.pdist.batalhanaval.dialogs.NovoJogo_Dialog;
+import com.pdist.batalhanaval.client.dialogs.NovoJogo_Dialog;
 
-public class BatalhaNaval {
+public class BatalhaNaval_Client {
 
 	private JFrame frmBatalhaNavalV;
 	private final Action action = new SwingAction();
@@ -30,7 +30,7 @@ public class BatalhaNaval {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BatalhaNaval window = new BatalhaNaval();
+					BatalhaNaval_Client window = new BatalhaNaval_Client();
 					window.frmBatalhaNavalV.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +42,7 @@ public class BatalhaNaval {
 	/**
 	 * Create the application.
 	 */
-	public BatalhaNaval() {
+	public BatalhaNaval_Client() {
 		initialize();
 	}
 
@@ -81,8 +81,7 @@ public class BatalhaNaval {
 			putValue(SHORT_DESCRIPTION, "Some short description");
 		}
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(frmBatalhaNavalV,
-				    "Ainda não implementado!");
+			
 			try {
 				NovoJogo_Dialog dialog = new NovoJogo_Dialog();
 				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
