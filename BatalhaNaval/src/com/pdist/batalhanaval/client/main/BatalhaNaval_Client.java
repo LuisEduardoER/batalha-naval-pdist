@@ -22,7 +22,6 @@ public class BatalhaNaval_Client {
 
 	private JFrame frmBatalhaNavalV;
 	private final Action action = new SwingAction();
-
 	/**
 	 * Launch the application.
 	 */
@@ -42,7 +41,7 @@ public class BatalhaNaval_Client {
 	/**
 	 * Create the application.
 	 */
-	public BatalhaNaval_Client() {
+	public BatalhaNaval_Client() {		
 		initialize();
 	}
 
@@ -79,13 +78,16 @@ public class BatalhaNaval_Client {
 		public SwingAction() {
 			putValue(NAME, "Novo Jogo");
 			putValue(SHORT_DESCRIPTION, "Some short description");
-		}
-		public void actionPerformed(ActionEvent e) {
-			
-			try {
-				NovoJogo_Dialog dialog = new NovoJogo_Dialog();
-				dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				dialog.setVisible(true);
+		}		
+		
+		public void actionPerformed(ActionEvent e) {			
+			try {			
+				if(!VarsGlobais.NovoJogoThreadCreated){
+					NovoJogo_Dialog dialog = new NovoJogo_Dialog();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);	
+				}
+				
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}

@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 
 import com.pdist.batalhanaval.client.main.LoginServidor;
+import com.pdist.batalhanaval.client.main.VarsGlobais;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -25,8 +26,9 @@ public class NovoJogo_Dialog extends JDialog {
 	private JTextField textField;
 	private JTextField textField_1;
 
-
 	public NovoJogo_Dialog() {
+		
+		
 		setResizable(false);
 		setModal(true);
 		setTitle("Batalha Naval - Novo Jogo");
@@ -67,16 +69,16 @@ public class NovoJogo_Dialog extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 				
 				okButton.addActionListener(new ActionListener() {
-					   public void actionPerformed(ActionEvent evt) {
-						   
+					   public void actionPerformed(ActionEvent evt) {						   
 						   JOptionPane.showMessageDialog(contentPanel,
 								    "IP:"+textField.getText()+"\nNome:"+textField_1.getText());
 						   
 						   try {
 							Thread t = new Thread(new LoginServidor(textField.getText(),textField_1.getText()) );
-							 t.setDaemon(true);
-							 t.start();
-						   
+							t.setDaemon(true);
+							t.start();
+							VarsGlobais.NovoJogoThreadCreated = true;
+							dispose();
 						   } catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -91,14 +93,17 @@ public class NovoJogo_Dialog extends JDialog {
 				buttonPane.add(cancelButton);
 				
 				cancelButton.addActionListener(new ActionListener() {
-					   public void actionPerformed(ActionEvent evt) {
+					   public void actionPerformed(ActionEvent evt) {						   
 						   dispose();
 					   }
 				});
 			}
-		}
-		
+		}	
 		   
 		   
 	}
+	
+
+	
+	
 }
