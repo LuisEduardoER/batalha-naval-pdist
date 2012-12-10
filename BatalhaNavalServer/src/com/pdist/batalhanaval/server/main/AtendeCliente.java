@@ -44,6 +44,12 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
 						getLoginRequest(msg);	
 						break;
+					case Macros.MSG_LISTA_ONLINE:
+						sendListaOnline(msg);
+						break;
+					case Macros.MSG_LISTA_JOGOS:
+						sendListaJogos(msg);
+						break;
 				}					
 			} catch (IOException | NullPointerException e) {
 				System.out.println("Cliente desligou");
@@ -54,8 +60,10 @@ public class AtendeCliente extends Thread{
 				System.out.println("ERR: Não é mensagem");				
 			} 
 		}
+
 		
 		VarsGlobais.threads.remove(this);
+		VarsGlobais.nThreads--;
 	}
 	
 	
@@ -110,5 +118,31 @@ public class AtendeCliente extends Thread{
 			out.flush();
 			System.out.println("Ja esta logado");
 		}
+	}
+
+	private void sendListaOnline(Mensagem msg) throws IOException{
+		msg.setType(Macros.MSG_ONLINE_RESPONSE);
+		
+		for(int i = 0;i<VarsGlobais.nClientes;i++)
+			msg.addNomesClientes(VarsGlobais.ClientesOn.get(i).getNome());
+		
+		out.flush();
+		out.writeObject(msg);
+		out.flush();
+	}
+	
+	private void sendListaJogos(Mensagem msg) throws IOException{
+		msg.setType(Macros.MSG_JOGOS_RESPONSE);
+		
+		for(int i = 0;i<VarsGlobais.nJogos;i++){
+			msg.addNomesJogadores1(VarsGlobais.jogos.get(i).getC1().getNome());
+			msg.addNomesJogadores2(VarsGlobais.jogos.get(i).getC2().getNome());
+			String nomeJogo = "Jogo num "+(i+1);
+			msg.addNomesJogos(nomeJogo);
+		}
+		
+		out.flush();
+		out.writeObject(msg);
+		out.flush();
 	}
 }

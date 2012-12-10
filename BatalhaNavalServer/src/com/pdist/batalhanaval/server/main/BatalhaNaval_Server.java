@@ -31,7 +31,8 @@ public class BatalhaNaval_Server {
 				System.out.println("===== Cliente #"+(++numCliente)+" =====");
 				Thread t = new AtendeCliente(client);
 				
-				VarsGlobais.threads.add(t);				
+				VarsGlobais.threads.add(t);		
+				VarsGlobais.nThreads++;
 				t.start();
 			}
 			

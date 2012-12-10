@@ -7,6 +7,7 @@ public class Jogo {
 	private boolean started;
 	
 	
+	
 	//Construtores
 	public Jogo(){
 		c1 = c2 = null;

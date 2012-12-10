@@ -18,6 +18,11 @@ public class Macros {
 	public static final int MSG_LOGIN_CANCEL = 4; //Aviso de que o utilizador já não se quer registar
 	public static final int MSG_LOGIN_LOGGED = 5; //Ja estava logado
 	
+	public static final int MSG_LISTA_ONLINE = 6;
+	public static final int MSG_ONLINE_RESPONSE = 7;
+	public static final int MSG_LISTA_JOGOS = 8;
+	public static final int MSG_JOGOS_RESPONSE = 9;
+	
 	
 	private Macros(){} //Singleton
 	
