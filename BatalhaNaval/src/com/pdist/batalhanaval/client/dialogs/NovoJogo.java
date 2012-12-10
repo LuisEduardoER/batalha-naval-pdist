@@ -1,39 +1,26 @@
 package com.pdist.batalhanaval.client.dialogs;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.*;
+import java.awt.event.*;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
 
 import com.pdist.batalhanaval.client.main.LoginServidor;
 import com.pdist.batalhanaval.client.main.VarsGlobais;
 
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class NovoJogo extends JDialog {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1578538003101261327L;
 	private final JPanel contentPanel = new JPanel();
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField inputIP;
+	private JTextField inputNome;
 
 	public NovoJogo() {
-		
-		
-		setResizable(false);
-		setModal(true);
+				
+		setResizable(false);  setModal(true);
 		setTitle("Batalha Naval - Novo Jogo");
 		setBounds(100, 100, 378, 241);
 		getContentPane().setLayout(new BorderLayout());
@@ -41,21 +28,26 @@ public class NovoJogo extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setText("127.0.0.1");
-		textField.setBounds(136, 42, 105, 20);
-		contentPanel.add(textField);
-		textField.setColumns(10);
+		//Adiciona texto a pedir IP e TextField respectivo
+		
+		inputIP = new JTextField();
+		inputIP.setText("127.0.0.1");
+		inputIP.setBounds(136, 42, 105, 20);
+		contentPanel.add(inputIP);
+		inputIP.setColumns(10);
 		
 		JLabel lblIp = new JLabel("IP Servidor:");
 		lblIp.setFont(new Font("Arial", Font.BOLD, 12));
 		lblIp.setBounds(40, 45, 94, 14);
 		contentPanel.add(lblIp);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(136, 84, 158, 20);
-		contentPanel.add(textField_1);
-		textField_1.setColumns(10);
+		
+		//Adiciona texto a pedir o NOME e TextField respectivo
+		
+		inputNome = new JTextField();
+		inputNome.setBounds(136, 84, 158, 20);
+		contentPanel.add(inputNome);
+		inputNome.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Nome:");
 		lblUsername.setFont(new Font("Arial", Font.BOLD, 12));
@@ -71,19 +63,23 @@ public class NovoJogo extends JDialog {
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 				
+				//---Eventos-OK--
 				okButton.addActionListener(new ActionListener() {
-					   public void actionPerformed(ActionEvent evt) {						   
+					   public void actionPerformed(ActionEvent evt) {	
+						   
 						   JOptionPane.showMessageDialog(contentPanel,
-								    "IP:"+textField.getText()+"\nNome:"+textField_1.getText());
+								    "IP:"+inputIP.getText()+"\nNome:"+inputNome.getText());
 						   
 						   try {
-							Thread t = new Thread(new LoginServidor(textField.getText(),textField_1.getText()) );
+							   
+							Thread t = new Thread(new LoginServidor(inputIP.getText(),inputNome.getText()) );
 							t.setDaemon(true);
 							t.start();
 							VarsGlobais.NovoJogoThreadCreated = true;
 							dispose();
+							
 						   } catch (IOException e) {
-							// TODO Auto-generated catch block
+							// TRATAR
 							e.printStackTrace();
 						}
 						  
@@ -95,6 +91,7 @@ public class NovoJogo extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 				
+				//---Eventos-CANCEL--
 				cancelButton.addActionListener(new ActionListener() {
 					   public void actionPerformed(ActionEvent evt) {						   
 						   dispose();

@@ -81,7 +81,7 @@ public class LoginServidor implements Runnable {
 				System.out.println("Erro na ligação");
 				break;
 			} catch(ClassNotFoundException e){
-				System.out.println("Erro ao receber mensagem");		
+				System.out.println("Erro ao receber mensagem");				
 			}
 		}		
 	}	
