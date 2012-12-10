@@ -5,8 +5,8 @@ public class Macros {
 
 	public static final int SIZE_X = 10;
 	public static final int SIZE_Y = 10;
-	public static final int TAM_X = 10;
-	public static final int TAM_Y = 10;
+	public static final int TAM_X = 32;
+	public static final int TAM_Y = 32;
 	public static int MAX_SIZE = 1000;
 	public static final String askIP = "GIVE_IP";
 	public final static int TIMEOUT = 1500;
@@ -30,10 +30,21 @@ public class Macros {
 	
 	public static final int MSG_JOGAR = 14;
 	public static final int MSG_JOGAR_RESPONSE = 15;
+	public static final int MSG_GET_TABULEIRO = 16;
+	public static final int MSG_SET_TABULEIRO = 17;
+	
+	public static final int MSG_ATACAR = 18;
+	public static final int MSG_ACTUALIZAR_TABS = 19;
 	
 	public static final String ACEITAR_PEDIDO = "aceitar";
 	public static final String REJEITAR_PEDIDO = "rejeitar";
 	public static final String IGNORAR_PEDIDO = "ignorar"; // pode ser com timeOut depois de receber a proposta
+	
+	public static final int IMAGEM_AGUA = 1000;
+	public static final int IMAGEM_SHOTED = 1001;
+	public static final int IMAGEM_BARCO_1 = 1002;//cabeça do barco
+	public static final int IMAGEM_BARCO_2 = 1002;//resto do barco
+	
 	private Macros(){} //Singleton
 	
 

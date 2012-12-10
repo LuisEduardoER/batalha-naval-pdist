@@ -105,6 +105,10 @@ public class Ships {
 	}
 	
 	
+	public void addUnidade(UnidadeTabuleiro uni){barco.add(uni);
+		updateSize();
+	}
+	
 	
 
 }

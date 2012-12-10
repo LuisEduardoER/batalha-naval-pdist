@@ -57,4 +57,49 @@ public class Tabuleiro {
 	}
 	
 	
+	public void setShipsOnTab(){
+		//pesquisar barcos horizontais
+		for(int i=0; i<Macros.SIZE_Y-1;i++){
+			for(int j=0;j<Macros.SIZE_X-1;j++){
+				
+				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_1){
+					if(tabuleiro.get(i*10+j+1).getImage() == Macros.IMAGEM_BARCO_2){
+						Ships barco = new Ships();
+						barco.addUnidade(tabuleiro.get(i*10+j));
+						barco.addUnidade(tabuleiro.get(i*10+j+1));
+						j=j+2;
+						while(tabuleiro.get(i*10+j).getImage() != Macros.IMAGEM_AGUA && j<Macros.SIZE_X){
+							barco.addUnidade(tabuleiro.get(i*10+j));
+							j++;
+						}							
+						barcos.add(barco);						
+					}
+				}	
+			}			
+		}
+		
+		//pesquisar barcos verticais
+		for(int i=0; i<Macros.SIZE_Y-1;i++){
+			for(int j=0;j<Macros.SIZE_X-1;j = j+Macros.SIZE_X){						
+				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_1){
+					if(tabuleiro.get(i*10+j+Macros.SIZE_X).getImage() == Macros.IMAGEM_BARCO_2){
+						Ships barco = new Ships();
+						barco.addUnidade(tabuleiro.get(i*10+j));
+						barco.addUnidade(tabuleiro.get(i*10+j+Macros.SIZE_X));
+						j=j+Macros.SIZE_X;
+						while(tabuleiro.get(i*10+j).getImage() != Macros.IMAGEM_AGUA && j<Macros.SIZE_X){
+							barco.addUnidade(tabuleiro.get(i*10+j));
+							j = j+Macros.SIZE_X;
+						}							
+						barcos.add(barco);						
+					}
+				}
+			}			
+		}
+		
+		updateShips();
+	}
+	
+	
+	
 }

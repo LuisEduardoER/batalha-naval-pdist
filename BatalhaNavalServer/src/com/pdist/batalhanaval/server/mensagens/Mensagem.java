@@ -23,6 +23,7 @@ public class Mensagem implements Serializable {
 		private ArrayList<String> nomesJogadores1;
 		private ArrayList<String> nomesJogadores2;
 		private ArrayList<String> nomesJogos;
+		private ArrayList<Integer> tabuleiro;
 		
 		
 		//construtores
@@ -37,6 +38,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores2 = null;
 			nomesJogos = null;
 			responseText="";
+			tabuleiro = null;
 		}		
 		public Mensagem(int type, String msg_text){
 			this.type = type;
@@ -49,6 +51,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores2 = null;
 			nomesJogos = null;
 			responseText="";
+			tabuleiro = null;
 		}
 		public Mensagem(int type, Letra letra, Numero numero){
 			this.type = type;
@@ -61,6 +64,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores2 = null;
 			nomesJogos = null;
 			responseText="";
+			tabuleiro = null;
 		}
 		public Mensagem(int type, Cliente cliente1, Cliente cliente2){
 			this.type = type;
@@ -73,6 +77,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores2 = null;
 			nomesJogos = null;
 			responseText="";
+			tabuleiro = null;
 		}
 		
 		
@@ -87,6 +92,7 @@ public class Mensagem implements Serializable {
 		public ArrayList<String> getNomesJogadores2(){return nomesJogadores2;}
 		public ArrayList<String> getNomesJogos(){return nomesJogos;}
 		public String getResponseText(){return responseText;}
+		public ArrayList<Integer> getTabuleiro(){return tabuleiro;}
 		
 		//Setters
 		public void setType(int type){this.type = type;}
@@ -99,6 +105,7 @@ public class Mensagem implements Serializable {
 		public void setNomesJogadores2(ArrayList<String> nomesJogadores2){this.nomesJogadores2 = nomesJogadores2;}
 		public void setNomesJogos(ArrayList<String> nomesJogos){this.nomesJogos = nomesJogos;}
 		public void setResponseText(String responseText){this.responseText = responseText;}
+		public void setTabuleiro(ArrayList<Integer> tabuleiro){this.tabuleiro = tabuleiro;}
 		
 		//usar os nomes de clientes
 		public void addNomesClientes(String nome){nomesClientes.add(nome);}
@@ -140,4 +147,14 @@ public class Mensagem implements Serializable {
 							
 			return nomesJogos.get(i);}
 		public void clearNomesJogos(){nomesJogos.clear();}		
+		
+		//usar tabuleiro
+		public void addParteTabuleiro(int uni){tabuleiro.add(uni);}
+		public void removeParteTabuleiro(int pos){tabuleiro.remove(pos);}
+		public Integer getParteTabuleiro(int i){
+			if(i<0 || i>tabuleiro.size()-1)
+				return null;
+									
+			return tabuleiro.get(i);}
+		public void clearTabuleiro(){tabuleiro.clear();}
 }

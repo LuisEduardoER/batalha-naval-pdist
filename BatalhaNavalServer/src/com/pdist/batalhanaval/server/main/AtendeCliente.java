@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.controlo.Cliente;
 import com.pdist.batalhanaval.server.controlo.Jogo;
+import com.pdist.batalhanaval.server.controlo.Tabuleiro;
+import com.pdist.batalhanaval.server.controlo.UnidadeTabuleiro;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -59,6 +62,9 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo
 						getResponse(msg);
 						break;
+					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador
+						setTabuleiro(msg);
+						break;
 					
 				}					
 			} catch (IOException | NullPointerException e) {
@@ -97,6 +103,7 @@ public class AtendeCliente extends Thread{
 	private void criaCliente(){
 		cliente = new Cliente(socket.getInetAddress());
 		cliente.setMySocket(socket);
+		cliente.setMyThread(this);
 		cliente.setOnGame(false);		
 	}
 	
@@ -203,9 +210,61 @@ public class AtendeCliente extends Thread{
 		Jogo j = new Jogo();
 		j.setC1(jog1);
 		j.setC2(jog2);
-		
+				
 		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket());
+		
+		jog2.getMyThread().setGame(jogo);		
 		game = jogo;
 	}
 
+	@SuppressWarnings("null")
+	private void setTabuleiro(Mensagem msg){
+		
+		Tabuleiro tab = new Tabuleiro();
+		ArrayList<Integer> t = msg.getTabuleiro();
+			
+		UnidadeTabuleiro uni = null;
+			
+		for(int i = 0; i<Macros.SIZE_X;i++){
+			for(int j = 0;j<Macros.SIZE_Y;j++){
+				uni.setImage(t.get((i*10)+j));
+				uni.setX(i*30);
+				uni.setY(j*30);
+				if(uni.getImage() == Macros.IMAGEM_BARCO_1 || uni.getImage() == Macros.IMAGEM_BARCO_2)
+					uni.setOcupied(true);
+				else
+					uni.setOcupied(false);
+					
+				
+				
+				if(uni.getImage() == Macros.IMAGEM_SHOTED)
+					uni.setShooted(true);
+				else
+					uni.setShooted(false);
+				
+				
+				
+				tab.getTabuleiro().add(uni);					
+			}
+		}
+			
+		
+		
+		if(cliente.getNome().equalsIgnoreCase(game.getJogo().getC1().getNome())){
+			game.getJogo().getC1().setTabuleiro(tab);
+			game.getJogo().getC1().getTabuleiro().setShipsOnTab();
+		}else{
+			game.getJogo().getC2().setTabuleiro(tab);
+			game.getJogo().getC2().getTabuleiro().setShipsOnTab();
+		}
+		
+		if(game.getJogo().getC1().getTabuleiro() != null && game.getJogo().getC2().getTabuleiro() != null)
+			game.getJogo().setStarted(true);
+		
+	}
+
+	private void setGame(GameThread game){this.game = game;}
 }
+
+
+

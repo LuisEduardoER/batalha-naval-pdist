@@ -9,6 +9,8 @@ import java.util.StringTokenizer;
 import javax.swing.*;
 
 import com.pdist.batalhanaval.client.dialogs.NovoJogo;
+import com.pdist.batalhanaval.server.macros.Macros;
+
 import java.awt.Toolkit;
 
 
@@ -134,11 +136,11 @@ public class BatalhaNaval_Client implements ActionListener {
 	 
 	 public void criaMapaUtilizador(int x,int y) //TESTE
 	 {
-		  for(int i=0; i<10; i++){
-			   for(int j=0; j<10; j++){			   
+		  for(int i=0; i<Macros.SIZE_X; i++){
+			   for(int j=0; j<Macros.SIZE_Y; j++){			   
 				 
-			    botao[i][j] = new JButton(agua);		 
-			    botao[i][j].setBounds(x+(j*30), y+(i*30), 32, 32);
+			    botao[i][j] = new JButton(agua);	 
+			    botao[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
 			    botao[i][j].addActionListener((ActionListener) this);			 
 			    BatalhaNavalUI.getContentPane().add(botao[i][j]);
 			   }

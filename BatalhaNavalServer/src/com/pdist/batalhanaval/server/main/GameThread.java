@@ -36,13 +36,34 @@ public class GameThread implements Runnable{
 		VarsGlobais.ClientesOn.remove(jogo.getC1());
 		VarsGlobais.ClientesOn.remove(jogo.getC2());
 		
-		jogo.setStarted(true);
-		
+				
 	}
 	
 	@Override
 	public void run() {
-		Mensagem msg = new Mensagem(Macros.MSG_JOGAR);
+		Mensagem msg = null;
+		
+		if(!jogo.isStarted()){
+			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
+			try {
+				out1.flush();
+				out1.writeObject(msg);
+				out1.flush();
+				out2.flush();
+				out2.writeObject(msg);
+				out2.flush();
+				
+			} catch (IOException e) {				
+				System.out.println("Ligação caiu");
+				VarsGlobais.jogos.remove(jogo);
+				VarsGlobais.nJogos--;
+				VarsGlobais.nClientes = VarsGlobais.nClientes+2;
+				VarsGlobais.ClientesOn.add(jogo.getC1());
+				VarsGlobais.ClientesOn.add(jogo.getC2());
+				return;
+			}
+			
+		}
 		
 		while(!jogo.isFim()){
 			try{
@@ -70,4 +91,5 @@ public class GameThread implements Runnable{
 		
 	}
 
+	public Jogo getJogo(){return jogo;}
 }
