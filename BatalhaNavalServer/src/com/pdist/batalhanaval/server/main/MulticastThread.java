@@ -30,9 +30,10 @@ public class MulticastThread extends Thread{
 			
 			barray = new byte[Macros.MAX_SIZE];
 	        pkt = new DatagramPacket(barray,Macros.MAX_SIZE);
-			
+			this.setDaemon(true);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
     }
     
@@ -57,6 +58,7 @@ public class MulticastThread extends Thread{
 				
 			} catch (IOException e) {
 				e.printStackTrace();
+				break;
 			}
     		
     	}

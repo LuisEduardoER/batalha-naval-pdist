@@ -31,7 +31,7 @@ public class LoginServidor implements Runnable {
 		public LoginServidor(String IP, String nome) throws IOException{
 			
 			this.servAddr = InetAddress.getByName(IP);
-		    this.servPort = Integer.parseInt("5001"); //alterar?
+		    this.servPort = 5001;
 		    this.nome = nome;
 		    this.logIn = false;			
 			
@@ -43,11 +43,10 @@ public class LoginServidor implements Runnable {
 	public void run() {
 		 try{
 				socket = new Socket(servAddr,servPort);	
-			    }catch(Exception e)
-			    { 
-			    	 JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+			 }catch(Exception e){ 
+			    	 JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");			    	 
 					 return; //ja nao estoira e volta ao menu inicial (aparentemente)
-			    }
+			  }
 				//socket.setSoTimeout(TIMEOUT);
 				
 									
@@ -56,7 +55,8 @@ public class LoginServidor implements Runnable {
 					out = new ObjectOutputStream(socket.getOutputStream());				
 					in = new ObjectInputStream(socket.getInputStream());
 				} catch (IOException e1) {
-					e1.printStackTrace(); }
+					return;
+				}
 		
 		while(true){			
 			try {						
@@ -81,7 +81,7 @@ public class LoginServidor implements Runnable {
 				System.out.println("Erro na ligação");
 				break;
 			} catch(ClassNotFoundException e){
-				System.out.println("Erro ao receber mensagem");				
+				System.out.println("Erro ao receber mensagem");		
 			}
 		}		
 	}	

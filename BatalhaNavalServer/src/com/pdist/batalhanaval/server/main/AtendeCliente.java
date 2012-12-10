@@ -22,11 +22,12 @@ public class AtendeCliente extends Thread{
 		criaCliente();				
 		logIn = false;
 		
+		
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
-			System.out.println("Conexão falhou");
+			System.out.println("Conexão falhou");	
 			return;
 		}
 		
@@ -41,17 +42,20 @@ public class AtendeCliente extends Thread{
 				Mensagem msg = (Mensagem) in.readObject();					
 				switch(msg.getType()){
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
-						getLoginRequest(msg);
+						getLoginRequest(msg);	
 						break;
 				}					
 			} catch (IOException | NullPointerException e) {
 				System.out.println("Cliente desligou");
-				VarsGlobais.ClientesOn.remove(cliente);
+				VarsGlobais.ClientesOn.remove(cliente);		
+				VarsGlobais.nClientes--;
 				break;
 			} catch (ClassNotFoundException  e) {
 				System.out.println("ERR: Não é mensagem");				
 			} 
 		}
+		
+		VarsGlobais.threads.remove(this);
 	}
 	
 	
@@ -59,7 +63,7 @@ public class AtendeCliente extends Thread{
 		boolean result = true;
 		
 		for(int i = 0;i<VarsGlobais.ClientesOn.size();i++){
-			if(msg.getCliente().getNome().compareToIgnoreCase(msg.getMsgText())==0){
+			if(VarsGlobais.ClientesOn.get(i).getNome().compareToIgnoreCase(msg.getMsgText())==0){
 				result = false;
 				break;
 			}
@@ -68,7 +72,7 @@ public class AtendeCliente extends Thread{
 		if(result)
 			cliente.setNome(msg.getMsgText());
 		
-		
+		System.out.println("EXIT");
 		return result;
 	}
 	
@@ -79,6 +83,7 @@ public class AtendeCliente extends Thread{
 	
 	
 	private void getLoginRequest(Mensagem msg) throws IOException{
+		
 		if(!logIn){
 			if(!validaLogin(msg)){
 				msg.setType(Macros.MSG_LOGIN_FAIL);
