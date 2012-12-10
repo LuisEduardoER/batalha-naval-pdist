@@ -13,25 +13,25 @@ import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 
-public class LoginServidor implements Runnable {
+public class LoginServidor_IP implements Runnable {
         
         
-                protected Socket socket;
-                protected ObjectOutputStream out;
-                protected ObjectInputStream in;
-                protected boolean logIn;
-                protected InetAddress servAddr = null;
-                protected int servPort;
-                protected String nome;
+	protected Socket socket;
+	protected ObjectOutputStream out;
+	protected ObjectInputStream in;
+	protected boolean logIn;
+	protected InetAddress servAddr = null;
+	protected int servPort;
+	protected String nome;
                 
-                private final JPanel contentPanel = new JPanel();       
+	private final JPanel contentPanel = new JPanel();       
                 
         
                 
-                public LoginServidor(String IP, String nome) throws IOException{
+	public LoginServidor_IP(String IP, String nome, String porto) throws IOException{
                         
                     this.servAddr = InetAddress.getByName(IP);
-                    this.servPort = 5001; //alterar? poder definir a porta?
+                    this.servPort = Integer.parseInt(porto);
                     this.nome = nome;
                     this.logIn = false;                 
                         

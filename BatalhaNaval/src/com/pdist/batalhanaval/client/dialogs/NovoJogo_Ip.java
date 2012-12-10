@@ -6,19 +6,20 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import com.pdist.batalhanaval.client.main.LoginServidor;
+import com.pdist.batalhanaval.client.main.LoginServidor_IP;
 import com.pdist.batalhanaval.client.main.VarsGlobais;
 
 import java.io.IOException;
 
-public class NovoJogo extends JDialog {
+public class NovoJogo_Ip extends JDialog {
 	
 	private static final long serialVersionUID = 1578538003101261327L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField inputIP;
 	private JTextField inputNome;
+	private JTextField inputPorto;
 
-	public NovoJogo() {
+	public NovoJogo_Ip() {
 				
 		setResizable(false);  setModal(true);
 		setTitle("Batalha Naval - Novo Jogo");
@@ -32,7 +33,7 @@ public class NovoJogo extends JDialog {
 		
 		inputIP = new JTextField();
 		inputIP.setText("127.0.0.1");
-		inputIP.setBounds(136, 42, 105, 20);
+		inputIP.setBounds(136, 42, 94, 20);
 		contentPanel.add(inputIP);
 		inputIP.setColumns(10);
 		
@@ -53,6 +54,17 @@ public class NovoJogo extends JDialog {
 		lblUsername.setFont(new Font("Arial", Font.BOLD, 12));
 		lblUsername.setBounds(68, 87, 70, 14);
 		contentPanel.add(lblUsername);
+		
+		JLabel lblPorta = new JLabel("Porto:");
+		lblPorta.setFont(new Font("Arial", Font.BOLD, 12));
+		lblPorta.setBounds(240, 27, 34, 14);
+		contentPanel.add(lblPorta);
+		
+		inputPorto = new JTextField();
+		inputPorto.setText("5001");
+		inputPorto.setColumns(10);
+		inputPorto.setBounds(240, 42, 57, 20);
+		contentPanel.add(inputPorto);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -68,11 +80,11 @@ public class NovoJogo extends JDialog {
 					   public void actionPerformed(ActionEvent evt) {	
 						   
 						   JOptionPane.showMessageDialog(contentPanel,
-								    "IP:"+inputIP.getText()+"\nNome:"+inputNome.getText());
+								    "IP: "+inputIP.getText()+"Port: "+inputPorto.getText()+"\nNome: "+inputNome.getText());
 						   
 						   try {
 							   
-							Thread t = new Thread(new LoginServidor(inputIP.getText(),inputNome.getText()) );
+							Thread t = new Thread(new LoginServidor_IP(inputIP.getText(),inputNome.getText(),inputPorto.getText() ) );
 							t.setDaemon(true);
 							t.start();
 							VarsGlobais.NovoJogoThreadCreated = true;
@@ -102,8 +114,4 @@ public class NovoJogo extends JDialog {
 		   
 		   
 	}
-	
-
-	
-	
 }

@@ -8,7 +8,8 @@ import java.util.StringTokenizer;
 
 import javax.swing.*;
 
-import com.pdist.batalhanaval.client.dialogs.NovoJogo;
+import com.pdist.batalhanaval.client.dialogs.NovoJogo_Ip;
+import com.pdist.batalhanaval.client.dialogs.NovoJogo_Multicast;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 import java.awt.Toolkit;
@@ -52,8 +53,13 @@ public class BatalhaNaval_Client implements ActionListener {
 		JMenu mnJogo = new JMenu("Jogo");
 		menuBar.add(mnJogo);
 		
-		JMenuItem mntmNovoJogo = new JMenuItem("Novo Jogo");
+		//Depois alterar esta forma?
+		JMenuItem mntmNovoJogo = new JMenuItem("Novo Jogo - IP/Port");
 		mnJogo.add(mntmNovoJogo);
+		//Depois alterar esta forma?
+		JMenuItem mntmNovoJogo2 = new JMenuItem("Novo Jogo - Multicast");
+		mnJogo.add(mntmNovoJogo2);
+		
 		
 		JMenuItem mntmSair = new JMenuItem("Sair");
 		mnJogo.add(mntmSair);
@@ -83,7 +89,25 @@ public class BatalhaNaval_Client implements ActionListener {
 			   			   
 			   try {			
 					if(!VarsGlobais.NovoJogoThreadCreated){
-						NovoJogo dialog = new NovoJogo();
+						NovoJogo_Ip dialog = new NovoJogo_Ip();
+						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+						dialog.setVisible(true);	
+					}
+					
+				} catch (Exception e1) {
+					//TRATAR
+					e1.printStackTrace();
+				}
+			  
+		   }
+	});
+	
+	mntmNovoJogo2.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent evt) {	
+			   			   
+			   try {			
+					if(!VarsGlobais.NovoJogoThreadCreated){
+						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 						dialog.setVisible(true);	
 					}
