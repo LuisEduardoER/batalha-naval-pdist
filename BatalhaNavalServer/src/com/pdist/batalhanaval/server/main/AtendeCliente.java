@@ -80,7 +80,6 @@ public class AtendeCliente extends Thread{
 		if(result)
 			cliente.setNome(msg.getMsgText());
 		
-		System.out.println("EXIT");
 		return result;
 	}
 	
