@@ -19,8 +19,8 @@ public class BatalhaNaval_Client implements ActionListener {
 	private JFrame BatalhaNavalUI;
 	private JButton[][] botao = new JButton[12][12];
 	private JButton[][] botaoAdv = new JButton[12][12];
-	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaAlvo.jpg");
-	private ImageIcon agua = new ImageIcon("Imagens/agua.jpg");	  
+	private ImageIcon aguaAlvo = new ImageIcon("imagens/aguaFail.png");
+	private ImageIcon agua = new ImageIcon("imagens/agua.png");	  
 
 	public static void main(String[] args)
 	{		
