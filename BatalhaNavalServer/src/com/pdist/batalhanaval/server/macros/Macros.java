@@ -23,6 +23,11 @@ public class Macros {
 	public static final int MSG_LISTA_JOGOS = 8;
 	public static final int MSG_JOGOS_RESPONSE = 9;
 	
+	public static final int MSG_INICIAR_JOGO = 10;//um jogador pede para o jogo começar
+	public static final int MSG_PEDIDO_JOGO = 11;//o servidor reencaminha o pedido para o 2º jogador
+	public static final int MSG_INICIAR_RESPONSE = 12;//Resposta dada ao 1º utilizador
+	public static final int MSG_PEDIDO_RESPONSE = 13;//Resposta dada pelo 2º utilizador ao servidor
+	
 	
 	private Macros(){} //Singleton
 	

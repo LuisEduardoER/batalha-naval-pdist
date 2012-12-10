@@ -50,6 +50,10 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_LISTA_JOGOS:
 						sendListaJogos(msg);
 						break;
+					case Macros.MSG_INICIAR_JOGO:
+						sendInvite(msg);
+						break;
+					
 				}					
 			} catch (IOException | NullPointerException e) {
 				System.out.println("Cliente desligou");
@@ -85,6 +89,7 @@ public class AtendeCliente extends Thread{
 	
 	private void criaCliente(){
 		cliente = new Cliente(socket.getInetAddress());
+		cliente.setMySocket(socket);
 		cliente.setOnGame(false);		
 	}
 	
@@ -143,5 +148,27 @@ public class AtendeCliente extends Thread{
 		out.flush();
 		out.writeObject(msg);
 		out.flush();
+	}
+	
+	private void sendInvite(Mensagem msg) throws IOException{
+		msg.setType(Macros.MSG_PEDIDO_JOGO);
+		Socket s = null;
+		ObjectOutputStream out2 = null;
+		
+		
+		for(int i = 0;i<VarsGlobais.nClientes;i++){
+			if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
+				s = VarsGlobais.ClientesOn.get(i).getMySocket();
+				out2 = new ObjectOutputStream(s.getOutputStream());
+				msg.setMsgText(cliente.getNome());
+				break;
+			}				
+		}
+		
+		if(out2 != null){
+			out2.flush();
+			out2.writeObject(msg);
+			out2.flush();
+		}
 	}
 }
