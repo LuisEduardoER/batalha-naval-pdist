@@ -28,7 +28,12 @@ public class Macros {
 	public static final int MSG_INICIAR_RESPONSE = 12;//Resposta dada ao 1º utilizador
 	public static final int MSG_PEDIDO_RESPONSE = 13;//Resposta dada pelo 2º utilizador ao servidor
 	
+	public static final int MSG_JOGAR = 14;
+	public static final int MSG_JOGAR_RESPONSE = 15;
 	
+	public static final String ACEITAR_PEDIDO = "aceitar";
+	public static final String REJEITAR_PEDIDO = "rejeitar";
+	public static final String IGNORAR_PEDIDO = "ignorar"; // pode ser com timeOut depois de receber a proposta
 	private Macros(){} //Singleton
 	
 

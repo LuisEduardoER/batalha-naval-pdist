@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import com.pdist.batalhanaval.server.controlo.Cliente;
+import com.pdist.batalhanaval.server.controlo.Jogo;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -16,8 +17,10 @@ public class AtendeCliente extends Thread{
 	protected ObjectInputStream in;
 	protected boolean logIn;
 	protected Cliente cliente;
+	protected GameThread game;
 	
 	public AtendeCliente(Socket s){
+		game = null;
 		socket = s;
 		criaCliente();				
 		logIn = false;
@@ -44,14 +47,17 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
 						getLoginRequest(msg);	
 						break;
-					case Macros.MSG_LISTA_ONLINE:
+					case Macros.MSG_LISTA_ONLINE: //o utilizador pede a lista de jogadores
 						sendListaOnline(msg);
 						break;
-					case Macros.MSG_LISTA_JOGOS:
+					case Macros.MSG_LISTA_JOGOS: //o utilizador pede a lista de jogos a decorrer
 						sendListaJogos(msg);
 						break;
-					case Macros.MSG_INICIAR_JOGO:
+					case Macros.MSG_INICIAR_JOGO: //o utilizador faz um pedido de jogo
 						sendInvite(msg);
+						break;
+					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo
+						getResponse(msg);
 						break;
 					
 				}					
@@ -74,6 +80,7 @@ public class AtendeCliente extends Thread{
 	private boolean validaLogin(Mensagem msg){
 		boolean result = true;
 		
+		//ver se o nome não é repetido
 		for(int i = 0;i<VarsGlobais.ClientesOn.size();i++){
 			if(VarsGlobais.ClientesOn.get(i).getNome().compareToIgnoreCase(msg.getMsgText())==0){
 				result = false;
@@ -155,6 +162,7 @@ public class AtendeCliente extends Thread{
 		Socket s = null;
 		ObjectOutputStream out2 = null;
 		
+		//no campo MsgText vem o nome do jogador a convidar e depois vai o nome de quem convidou
 		
 		for(int i = 0;i<VarsGlobais.nClientes;i++){
 			if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
@@ -171,4 +179,33 @@ public class AtendeCliente extends Thread{
 			out2.flush();
 		}
 	}
+
+	private void getResponse(Mensagem msg) throws IOException{
+		msg.setType(Macros.MSG_INICIAR_RESPONSE);
+		
+		//se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido
+		if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
+			out.writeObject(msg);
+		
+		if(msg.getResponseText() == Macros.ACEITAR_PEDIDO){
+			Cliente c2 = null;
+			for(int i = 0; i< VarsGlobais.nClientes;i++)
+				if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
+					c2 = VarsGlobais.ClientesOn.get(i);
+					break;
+				}
+			
+			startNewGame(cliente,c2);
+		}
+	}
+	
+	private void startNewGame(Cliente jog1, Cliente jog2){
+		Jogo j = new Jogo();
+		j.setC1(jog1);
+		j.setC2(jog2);
+		
+		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket());
+		game = jogo;
+	}
+
 }

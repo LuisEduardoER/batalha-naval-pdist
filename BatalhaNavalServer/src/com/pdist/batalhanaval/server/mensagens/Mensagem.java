@@ -15,6 +15,7 @@ public class Mensagem implements Serializable {
 	private static final long serialVersionUID = -3510385339259903686L;
 		private int type;
 		private String msg_text;
+		private String responseText;
 		private Letra letra;
 		private Numero numero;
 		private Cliente cliente;
@@ -35,6 +36,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores1 = null;
 			nomesJogadores2 = null;
 			nomesJogos = null;
+			responseText="";
 		}		
 		public Mensagem(int type, String msg_text){
 			this.type = type;
@@ -46,6 +48,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores1 = null;
 			nomesJogadores2 = null;
 			nomesJogos = null;
+			responseText="";
 		}
 		public Mensagem(int type, Letra letra, Numero numero){
 			this.type = type;
@@ -57,6 +60,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores1 = null;
 			nomesJogadores2 = null;
 			nomesJogos = null;
+			responseText="";
 		}
 		public Mensagem(int type, Cliente cliente1, Cliente cliente2){
 			this.type = type;
@@ -68,6 +72,7 @@ public class Mensagem implements Serializable {
 			nomesJogadores1 = null;
 			nomesJogadores2 = null;
 			nomesJogos = null;
+			responseText="";
 		}
 		
 		
@@ -81,6 +86,7 @@ public class Mensagem implements Serializable {
 		public ArrayList<String> getNomesJogadores1(){return nomesJogadores1;}
 		public ArrayList<String> getNomesJogadores2(){return nomesJogadores2;}
 		public ArrayList<String> getNomesJogos(){return nomesJogos;}
+		public String getResponseText(){return responseText;}
 		
 		//Setters
 		public void setType(int type){this.type = type;}
@@ -92,7 +98,7 @@ public class Mensagem implements Serializable {
 		public void setNomesJogadores1(ArrayList<String> nomesJogadores1){this.nomesJogadores1 = nomesJogadores1;}
 		public void setNomesJogadores2(ArrayList<String> nomesJogadores2){this.nomesJogadores2 = nomesJogadores2;}
 		public void setNomesJogos(ArrayList<String> nomesJogos){this.nomesJogos = nomesJogos;}
-		
+		public void setResponseText(String responseText){this.responseText = responseText;}
 		
 		//usar os nomes de clientes
 		public void addNomesClientes(String nome){nomesClientes.add(nome);}
