@@ -22,7 +22,7 @@ public class NovoJogo_Ip extends JDialog {
 	public NovoJogo_Ip() {
 				
 		setResizable(false);  setModal(true);
-		setTitle("Batalha Naval - Novo Jogo");
+		setTitle("Batalha Naval - Novo Jogo - IP/Port");
 		setBounds(100, 100, 378, 241);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -32,38 +32,41 @@ public class NovoJogo_Ip extends JDialog {
 		//Adiciona texto a pedir IP e TextField respectivo
 		
 		inputIP = new JTextField();
+		inputIP.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		inputIP.setText("127.0.0.1");
-		inputIP.setBounds(136, 42, 94, 20);
+		inputIP.setBounds(125, 42, 105, 23);
 		contentPanel.add(inputIP);
 		inputIP.setColumns(10);
 		
-		JLabel lblIp = new JLabel("IP Servidor:");
-		lblIp.setFont(new Font("Arial", Font.BOLD, 12));
-		lblIp.setBounds(40, 45, 94, 14);
+		JLabel lblIp = new JLabel("Servidor IP:");
+		lblIp.setFont(new Font("Arial", Font.BOLD, 16));
+		lblIp.setBounds(125, 27, 94, 14);
 		contentPanel.add(lblIp);
 		
 		
 		//Adiciona texto a pedir o NOME e TextField respectivo
 		
 		inputNome = new JTextField();
-		inputNome.setBounds(136, 84, 158, 20);
+		inputNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		inputNome.setBounds(125, 89, 172, 23);
 		contentPanel.add(inputNome);
 		inputNome.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Nome:");
-		lblUsername.setFont(new Font("Arial", Font.BOLD, 12));
-		lblUsername.setBounds(68, 87, 70, 14);
+		lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
+		lblUsername.setBounds(70, 93, 70, 14);
 		contentPanel.add(lblUsername);
 		
-		JLabel lblPorta = new JLabel("Porto:");
-		lblPorta.setFont(new Font("Arial", Font.BOLD, 12));
-		lblPorta.setBounds(240, 27, 34, 14);
+		JLabel lblPorta = new JLabel("Port:");
+		lblPorta.setFont(new Font("Arial", Font.BOLD, 16));
+		lblPorta.setBounds(240, 27, 70, 14);
 		contentPanel.add(lblPorta);
 		
 		inputPorto = new JTextField();
+		inputPorto.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		inputPorto.setText("5001");
 		inputPorto.setColumns(10);
-		inputPorto.setBounds(240, 42, 57, 20);
+		inputPorto.setBounds(240, 42, 57, 23);
 		contentPanel.add(inputPorto);
 		{
 			JPanel buttonPane = new JPanel();

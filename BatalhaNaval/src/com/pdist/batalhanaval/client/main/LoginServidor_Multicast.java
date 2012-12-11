@@ -20,12 +20,10 @@ public class LoginServidor_Multicast implements Runnable {
 	protected int ip_port;
 	protected String nome;
 	protected String msg="";
-	
-	
 	protected MulticastSocket s;
     protected DatagramPacket pkt;
     protected DatagramPacket send;
-    protected int port = 5001; //mesma
+    protected int port; //mesma
     protected boolean running;
     protected byte[] barray;
     
@@ -35,12 +33,13 @@ public class LoginServidor_Multicast implements Runnable {
     //Na verdade não faz login, simplesmente aproveita para saber o ip do servidor e chama a class LoginServidor_IP caso tenha sucesso!
 	//acho que não vale a pena ter duas a fazer o mesmo depois...visto que a ligaçao tem ke ser via TCP (conforme imagem do enunciado)
 	
-	public LoginServidor_Multicast(String IP, String nome) throws IOException{
+	public LoginServidor_Multicast(String IP, String Port, String nome) throws IOException{
 		
 		try {
                         
                     this.group = InetAddress.getByName(IP);
                     this.ip = InetAddress.getLocalHost();
+                    this.port = Integer.parseInt(Port);
                     this.nome = nome;
             
                     s = new MulticastSocket(port);
@@ -68,30 +67,30 @@ public class LoginServidor_Multicast implements Runnable {
         	while(running){
         		try {
         			
-//Pedido de IP do servidor
+//=====================Pedido de IP do servidor
         			   String msgToSend = "MSG_SERVIP_REQUEST"; //nova, basta so para saber os dados                       
         			   DatagramPacket dgram = new DatagramPacket(msgToSend.getBytes(), msgToSend.length(),group, port);
                        s.send(dgram);
                        s.setSoTimeout(1500); //caso o servidor nao esteja on..
                        
                        while(!msg.equals("IPSERVIDOR")){ // enquanto n receber esta mensagem...                 	   
-                    	try{
-                    		//Resposta do servidor            			
+                    	   try{
+//=============================Resposta do servidor            			
             				   s.receive(pkt);   
-                    	} catch (Exception e) {            			
-           				 JOptionPane.showMessageDialog(contentPanel,"(Timeout)Não foi possivel obter uma resposta, tente novamente!");
-           				return;
-           			}
+                    	   	} catch (Exception e) {            			
+                    	   		JOptionPane.showMessageDialog(contentPanel,"(Timeout)Não foi possivel obter uma resposta, tente novamente!");
+                    	   	  return;
+                    	   	}
                     	   
     				
        				   msg =  new String(pkt.getData(), 0, pkt.getLength());       				
        			       System.out.println("Resposta via multicast: (" + pkt.getAddress().getHostAddress() + ":" + pkt.getPort() + ")MSG: " + msg );	
        			        
+       			       //recebe ip e port do servidor
        			       ip_serv = pkt.getAddress().getHostAddress();
        			       ip_port = pkt.getPort();   
        			       
-//Como ja sabe o ip e porta do servidor, faz a ligaçao via tcp (so falta controlar se o nome ta em uso))
-       			       
+//Como ja sabe o ip e porta do servidor, faz a ligaçao via tcp (so falta controlar se o nome ta em uso))       			       
        			       	if(msg.equals("IPSERVIDOR"))
        			       	{      			      
        			       		Thread t = new Thread(new LoginServidor_IP(ip_serv,nome,""+ip_port) );

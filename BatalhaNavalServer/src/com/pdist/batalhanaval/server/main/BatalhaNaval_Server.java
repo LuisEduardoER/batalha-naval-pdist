@@ -11,10 +11,13 @@ public class BatalhaNaval_Server {
 	 * */	
 	
 	private static ServerSocket ss;
+	//===========Porta fixa do servidor==============
+	private static int ServerPort = 5001;
+	//===========Porta fixa do servidor==============
 	
 	public static void main(String[] args) throws IOException {
 		
-	System.out.println("===== Inicio Servidor =====");
+	System.out.println("===== Inicio Servidor (Port:"+ServerPort+")=====");
 	int numCliente=0;
 	Socket client = null;
 	
@@ -23,7 +26,7 @@ public class BatalhaNaval_Server {
 	
 	try{ 
 			
-			ss = new ServerSocket(5001);
+			ss = new ServerSocket(ServerPort);
 			
 			while(true){
 				client = ss.accept();

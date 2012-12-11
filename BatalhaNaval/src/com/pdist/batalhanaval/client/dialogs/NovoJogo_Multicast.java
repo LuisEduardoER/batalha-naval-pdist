@@ -17,6 +17,7 @@ public class NovoJogo_Multicast extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField inputIP;
 	private JTextField inputNome;
+	private JTextField textField;
 
 	public NovoJogo_Multicast() {
 				
@@ -31,28 +32,42 @@ public class NovoJogo_Multicast extends JDialog {
 		//Adiciona texto a pedir IP e TextField respectivo
 		
 		inputIP = new JTextField();
+		inputIP.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		inputIP.setText("230.1.1.1");
-		inputIP.setBounds(136, 42, 94, 20);
+		inputIP.setBounds(136, 42, 106, 23);
 		contentPanel.add(inputIP);
 		inputIP.setColumns(10);
 		
-		JLabel lblIp = new JLabel("IP Multicast:");
-		lblIp.setFont(new Font("Arial", Font.BOLD, 12));
-		lblIp.setBounds(40, 45, 94, 14);
+		JLabel lblIp = new JLabel("Multicast IP:");
+		lblIp.setFont(new Font("Arial", Font.BOLD, 16));
+		lblIp.setBounds(136, 24, 94, 14);
 		contentPanel.add(lblIp);
 		
 		
 		//Adiciona texto a pedir o NOME e TextField respectivo
 		
 		inputNome = new JTextField();
-		inputNome.setBounds(136, 84, 158, 20);
+		inputNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		inputNome.setBounds(135, 94, 173, 23);
 		contentPanel.add(inputNome);
 		inputNome.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Nome:");
-		lblUsername.setFont(new Font("Arial", Font.BOLD, 12));
-		lblUsername.setBounds(68, 87, 70, 14);
+		lblUsername.setFont(new Font("Arial", Font.BOLD, 16));
+		lblUsername.setBounds(67, 98, 58, 14);
 		contentPanel.add(lblUsername);
+		
+		JLabel label = new JLabel("Port:");
+		label.setFont(new Font("Arial", Font.BOLD, 16));
+		label.setBounds(252, 24, 70, 14);
+		contentPanel.add(label);
+		
+		textField = new JTextField();
+		textField.setText("5001");
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField.setColumns(10);
+		textField.setBounds(252, 42, 57, 23);
+		contentPanel.add(textField);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -68,11 +83,11 @@ public class NovoJogo_Multicast extends JDialog {
 					   public void actionPerformed(ActionEvent evt) {	
 						   
 						   JOptionPane.showMessageDialog(contentPanel,
-								    "IP: "+inputIP.getText()+"Port: "+"\nNome: "+inputNome.getText());
+								    "IP: "+inputIP.getText()+"Port: "+ textField.getText() +"\nNome: "+inputNome.getText());
 						   
 						   try {
 							   
-							   Thread t = new Thread(new LoginServidor_Multicast(inputIP.getText(),inputNome.getText() ) );
+							   Thread t = new Thread(new LoginServidor_Multicast(inputIP.getText(),textField.getText(),inputNome.getText() ) );
 							   t.setDaemon(true);
 							   t.start();	
 							   dispose();
