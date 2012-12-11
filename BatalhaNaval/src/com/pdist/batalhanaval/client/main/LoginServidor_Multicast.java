@@ -72,14 +72,13 @@ public class LoginServidor_Multicast implements Runnable {
         			   String msgToSend = "MSG_SERVIP_REQUEST"; //nova, basta so para saber os dados                       
         			   DatagramPacket dgram = new DatagramPacket(msgToSend.getBytes(), msgToSend.length(),group, port);
                        s.send(dgram);
-                       s.setSoTimeout(2000); //caso o servidor nao esteja on..
+                       s.setSoTimeout(1500); //caso o servidor nao esteja on..
                        
                        while(!msg.equals("IPSERVIDOR")){ // enquanto n receber esta mensagem...                 	   
                     	try{
                     		//Resposta do servidor            			
             				   s.receive(pkt);   
-                    	} catch (Exception e) {
-            				e.printStackTrace();
+                    	} catch (Exception e) {            			
            				 JOptionPane.showMessageDialog(contentPanel,"(Timeout)Não foi possivel obter uma resposta, tente novamente!");
            				return;
            			}

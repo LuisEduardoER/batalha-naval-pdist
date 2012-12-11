@@ -46,6 +46,7 @@ public class LoginServidor_IP implements Runnable {
                             }catch(Exception e)
                             { 
                                  JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+                                 VarsGlobais.NovoJogoThreadCreated = false;  
                                          return;
                             }
                                 //socket.setSoTimeout(TIMEOUT);
@@ -74,15 +75,18 @@ public class LoginServidor_IP implements Runnable {
                                                 break;
                                         case Macros.MSG_LOGIN_VALIDATED:
                                                 logIn = true;
+                                                JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
                                                 break;
                                 }                                       
                                 
                         } catch (IOException  e) {
                                 
                                  JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+                                 VarsGlobais.NovoJogoThreadCreated = false;  
                                  return;
                         } catch(ClassNotFoundException e){
                                  JOptionPane.showMessageDialog(contentPanel,"Erro ao receber a mensagem");
+                                 VarsGlobais.NovoJogoThreadCreated = false;  
                                  return;                                
                         }
                 }               
