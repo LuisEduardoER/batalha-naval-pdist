@@ -5,8 +5,8 @@ public class Macros {
 
 	public static final int SIZE_X = 10;
 	public static final int SIZE_Y = 10;
-	public static final int TAM_X = 32;
-	public static final int TAM_Y = 32;
+	public static final int TAM_X = 30;
+	public static final int TAM_Y = 30;
 	public static int MAX_SIZE = 1000;
 	public static final String askIP = "GIVE_IP";
 	public final static int TIMEOUT = 1500;

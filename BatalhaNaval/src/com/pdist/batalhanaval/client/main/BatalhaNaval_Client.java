@@ -13,6 +13,7 @@ import com.pdist.batalhanaval.client.dialogs.NovoJogo_Multicast;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 import java.awt.Toolkit;
+import java.awt.SystemColor;
 
 
 public class BatalhaNaval_Client implements ActionListener {
@@ -21,7 +22,11 @@ public class BatalhaNaval_Client implements ActionListener {
 	private JButton[][] botao = new JButton[12][12];
 	private JButton[][] botaoAdv = new JButton[12][12];
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
-	private ImageIcon agua = new ImageIcon("Imagens/agua.png");	  
+	private ImageIcon agua = new ImageIcon("Imagens/agua.png"); 
+	private static JLabel lblJogador_1 = new JLabel("<nome>");
+	private static JLabel lblJogador_2 = new JLabel("<nome>");
+	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
+
 
 	public static void main(String[] args)
 	{		
@@ -40,8 +45,8 @@ public class BatalhaNaval_Client implements ActionListener {
 		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage(BatalhaNaval_Client.class.getResource("/javax/swing/plaf/metal/icons/ocean/computer.gif")));
 		BatalhaNavalUI.setResizable(false);
 		BatalhaNavalUI.setTitle("Batalha Naval v0.1");
-		BatalhaNavalUI.getContentPane().setBackground(Color.LIGHT_GRAY);
-		BatalhaNavalUI.setBounds(100, 100, 800, 600);
+		BatalhaNavalUI.getContentPane().setBackground(SystemColor.controlHighlight);
+		BatalhaNavalUI.setBounds(100, 100, 775, 500);
 		BatalhaNavalUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		BatalhaNavalUI.getContentPane().setLayout(null);
 		
@@ -58,24 +63,53 @@ public class BatalhaNaval_Client implements ActionListener {
 		mnJogo.add(mntmNovoJogo);
 		//Depois alterar esta forma?
 		JMenuItem mntmNovoJogo2 = new JMenuItem("Novo Jogo - Multicast");
-		mnJogo.add(mntmNovoJogo2);
-		
+		mnJogo.add(mntmNovoJogo2);		
 		
 		JMenuItem mntmSair = new JMenuItem("Sair");
 		mnJogo.add(mntmSair);
+		mntmSair.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent evt) {						   
+				   System.exit(0);
+			   }
+		});
 		
 		JMenu mnOpes = new JMenu("Op\u00E7\u00F5es");
 		menuBar.add(mnOpes);
 		
-		JLabel lblJogador = new JLabel("Jogador 1");
-		lblJogador.setFont(new Font("Arial", Font.PLAIN, 26));
-		lblJogador.setBounds(170, 32, 138, 30);
-		BatalhaNavalUI.getContentPane().add(lblJogador);
+		JLabel label = new JLabel("Jogador:");
+		label.setForeground(Color.BLACK);
+		label.setFont(new Font("Tahoma", Font.BOLD, 16));
+		label.setBounds(89, 32, 83, 37);
+		BatalhaNavalUI.getContentPane().add(label);
 		
-		JLabel lblJogador_1 = new JLabel("Jogador 2");
-		lblJogador_1.setFont(new Font("Arial", Font.PLAIN, 26));
-		lblJogador_1.setBounds(497, 32, 138, 30);
-		BatalhaNavalUI.getContentPane().add(lblJogador_1);
+	    //Nome Jogador 1
+		lblJogador_1.setForeground(Color.BLACK);
+		lblJogador_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblJogador_1.setBounds(169, 32, 163, 37);
+		BatalhaNavalUI.getContentPane().add(lblJogador_1);		
+		
+		JLabel label_1 = new JLabel("Inimigo:");
+		label_1.setForeground(Color.BLACK);
+		label_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+		label_1.setBounds(415, 29, 73, 43);
+		BatalhaNavalUI.getContentPane().add(label_1);			
+		
+		 //Nome Jogador 2
+		lblJogador_2.setForeground(Color.BLACK);
+		lblJogador_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblJogador_2.setBounds(490, 29, 192, 43);
+		BatalhaNavalUI.getContentPane().add(lblJogador_2);
+		
+		JLabel label3 = new JLabel("Estado:");
+		label3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		label3.setBounds(316, 428, 66, 21);
+		BatalhaNavalUI.getContentPane().add(label3);
+		
+		
+		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblEstado.setBounds(378, 432, 202, 14);
+		BatalhaNavalUI.getContentPane().add(lblEstado);
+		
 		
 		
 //======(PROVISORIO) EXEMPLO INTERFACE JOGO============
@@ -177,10 +211,23 @@ public class BatalhaNaval_Client implements ActionListener {
 			   for(int j=0; j<10; j++){			   
 				 
 			    botaoAdv[i][j] = new JButton(agua);		 
-			    botaoAdv[i][j].setBounds(x+(j*30), y+(i*30), 32, 32);
+			    botaoAdv[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
 			    botaoAdv[i][j].addActionListener((ActionListener) this);				    		    
 			    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);
 			   }
 		  }
+	 }
+	 
+	 public static void setNomeJogador1(String nome)
+	 {
+		 lblJogador_1.setText(nome);			 
+	 }
+	 public static void setNomeJogador2(String nome)
+	 {
+		 lblJogador_2.setText(nome);			 
+	 }
+	 public static void setEstado(String estado)
+	 {
+		 lblEstado.setText(estado);			 
 	 }
 }

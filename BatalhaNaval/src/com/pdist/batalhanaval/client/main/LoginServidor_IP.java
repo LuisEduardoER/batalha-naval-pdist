@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
+import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 
 
 public class LoginServidor_IP implements Runnable {
@@ -76,6 +77,11 @@ public class LoginServidor_IP implements Runnable {
                                         case Macros.MSG_LOGIN_VALIDATED:
                                                 logIn = true;
                                                 JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
+                                                //Teste=====
+                                                BatalhaNaval_Client.setNomeJogador1(nome);
+                                                BatalhaNaval_Client.setNomeJogador2("A aguardar..");
+                                                BatalhaNaval_Client.setEstado("A aguardar jogador 2...");
+                                                //========                                                
                                                 break;
                                 }                                       
                                 
