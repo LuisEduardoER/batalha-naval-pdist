@@ -24,8 +24,7 @@ public class LoginServidor_IP implements Runnable {
 	protected int servPort;
 	protected String nome;
                 
-	private final JPanel contentPanel = new JPanel();       
-                
+	private final JPanel contentPanel = new JPanel();                     
         
                 
 	public LoginServidor_IP(String IP, String nome, String porto) throws IOException{

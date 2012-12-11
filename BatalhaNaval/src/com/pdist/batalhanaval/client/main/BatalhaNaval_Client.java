@@ -78,12 +78,12 @@ public class BatalhaNaval_Client implements ActionListener {
 		BatalhaNavalUI.getContentPane().add(lblJogador_1);
 		
 		
-		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
+//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
 		criaMapaUtilizador(70,70); 				
 		criaMapaAdversario(400,70); 		
 		
 		
-	//----Novo Jogo - Evento---
+//----Novo Jogo - Evento---
 	mntmNovoJogo.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent evt) {	
 			   			   
@@ -124,7 +124,7 @@ public class BatalhaNaval_Client implements ActionListener {
 	
 	}
 	
-	//EVENTO BOTOES
+//EVENTO BOTOES
 	 public void actionPerformed(ActionEvent e) {	
 		 
 		 StringTokenizer tokens = new StringTokenizer(new String(e.getSource().toString()),",");

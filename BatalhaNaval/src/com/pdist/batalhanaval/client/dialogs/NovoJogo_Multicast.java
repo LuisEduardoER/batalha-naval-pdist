@@ -6,9 +6,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import com.pdist.batalhanaval.client.main.LoginServidor_IP;
 import com.pdist.batalhanaval.client.main.LoginServidor_Multicast;
-import com.pdist.batalhanaval.client.main.VarsGlobais;
+
 
 import java.io.IOException;
 
@@ -18,7 +17,6 @@ public class NovoJogo_Multicast extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField inputIP;
 	private JTextField inputNome;
-	int jfjf;
 
 	public NovoJogo_Multicast() {
 				
@@ -74,11 +72,10 @@ public class NovoJogo_Multicast extends JDialog {
 						   
 						   try {
 							   
-							Thread t = new Thread(new LoginServidor_Multicast(inputIP.getText(),inputNome.getText() ) );
-							t.setDaemon(true);
-							t.start();
-							VarsGlobais.NovoJogoThreadCreated = true;
-							dispose();
+							   Thread t = new Thread(new LoginServidor_Multicast(inputIP.getText(),inputNome.getText() ) );
+							   t.setDaemon(true);
+							   t.start();	
+							   dispose();
 							
 						   } catch (IOException e) {
 							// TRATAR

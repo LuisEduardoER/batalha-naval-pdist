@@ -1,59 +1,122 @@
 package com.pdist.batalhanaval.client.main;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.net.Socket;
+import java.net.MulticastSocket;
+
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
-import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
-
-public class LoginServidor_Multicast implements Runnable {
+public class LoginServidor_Multicast implements Runnable {    
         
-        
-	protected Socket socket;
-	protected ObjectOutputStream out;
-	protected ObjectInputStream in;
-	protected boolean logIn;
-	protected InetAddress servAddr = null;
-	protected int servPort;
+	
+	protected InetAddress group = null;
+	protected InetAddress ip = null;
+	protected String ip_serv =null;
+	protected int ip_port;
 	protected String nome;
-                
-	private final JPanel contentPanel = new JPanel();       
-                
+	protected String msg="";
+	
+	
+	protected MulticastSocket s;
+    protected DatagramPacket pkt;
+    protected DatagramPacket send;
+    protected int port = 5001; //mesma
+    protected boolean running;
+    protected byte[] barray;
+    
+	
+	private final JPanel contentPanel = new JPanel();                                
         
-                
+    //Na verdade não faz login, simplesmente aproveita para saber o ip do servidor e chama a class LoginServidor_IP caso tenha sucesso!
+	//acho que não vale a pena ter duas a fazer o mesmo depois...visto que a ligaçao tem ke ser via TCP (conforme imagem do enunciado)
+	
 	public LoginServidor_Multicast(String IP, String nome) throws IOException{
+		
+		try {
                         
-                    this.servAddr = InetAddress.getByName(IP);
+                    this.group = InetAddress.getByName(IP);
+                    this.ip = InetAddress.getLocalHost();
                     this.nome = nome;
-                    this.logIn = false;                 
+            
+                    s = new MulticastSocket(port);
+                    s.joinGroup(group);
+                    
+                    running = true;
+                    barray = new byte[Macros.MAX_SIZE];
+        	        pkt = new DatagramPacket(barray,Macros.MAX_SIZE);      		
                         
-                }                       
+            
+	} catch (IOException e) {
+		//tratar
+		e.printStackTrace();
+		return;}
+	}
         
 
                 
         @Override
         public void run() {
+        	
+        	if(s == null || running == false)
+        		return;
+        	
+        	while(running){
+        		try {
+        			
+//Pedido de IP do servidor
+        			   String msgToSend = "MSG_SERVIP_REQUEST"; //nova, basta so para saber os dados                       
+        			   DatagramPacket dgram = new DatagramPacket(msgToSend.getBytes(), msgToSend.length(),group, port);
+                       s.send(dgram);
+                       s.setSoTimeout(2000); //caso o servidor nao esteja on..
+                       
+                       while(!msg.equals("IPSERVIDOR")){ // enquanto n receber esta mensagem...                 	   
+                    	try{
+                    		//Resposta do servidor            			
+            				   s.receive(pkt);   
+                    	} catch (Exception e) {
+            				e.printStackTrace();
+           				 JOptionPane.showMessageDialog(contentPanel,"(Timeout)Não foi possivel obter uma resposta, tente novamente!");
+           				return;
+           			}
+                    	   
+    				
+       				   msg =  new String(pkt.getData(), 0, pkt.getLength());       				
+       			       System.out.println("Resposta via multicast: (" + pkt.getAddress().getHostAddress() + ":" + pkt.getPort() + ")MSG: " + msg );	
+       			        
+       			       ip_serv = pkt.getAddress().getHostAddress();
+       			       ip_port = pkt.getPort();   
+       			       
+//Como ja sabe o ip e porta do servidor, faz a ligaçao via tcp (so falta controlar se o nome ta em uso))
+       			       
+       			       	if(msg.equals("IPSERVIDOR"))
+       			       	{      			      
+       			       		Thread t = new Thread(new LoginServidor_IP(ip_serv,nome,""+ip_port) );
+       			       		t.setDaemon(true);
+       			       		t.start();
+       			       		VarsGlobais.NovoJogoThreadCreated = true;   
+       			       		running=false;
+       			       	JOptionPane.showMessageDialog(contentPanel,"Conectado com sucesso,  e a ligar via TCP agora!");       			
+       			       		return; 
+       			       	}       			       	
+       		
+                       }                     
+                  
+    				
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    				 JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+    				break;
+    			}
+        	}
+        	return;
+        		
                 
-                
-        }       
+        }    
         
-        public void sendLoginResponse() throws IOException{
-                //nome = pede novo nome;
-                sendLoginRequest();
-        }
-        
-        public void sendLoginRequest() throws IOException{
-               
-        }
-        
-        public void noteAlreadyLogged(){
-                //avisa o utilizador que já está logado
-        }
+       
 }

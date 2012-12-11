@@ -75,7 +75,7 @@ public class NovoJogo_Ip extends JDialog {
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 				
-				//---Eventos-OK--
+//---Eventos-OK--
 				okButton.addActionListener(new ActionListener() {
 					   public void actionPerformed(ActionEvent evt) {	
 						   
@@ -84,11 +84,11 @@ public class NovoJogo_Ip extends JDialog {
 						   
 						   try {
 							   
-							Thread t = new Thread(new LoginServidor_IP(inputIP.getText(),inputNome.getText(),inputPorto.getText() ) );
-							t.setDaemon(true);
-							t.start();
-							VarsGlobais.NovoJogoThreadCreated = true;
-							dispose();
+							   Thread t = new Thread(new LoginServidor_IP(inputIP.getText(),inputNome.getText(),inputPorto.getText() ) );
+							   t.setDaemon(true);
+							   t.start();
+							   VarsGlobais.NovoJogoThreadCreated = true;
+							   dispose();
 							
 						   } catch (IOException e) {
 							// TRATAR
@@ -103,7 +103,7 @@ public class NovoJogo_Ip extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 				
-				//---Eventos-CANCEL--
+//---Eventos-CANCEL--
 				cancelButton.addActionListener(new ActionListener() {
 					   public void actionPerformed(ActionEvent evt) {						   
 						   dispose();

@@ -18,6 +18,8 @@ public class MulticastThread extends Thread{
     protected boolean running;
     protected byte[] barray;
     
+    protected String msg=null;
+    
     
     public MulticastThread(){
     	try {
@@ -26,10 +28,10 @@ public class MulticastThread extends Thread{
 			
 			s = new MulticastSocket(port);
 			s.joinGroup(group);
-			running = true;
-			
+			running = true;			
 			barray = new byte[Macros.MAX_SIZE];
 	        pkt = new DatagramPacket(barray,Macros.MAX_SIZE);
+	        
 			this.setDaemon(true);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -44,20 +46,28 @@ public class MulticastThread extends Thread{
     	
     	while(running){
     		try {
-				s.receive(pkt);
+    			
+    			msg="";
+    			
+    			//recebe
+				s.receive(pkt);				
+				msg =  new String(pkt.getData(), 0, pkt.getLength());				
+				System.out.println("Recebido via Multicast: (" + pkt.getAddress().getHostAddress() + ":" + pkt.getPort() + ")MSG: " + msg );		  
+			
 				
-				if(pkt.getData().toString().equals(Macros.askIP)){
-					ip_client = pkt.getAddress();
-					String ipS = ip.toString();
-					barray = ipS.getBytes();
-					send.setData(barray);
-					send.setAddress(ip_client);
-					send.setPort(pkt.getPort());
-					s.send(send);
-				}
+				if(msg.equals("MSG_SERVIP_REQUEST")){ //se foi um request de ip envia de volta
+				
+				//resposta - envia o ip do servidor via multicast/broadcast
+				System.out.println("MSG_SERVIP_REQUEST - Enviado dados");					
+			    String msgToSend = "IPSERVIDOR"; //so para ter a certeza que é do servidor, depois o ip vai no pkt..                      
+      			DatagramPacket dgram = new DatagramPacket(msgToSend.getBytes(), msgToSend.length(), 
+                             group, port);
+                s.send(dgram);	
+				}				
+				
 				
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace();				
 				break;
 			}
     		
