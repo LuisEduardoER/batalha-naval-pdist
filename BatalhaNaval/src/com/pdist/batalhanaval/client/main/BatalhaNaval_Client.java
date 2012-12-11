@@ -33,8 +33,8 @@ public class BatalhaNaval_Client implements ActionListener {
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
 	
 	//PARA LIGAÇÕES
-	private Socket socket;			//socket para comunicações
-	private ServerAddr serverAddr = new ServerAddr();  //para saber o endereço e porto do server
+	private SocketCliente socketCliente;  //para ter o socket com ligação ao server
+	private Socket socket;				  //socket do socketCliente (socketCliente.getSocket() --> socket)
 
 	public static void main(String[] args)
 	{		
@@ -196,31 +196,46 @@ public class BatalhaNaval_Client implements ActionListener {
 					   
 					   //if(ainda_nao_atacou_esta_coordenada){
 					   		try{
-					   		    //criar socket para envio das coordenadas
-					   			//socket = new Socket(serverAddr.getServAddr(),serverAddr.getPorto());
+					   		    //socket para enviar as coordenadas
+					   			socket = socketCliente.getSocket();
 					   			//enviar coordenadas
 					   			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 					   			out.writeObject(new Integer((i*10) + j)); //ex.: enviar x6, y3 -> 60+3 = 63
 					   			out.flush();
 					   		}catch(Exception exc){ 
 					   			JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a enviar coordenada ao servidor");
-					   			//VarsGlobais.MeuTurno = true;  
+					   			//VarsGlobais.MeuTurno = true;
 					   			return;
 					   		}
-					   		//receber resposta (acertou?)
-					   		//...String barco ou agua?
-					   		//if(resposta == 1001) //1001 -> barco
-					   		//	botao[i][j].setIcon(explosao);
-					   		//else
-					   		//	botao[i][j].setIcon(aguaAlvo);
+					   		
+					   		//receber resposta do server(acertou?)
+					   		try{
+					   			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+					   			int resposta = (Integer) in.readObject();	//resposta do servidor: 1001-barco 1000-agua
+					   			
+					   			if(resposta == 1001) //1001 -> barco
+						   			botao[i][j].setIcon(explosao);
+						   		else
+						   			botao[i][j].setIcon(aguaAlvo); //agua
+					   			
+					   		}catch(Exception exc2){
+					   			JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a receber a resposta do servidor(ao enviar coordenada)");
+					   			//VarsGlobais.MeuTurno = true;
+					   			return;
+					   		}
+					   		
+					   		
+					   		//RETIRAR, APENAS PARA TESTES!!!
+					   		botao[i][j].setIcon(aguaAlvo);
+					   		
 					   		
 					   		//fechar socket
-					   		try {
+					   		/*try {
 								socket.close();
 							} catch (IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
-							}
+							}*/
 					   		
 				   	   //} 
 					   

@@ -27,7 +27,7 @@ public class LoginServidor_IP implements Runnable {
                 
 	private final JPanel contentPanel = new JPanel();                     
     
-	private ServerAddr serverAddr; //armazena o endereço e porto do server
+	private SocketCliente SocketServer = new SocketCliente(); //armazena o socket com ligação ao server (socket)
                 
 	public LoginServidor_IP(String IP, String nome, String porto) throws IOException{
                         
@@ -35,9 +35,10 @@ public class LoginServidor_IP implements Runnable {
                     this.servPort = Integer.parseInt(porto);
                     this.nome = nome;
                     this.logIn = false;                 
-                        
-                    serverAddr = new ServerAddr(IP, porto); //armazena o endereço e porto do server
-                }                       
+                      
+                    SocketServer.setSocket(socket); //armazena o socket com lig. ao server
+                    
+	}                       
         
 
                 
