@@ -4,6 +4,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.StringTokenizer;
 
 import javax.swing.*;
@@ -22,11 +26,15 @@ public class BatalhaNaval_Client implements ActionListener {
 	private JButton[][] botao = new JButton[12][12];
 	private JButton[][] botaoAdv = new JButton[12][12];
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
-	private ImageIcon agua = new ImageIcon("Imagens/agua.png"); 
+	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
+	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
-
+	
+	//PARA LIGAÇÕES
+	private Socket socket;			//socket para comunicações
+	private ServerAddr serverAddr = new ServerAddr();  //para saber o endereço e porto do server
 
 	public static void main(String[] args)
 	{		
@@ -143,7 +151,8 @@ public class BatalhaNaval_Client implements ActionListener {
 					if(!VarsGlobais.NovoJogoThreadCreated){
 						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						dialog.setVisible(true);	
+						dialog.setVisible(true);
+						
 					}
 					
 				} catch (Exception e1) {
@@ -171,7 +180,51 @@ public class BatalhaNaval_Client implements ActionListener {
 				   
 				   if(botao[i][j].getBounds().x == x &&
 						   botao[i][j].getBounds().y == y)
-				   {				 		
+				   {	
+					   
+					   //SE NAO ESTA A JOGAR NAO PODERA INTERAGIR COM OS BOTOES!
+					   if(VarsGlobais.NovoJogoThreadCreated == false)
+						   return;
+					   //SE NAO FOR O SEU TURNO NAO PODERA INTERAGIR COM OS BOTOES!
+					   //if(VarsGlobais.MeuTurno == false)
+					   //	   return;
+					   
+					   //verificar se ja atacou esta coordenada
+					     //se nao, enviar coordenada a atacar ao servidor
+					     //receber resposta, se acertou ou nao
+					     //mudar icone conforme
+					   
+					   //if(ainda_nao_atacou_esta_coordenada){
+					   		try{
+					   		    //criar socket para envio das coordenadas
+					   			//socket = new Socket(serverAddr.getServAddr(),serverAddr.getPorto());
+					   			//enviar coordenadas
+					   			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+					   			out.writeObject(new Integer((i*10) + j)); //ex.: enviar x6, y3 -> 60+3 = 63
+					   			out.flush();
+					   		}catch(Exception exc){ 
+					   			JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a enviar coordenada ao servidor");
+					   			//VarsGlobais.MeuTurno = true;  
+					   			return;
+					   		}
+					   		//receber resposta (acertou?)
+					   		//...String barco ou agua?
+					   		//if(resposta == 1001) //1001 -> barco
+					   		//	botao[i][j].setIcon(explosao);
+					   		//else
+					   		//	botao[i][j].setIcon(aguaAlvo);
+					   		
+					   		//fechar socket
+					   		try {
+								socket.close();
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+					   		
+				   	   //} 
+					   
+					   
 					   
 					   botao[i][j].setIcon(aguaAlvo);					   
 						//  BatalhaNavalUI.repaint();	  

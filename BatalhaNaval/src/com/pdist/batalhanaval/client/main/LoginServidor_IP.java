@@ -26,7 +26,8 @@ public class LoginServidor_IP implements Runnable {
 	protected String nome;
                 
 	private final JPanel contentPanel = new JPanel();                     
-        
+    
+	private ServerAddr serverAddr; //armazena o endereço e porto do server
                 
 	public LoginServidor_IP(String IP, String nome, String porto) throws IOException{
                         
@@ -35,6 +36,7 @@ public class LoginServidor_IP implements Runnable {
                     this.nome = nome;
                     this.logIn = false;                 
                         
+                    serverAddr = new ServerAddr(IP, porto); //armazena o endereço e porto do server
                 }                       
         
 
@@ -55,7 +57,7 @@ public class LoginServidor_IP implements Runnable {
                                                                         
                                 
                                 try {
-                                        out = new ObjectOutputStream(socket.getOutputStream());                         
+                                        out = new ObjectOutputStream(socket.getOutputStream());
                                         in = new ObjectInputStream(socket.getInputStream());
                                 } catch (IOException e1) {
                                         e1.printStackTrace(); }
