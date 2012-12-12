@@ -33,10 +33,10 @@ public class Mensagem implements Serializable {
 			letra = null;
 			numero = null;
 			cliente = null;
-			nomesClientes = null;
-			nomesJogadores1 = null;
-			nomesJogadores2 = null;
-			nomesJogos = null;
+			nomesClientes = new ArrayList<String>();
+			nomesJogadores1 = new ArrayList<String>();
+			nomesJogadores2 = new ArrayList<String>();
+			nomesJogos = new ArrayList<String>(); //e inicializar os arraylist!!!
 			responseText="";
 			tabuleiro = null;
 		}		

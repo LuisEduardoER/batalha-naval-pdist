@@ -10,9 +10,13 @@ import javax.swing.JList;
 import javax.swing.border.BevelBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.util.ArrayList;
+
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+
+import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 public class ListarJogos extends JDialog {
 
@@ -20,9 +24,11 @@ public class ListarJogos extends JDialog {
 	private static final long serialVersionUID = 4394138207569213899L;
 	private final JPanel contentPanel = new JPanel();
 	private JTextField nomeNovoJogo;
+	private ArrayList<String> nomeJogos = null;
 
 	
-	public ListarJogos() {
+	@SuppressWarnings("rawtypes")
+	public ListarJogos(Mensagem listajogos) {
 		
 		setResizable(false);  setModal(true);
 		setTitle("Novo Jogo - Listar Jogos");
@@ -33,12 +39,29 @@ public class ListarJogos extends JDialog {
 		contentPanel.setLayout(null);
 		
 		
-		//ListaJogo
-		JList<String> listaJogos = new JList<String>(); // STRING???
-		listaJogos.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		listaJogos.setBounds(49, 50, 181, 120);
-		contentPanel.add(listaJogos);		
+		//ListaJogo - Provisorio TODO
+		
+		nomeJogos = listajogos.getNomesJogos();		
+		
+		String[] listaJogos = { "", "", "", "", ""};		
+		listaJogos[0] = nomeJogos.get(0);
+		listaJogos[1] = nomeJogos.get(1);
+		listaJogos[2] = nomeJogos.get(2);
+		listaJogos[3] = nomeJogos.get(3);
+		listaJogos[4] = nomeJogos.get(4);
+		
+		@SuppressWarnings("unchecked")
+		JList lista = new JList(listaJogos);
+		lista .setSelectedIndex(2); //selecionar o 3º
+		
+		lista .setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lista .setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		lista .setBounds(49, 50, 181, 120);
+		contentPanel.add(lista);	
+		
+		//TESTE
+		
+		
 		
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Tahoma", Font.PLAIN, 14));

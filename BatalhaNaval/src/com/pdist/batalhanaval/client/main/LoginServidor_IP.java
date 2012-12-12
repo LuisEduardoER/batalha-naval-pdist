@@ -27,6 +27,8 @@ public class LoginServidor_IP implements Runnable {
 	protected InetAddress servAddr = null;
 	protected int servPort;
 	protected String nome;
+	public    Mensagem msg = null;
+	protected int TIMEOUT=1500;
                 
 	private final JPanel contentPanel = new JPanel();  
 
@@ -49,14 +51,15 @@ public class LoginServidor_IP implements Runnable {
                 
                  try{
         
-                                 
+                	 socket.setSoTimeout(TIMEOUT); //necessario para alguns trycatch
+                	 
                             }catch(Exception e)
                             { 
                                  JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
                                  VarsGlobais.NovoJogoThreadCreated = false;  
                                          return;
                             }
-                                //socket.setSoTimeout(TIMEOUT);
+                                
                                 
                                                                         
                                 
@@ -72,7 +75,7 @@ public class LoginServidor_IP implements Runnable {
                                         sendLoginRequest();                                     
                                 }
                                 
-                                Mensagem msg = (Mensagem) in.readObject();
+                                msg = (Mensagem) in.readObject();
                                 switch(msg.getType()){                                  
                                         case Macros.MSG_LOGIN_FAIL:
                                                 sendLoginResponse();
@@ -89,10 +92,11 @@ public class LoginServidor_IP implements Runnable {
                                                 BatalhaNaval_Client.setEstado("A aguardar jogador 2...");
                                                 
                                                 //Cria Lista de Jogos dialog
-                                                ListarJogos dialog = new ListarJogos();
-                        						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                        						dialog.setVisible(true);	
+                                                msg=sendListaJogosRequest();                                               
                                                 
+                                                ListarJogos dialog = new ListarJogos(msg);
+                        						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        						dialog.setVisible(true);	                                               
                                                 
                                                 
                                                 //========                                                
@@ -116,6 +120,27 @@ public class LoginServidor_IP implements Runnable {
                 //nome = pede novo nome;
                 sendLoginRequest();
         }
+        
+        public Mensagem sendListaJogosRequest() throws IOException{
+        	
+            Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
+            msg.setMsgText(nome);
+            
+            out.flush();
+            out.writeObject(msg);
+            out.flush();
+            
+            try{
+              	
+                msg = (Mensagem) in.readObject(); 
+                
+                } catch (Exception  e) {                                                    
+                    JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogos");
+                    VarsGlobais.NovoJogoThreadCreated = false;                     
+                }
+            
+            return msg;
+    }
         
         public void sendLoginRequest() throws IOException{
                 Mensagem msg = new Mensagem(Macros.MSG_LOGIN_REQUEST);

@@ -136,8 +136,7 @@ public class BatalhaNaval_Client {
 					if(!VarsGlobais.NovoJogoThreadCreated){
 						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						dialog.setVisible(true);
-						
+						dialog.setVisible(true);						
 					}
 					
 				} catch (Exception e1) {
@@ -154,10 +153,12 @@ public class BatalhaNaval_Client {
 	 {
 		 lblJogador_1.setText(nome);			 
 	 }
+	 
 	 public static void setNomeJogador2(String nome)
 	 {
 		 lblJogador_2.setText(nome);			 
 	 }
+	 
 	 public static void setEstado(String estado)
 	 {
 		 lblEstado.setText(estado);			 

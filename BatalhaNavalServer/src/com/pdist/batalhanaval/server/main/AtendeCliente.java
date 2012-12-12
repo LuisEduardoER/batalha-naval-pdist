@@ -39,8 +39,7 @@ public class AtendeCliente extends Thread{
 		
 	}
 	
-	public void run(){
-		System.out.println("NOVO CLIENTE");
+	public void run(){		
 		while(true){			
 			//tratar mensagens recebidas e enviar respostas
 			try {					
@@ -152,16 +151,27 @@ public class AtendeCliente extends Thread{
 	private void sendListaJogos(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_JOGOS_RESPONSE);
 		
+		/*
 		for(int i = 0;i<VarsGlobais.nJogos;i++){
 			msg.addNomesJogadores1(VarsGlobais.jogos.get(i).getC1().getNome());
 			msg.addNomesJogadores2(VarsGlobais.jogos.get(i).getC2().getNome());
 			String nomeJogo = "Jogo num "+(i+1);
 			msg.addNomesJogos(nomeJogo);
-		}
+		}*/
 		
+		//PROVISARIO (pa teste)		
+		msg.addNomesJogos("Jogo 1");
+		msg.addNomesJogos("BNAVAL FTW");
+		msg.addNomesJogos("ISEC");
+		msg.addNomesJogos("DEIS");
+		msg.addNomesJogos("LOSERS");		
+
+
 		out.flush();
 		out.writeObject(msg);
 		out.flush();
+		
+		System.out.println("Responde a Lista de Jogos");
 	}
 	
 	private void sendInvite(Mensagem msg) throws IOException{

@@ -33,7 +33,7 @@ public class NovoJogo_Multicast extends JDialog {
 		
 		inputIP = new JTextField();
 		inputIP.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		inputIP.setText("230.1.1.1");
+		inputIP.setText("225.1.1.1");
 		inputIP.setBounds(136, 42, 106, 23);
 		contentPanel.add(inputIP);
 		inputIP.setColumns(10);
