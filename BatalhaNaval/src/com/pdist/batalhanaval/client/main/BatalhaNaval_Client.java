@@ -34,7 +34,7 @@ public class BatalhaNaval_Client implements ActionListener {
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
 	
 	//PARA LIGAÇÕES
-	private SocketCliente socketCliente;  //para ter o socket com ligação ao server
+	private SocketClient_TCP socketCliente;  //para ter o socket com ligação ao server
 	private Socket socket;				  //socket do socketCliente (socketCliente.getSocket() --> socket)
 
 	public static void main(String[] args)
@@ -198,7 +198,7 @@ public class BatalhaNaval_Client implements ActionListener {
 					   //if(ainda_nao_atacou_esta_coordenada){
 					   		try{
 					   		    //socket para enviar as coordenadas
-					   			socket = socketCliente.getSocket();
+					   			socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
 					   			//enviar coordenadas
 					   			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 					   			out.writeObject(new Integer((i*10) + j)); //ex.: enviar x6, y3 -> 60+3 = 63

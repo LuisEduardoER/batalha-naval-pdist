@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
+import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 
 
 public class LoginServidor_IP implements Runnable {
@@ -25,18 +26,17 @@ public class LoginServidor_IP implements Runnable {
 	protected int servPort;
 	protected String nome;
                 
-	private final JPanel contentPanel = new JPanel();                     
-    
-	private SocketCliente SocketServer = new SocketCliente(); //armazena o socket com ligação ao server (socket)
+	private final JPanel contentPanel = new JPanel();  
+
                 
 	public LoginServidor_IP(String IP, String nome, String porto) throws IOException{
                         
                     this.servAddr = InetAddress.getByName(IP);
                     this.servPort = Integer.parseInt(porto);
                     this.nome = nome;
-                    this.logIn = false;                 
-                      
-                    SocketServer.setSocket(socket); //armazena o socket com lig. ao server
+                    this.logIn = false;   
+                    socket = new Socket(servAddr,servPort);  
+                    SocketClient_TCP.setSocket(socket);    //armazena o socket na class static (depois de criado)                   
                     
 	}                       
         
@@ -46,7 +46,8 @@ public class LoginServidor_IP implements Runnable {
         public void run() {
                 
                  try{
-                                socket = new Socket(servAddr,servPort); 
+        
+                                 
                             }catch(Exception e)
                             { 
                                  JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
