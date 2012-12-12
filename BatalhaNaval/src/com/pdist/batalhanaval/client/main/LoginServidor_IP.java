@@ -6,11 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
+import com.pdist.batalhanaval.client.dialogs.ListarJogos;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 
@@ -85,6 +87,14 @@ public class LoginServidor_IP implements Runnable {
                                                 BatalhaNaval_Client.setNomeJogador1(nome);
                                                 BatalhaNaval_Client.setNomeJogador2("A aguardar..");
                                                 BatalhaNaval_Client.setEstado("A aguardar jogador 2...");
+                                                
+                                                //Cria Lista de Jogos dialog
+                                                ListarJogos dialog = new ListarJogos();
+                        						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                        						dialog.setVisible(true);	
+                                                
+                                                
+                                                
                                                 //========                                                
                                                 break;
                                 }                                       
