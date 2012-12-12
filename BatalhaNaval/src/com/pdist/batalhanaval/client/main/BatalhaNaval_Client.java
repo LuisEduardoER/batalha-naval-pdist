@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.swing.*;
@@ -32,6 +33,8 @@ public class BatalhaNaval_Client implements ActionListener {
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
+	
+	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas
 	
 	//PARA LIGAÇÕES
 	private SocketClient_TCP socketCliente;  //para ter o socket com ligação ao server
@@ -191,56 +194,67 @@ public class BatalhaNaval_Client implements ActionListener {
 					   //	   return;
 					   
 					   //verificar se ja atacou esta coordenada
-					     //se nao, enviar coordenada a atacar ao servidor
-					     //receber resposta, se acertou ou nao
-					     //mudar icone conforme
+					     
 					   
-					   //if(ainda_nao_atacou_esta_coordenada){
-					   		try{
-					   		    //socket para enviar as coordenadas
-					   			socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
-					   			//enviar coordenadas
-					   			ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-					   			out.writeObject(new Integer((i*10) + j)); //ex.: enviar x6, y3 -> 60+3 = 63
-					   			out.flush();
-					   		}catch(Exception exc){ 
-					   			JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a enviar coordenada ao servidor");
-					   			//VarsGlobais.MeuTurno = true;
-					   			return;
-					   		}
+					   //verificar se ja atacou esta coordenada
+					   if(quadAtacados.isEmpty() != true){
+						   for(int k=0; k<quadAtacados.size(); k++){
+							   if(quadAtacados.get(k) == (( (i+1)*10 ) + (j+1)) ){
+								   return; //ja foi atacada
+							   }
+						   }
+					   }
+					   
+					   
+					   //enviar coordenada a atacar ao servidor
+					   //receber resposta, se acertou ou nao
+					   //mudar icone conforme
+
+					   try{
+						   	//socket para enviar as coordenadas
+					   	   	socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
+					   	   	socket.setSoTimeout(1500); //timeout 1,5s
+					   	   	//enviar coordenadas
+					   	   	ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+					   	   	out.writeObject(new Integer(( (i+1)*10 ) + (j+1)) ); //ex.: enviar x6, y3 -> 60+3 = 63 (os +1 é para acertar o index)
+					   	   	out.flush();
+					   	   	}catch(Exception exc){ 
+					   	   		JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a enviar coordenada ao servidor");
+					   	   		//VarsGlobais.MeuTurno = true;
+					   	   		return;
+					   	   	}
 					   		
-					   		//receber resposta do server(acertou?)
-					   		try{
-					   			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-					   			int resposta = (Integer) in.readObject();	//resposta do servidor: 1001-barco 1000-agua
+					   //receber resposta do server(acertou num barco?)
+					   try{
+					   		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+					   		int resposta = (Integer) in.readObject();	//resposta do servidor: 1001-barco 1000-agua
 					   			
-					   			if(resposta == 1001) //1001 -> barco
-						   			botao[i][j].setIcon(explosao);
-						   		else
-						   			botao[i][j].setIcon(aguaAlvo); //agua
+					   		if(resposta == 1001) //1001 -> barco
+					   			botao[i][j].setIcon(explosao);
+					   		else
+					   			botao[i][j].setIcon(aguaAlvo); //agua
 					   			
-					   		}catch(Exception exc2){
-					   			JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a receber a resposta do servidor(ao enviar coordenada)");
-					   			//VarsGlobais.MeuTurno = true;
-					   			return;
-					   		}
+					   		//atacou a coordenada com sucesso
+					   		quadAtacados.add( ( (i+1)*10 ) + (j+1) ); //ex.: atacou x6, y3 -> 60+3 = 63
+					   			
+					   }catch(Exception exc2){
+					   		JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a receber a resposta do servidor(ao enviar coordenada)");
+					   		//VarsGlobais.MeuTurno = true;
+					   		return;
+					   }
 					   		
 					   		
-					   		//RETIRAR, APENAS PARA TESTES!!!
-					   		botao[i][j].setIcon(aguaAlvo);
+					   //RETIRAR, APENAS PARA TESTES!!!
+					   botao[i][j].setIcon(aguaAlvo);
 					   		
 					   		
-					   		//fechar socket
-					   		/*try {
-								socket.close();
-							} catch (IOException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}*/
-					   		
-				   	   //} 
-					   
-					   
+					   //fechar socket
+					   /*try {
+							socket.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}*/
 					   
 					   botao[i][j].setIcon(aguaAlvo);					   
 						//  BatalhaNavalUI.repaint();	  
