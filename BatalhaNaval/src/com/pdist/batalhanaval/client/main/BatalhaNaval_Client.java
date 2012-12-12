@@ -34,11 +34,9 @@ public class BatalhaNaval_Client implements ActionListener {
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
 	
-	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas
-	
+	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
 	//PARA LIGAÇÕES
-	private SocketClient_TCP socketCliente;  //para ter o socket com ligação ao server
-	private Socket socket;				  //socket do socketCliente (socketCliente.getSocket() --> socket)
+	private Socket socket = null;
 
 	public static void main(String[] args)
 	{		
@@ -182,9 +180,26 @@ public class BatalhaNaval_Client implements ActionListener {
 	     for(int i=0; i<10; i++){
 			   for(int j=0; j<10; j++){	
 				   
+				   //Botoes do MAPA ESQUERDO (so para o jogador visualizar o seu mapa)
 				   if(botao[i][j].getBounds().x == x &&
 						   botao[i][j].getBounds().y == y)
 				   {	
+					   botao[i][j].setIcon(aguaAlvo);					   
+						//  BatalhaNavalUI.repaint();			  
+				   
+				   }
+				   
+				   
+				   //==================
+				   
+				   
+				   
+				   //Botoes do MAPA DIREITO (para o jogador ter a possibilidade de acertar nos barcos do inimigo)
+				   
+				   else if(botaoAdv[i][j].getBounds().x == x &&
+						   botaoAdv[i][j].getBounds().y == y)
+				   {				 		
+					   
 					   
 					   //SE NAO ESTA A JOGAR NAO PODERA INTERAGIR COM OS BOTOES!
 					   if(VarsGlobais.NovoJogoThreadCreated == false)
@@ -257,16 +272,7 @@ public class BatalhaNaval_Client implements ActionListener {
 						}*/
 					   
 					   botao[i][j].setIcon(aguaAlvo);					   
-						//  BatalhaNavalUI.repaint();	  
-				   
-				   }
-				   
-				   else if(botaoAdv[i][j].getBounds().x == x &&
-						   botaoAdv[i][j].getBounds().y == y)
-				   {				 		
-					   
-					   botaoAdv[i][j].setIcon(aguaAlvo);					   
-						//  BatalhaNavalUI.repaint();	  
+						//  BatalhaNavalUI.repaint();		  
 				   
 				   }
 				   
