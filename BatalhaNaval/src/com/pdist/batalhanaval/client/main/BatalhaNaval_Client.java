@@ -28,6 +28,7 @@ public class BatalhaNaval_Client implements ActionListener {
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
 	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
 	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
+	private ImageIcon mira = new ImageIcon("Imagens/mira.jpg");
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
@@ -280,7 +281,8 @@ public class BatalhaNaval_Client implements ActionListener {
 				 
 			    botaoAdv[i][j] = new JButton(agua);		 
 			    botaoAdv[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
-			    botaoAdv[i][j].addActionListener((ActionListener) this);				    		    
+			    botaoAdv[i][j].addActionListener((ActionListener) this);	
+			    botaoAdv[i][j].setRolloverIcon(mira);
 			    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);
 			   }
 		  }
