@@ -29,9 +29,16 @@ public class BatalhaNaval_Client implements ActionListener {
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
 	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
 	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
-	private ImageIcon mira = new ImageIcon("Imagens/mira.jpg");
+	private ImageIcon mira = new ImageIcon("Imagens/mira.png");
+	//Barcos
 	private ImageIcon barcoPequeno1 = new ImageIcon("Imagens/barcos/barcoPequeno_1.png");
-	private ImageIcon barcoPequeno2 = new ImageIcon("Imagens/barcos/barcoPequeno_2.png");
+	private ImageIcon barcoPequeno2 = new ImageIcon("Imagens/barcos/barcoPequeno_2.png");	
+	private ImageIcon barcoPequenoFIRE1 = new ImageIcon("Imagens/barcos/barcoPequenoFIRE_1.png");
+	private ImageIcon barcoPequenoFIRE2 = new ImageIcon("Imagens/barcos/barcoPequenoFIRE_2.png");
+	private ImageIcon barcoMedio1 = new ImageIcon("Imagens/barcos/barcoMedio_1.png");
+	private ImageIcon barcoMedio2 = new ImageIcon("Imagens/barcos/barcoMedio_2.png");
+	private ImageIcon barcoMedio3 = new ImageIcon("Imagens/barcos/barcoMedio_3.png");
+	private ImageIcon barcoMedio4 = new ImageIcon("Imagens/barcos/barcoMedio_4.png");
 	
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
@@ -293,17 +300,25 @@ public class BatalhaNaval_Client implements ActionListener {
 			   for(int j=0; j<Macros.SIZE_Y; j++){					   
 				 
 			    botao[i][j] = new JButton(agua);			    	
-			    botao[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
+			    botao[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
 			    botao[i][j].addActionListener((ActionListener) this);			
 			    botao[i][j].setDisabledIcon(agua); //senao aparecia cinzento quando nao esta em "enabled"
-			    botao[i][j].setEnabled(false);			    	
+			    botao[i][j].setEnabled(false);				  
 			
 			    BatalhaNavalUI.getContentPane().add(botao[i][j]);
 			   }
 		  }
-	      //=====Teste===	
+	      //=====Teste BARCOS===	
 		  botao[2][1].setIcon(barcoPequeno1); botao[2][1].setDisabledIcon(barcoPequeno1);
-		  botao[2][2].setIcon(barcoPequeno2); botao[2][2].setDisabledIcon(barcoPequeno2);		
+		  botao[2][2].setIcon(barcoPequeno2); botao[2][2].setDisabledIcon(barcoPequeno2);	
+		  
+		  botao[8][7].setIcon(barcoPequenoFIRE1); botao[8][7].setDisabledIcon(barcoPequenoFIRE1);
+		  botao[8][8].setIcon(barcoPequenoFIRE2); botao[8][8].setDisabledIcon(barcoPequenoFIRE2);
+		  
+		  botao[5][4].setIcon(barcoMedio1); botao[5][4].setDisabledIcon(barcoMedio1);	
+		  botao[5][5].setIcon(barcoMedio2); botao[5][5].setDisabledIcon(barcoMedio2);
+		  botao[5][6].setIcon(barcoMedio3); botao[5][6].setDisabledIcon(barcoMedio3);
+		  botao[5][7].setIcon(barcoMedio4); botao[5][7].setDisabledIcon(barcoMedio4);
 	 }
 
 	 public void criaMapaAdversario(int x,int y) //TESTE
@@ -312,7 +327,7 @@ public class BatalhaNaval_Client implements ActionListener {
 			   for(int j=0; j<10; j++){			   
 				 
 			    botaoAdv[i][j] = new JButton(agua);		 
-			    botaoAdv[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
+			    botaoAdv[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
 			    botaoAdv[i][j].addActionListener((ActionListener) this);	
 			    botaoAdv[i][j].setRolloverIcon(mira);
 			    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);
