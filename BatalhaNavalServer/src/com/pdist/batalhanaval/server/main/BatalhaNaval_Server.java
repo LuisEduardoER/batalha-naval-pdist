@@ -40,9 +40,12 @@ public class BatalhaNaval_Server {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
 			if(client !=  null)
 				client.close();
+			
+			System.out.println("Erro ao criar o ServeSocket, já existe um servidor em funcionamento nessa porta!");		
+			System.out.println("Servidor a fechar...");
+					return;			
 			
 		} 
 		

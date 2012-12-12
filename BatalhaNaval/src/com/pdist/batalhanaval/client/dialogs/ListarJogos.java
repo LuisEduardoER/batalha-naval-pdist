@@ -32,11 +32,13 @@ public class ListarJogos extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
+		
+		//ListaJogo
 		JList<String> listaJogos = new JList<String>(); // STRING???
 		listaJogos.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		listaJogos.setBounds(49, 50, 181, 120);
-		contentPanel.add(listaJogos);
+		contentPanel.add(listaJogos);		
 		
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Tahoma", Font.PLAIN, 14));

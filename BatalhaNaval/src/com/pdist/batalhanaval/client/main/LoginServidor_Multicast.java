@@ -78,7 +78,7 @@ public class LoginServidor_Multicast implements Runnable {
 //=============================Resposta do servidor            			
             				   s.receive(pkt);   
                     	   	} catch (Exception e) {            			
-                    	   		JOptionPane.showMessageDialog(contentPanel,"(Timeout)Não foi possivel obter uma resposta, tente novamente!");
+                    	   		JOptionPane.showMessageDialog(contentPanel,"(Timeout) Não foi possivel obter uma resposta, tente novamente!");
                     	   	  return;
                     	   	}
                     	   
