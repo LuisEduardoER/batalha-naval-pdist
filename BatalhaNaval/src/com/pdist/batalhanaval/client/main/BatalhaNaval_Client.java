@@ -25,10 +25,14 @@ public class BatalhaNaval_Client implements ActionListener {
 	private JFrame BatalhaNavalUI;
 	private JButton[][] botao = new JButton[12][12];
 	private JButton[][] botaoAdv = new JButton[12][12];
+	
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
 	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
 	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
 	private ImageIcon mira = new ImageIcon("Imagens/mira.jpg");
+	private ImageIcon barcoPequeno1 = new ImageIcon("Imagens/barcos/barcoPequeno_1.png");
+	private ImageIcon barcoPequeno2 = new ImageIcon("Imagens/barcos/barcoPequeno_2.png");
+	
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
@@ -184,7 +188,9 @@ public class BatalhaNaval_Client implements ActionListener {
 						   botao[i][j].getBounds().y == y)
 				   {	
 					   botao[i][j].setIcon(aguaAlvo);					   
-						//  BatalhaNavalUI.repaint();			  
+						//  BatalhaNavalUI.repaint();	
+					   
+					   //Gerar aleatoriamente os barcos do cliente
 				   
 				   }
 				   
@@ -201,8 +207,10 @@ public class BatalhaNaval_Client implements ActionListener {
 					   
 					   
 					   //SE NAO ESTA A JOGAR NAO PODERA INTERAGIR COM OS BOTOES!
-					   if(VarsGlobais.NovoJogoThreadCreated == false)
-						   return;
+					   
+					//   if(VarsGlobais.NovoJogoThreadCreated == false)
+						//   return;
+					   
 					   //SE NAO FOR O SEU TURNO NAO PODERA INTERAGIR COM OS BOTOES!
 					   //if(VarsGlobais.MeuTurno == false)
 					   //	   return;
@@ -235,7 +243,7 @@ public class BatalhaNaval_Client implements ActionListener {
 					   	   	}catch(Exception exc){ 
 					   	   		JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a enviar coordenada ao servidor");
 					   	   		//VarsGlobais.MeuTurno = true;
-					   	   		return;
+					   	   		//return;
 					   	   	}
 					   		
 					   //receber resposta do server(acertou num barco?)
@@ -244,9 +252,9 @@ public class BatalhaNaval_Client implements ActionListener {
 					   		int resposta = (Integer) in.readObject();	//resposta do servidor: 1001-barco 1000-agua
 					   			
 					   		if(resposta == 1001) //1001 -> barco
-					   			botao[i][j].setIcon(explosao);
+					   			botaoAdv[i][j].setIcon(explosao);
 					   		else
-					   			botao[i][j].setIcon(aguaAlvo); //agua
+					   			botaoAdv[i][j].setIcon(aguaAlvo); //agua
 					   			
 					   		//atacou a coordenada com sucesso
 					   		quadAtacados.add( ( (i+1)*10 ) + (j+1) ); //ex.: atacou x6, y3 -> 60+3 = 63
@@ -254,12 +262,11 @@ public class BatalhaNaval_Client implements ActionListener {
 					   }catch(Exception exc2){
 					   		JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a receber a resposta do servidor(ao enviar coordenada)");
 					   		//VarsGlobais.MeuTurno = true;
-					   		return;
+					   		//return;
 					   }
 					   		
 					   		
 					   //RETIRAR, APENAS PARA TESTES!!!
-					   botao[i][j].setIcon(aguaAlvo);
 					   		
 					   		
 					   //fechar socket
@@ -270,7 +277,7 @@ public class BatalhaNaval_Client implements ActionListener {
 							e1.printStackTrace();
 						}*/
 					   
-					   botao[i][j].setIcon(aguaAlvo);					   
+					   botaoAdv[i][j].setIcon(aguaAlvo);					   
 						//  BatalhaNavalUI.repaint();		  
 				   
 				   }
@@ -283,14 +290,20 @@ public class BatalhaNaval_Client implements ActionListener {
 	 public void criaMapaUtilizador(int x,int y) //TESTE
 	 {
 		  for(int i=0; i<Macros.SIZE_X; i++){
-			   for(int j=0; j<Macros.SIZE_Y; j++){			   
+			   for(int j=0; j<Macros.SIZE_Y; j++){					   
 				 
-			    botao[i][j] = new JButton(agua);	 
+			    botao[i][j] = new JButton(agua);			    	
 			    botao[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
-			    botao[i][j].addActionListener((ActionListener) this);			 
+			    botao[i][j].addActionListener((ActionListener) this);			
+			    botao[i][j].setDisabledIcon(agua); //senao aparecia cinzento quando nao esta em "enabled"
+			    botao[i][j].setEnabled(false);			    	
+			
 			    BatalhaNavalUI.getContentPane().add(botao[i][j]);
 			   }
 		  }
+	      //=====Teste===	
+		  botao[2][1].setIcon(barcoPequeno1); botao[2][1].setDisabledIcon(barcoPequeno1);
+		  botao[2][2].setIcon(barcoPequeno2); botao[2][2].setDisabledIcon(barcoPequeno2);		
 	 }
 
 	 public void criaMapaAdversario(int x,int y) //TESTE
