@@ -50,7 +50,7 @@ public class ListarJogos extends JDialog {
 		nomeJogos = listajogos.getNomesJogos();			
 		
 		DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //novo ListModel		
-		for(int i=0; i<nomeJogos.size()-1;i++)
+		for(int i=0; i<nomeJogos.size();i++)
 		{
 			modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
 		}
