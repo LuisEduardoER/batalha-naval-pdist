@@ -27,7 +27,7 @@ public class LoginServidor_IP implements Runnable {
 	protected InetAddress servAddr = null;
 	protected int servPort;
 	protected String nome;
-	public    Mensagem msg = null;
+	protected Mensagem msg = null;
 	protected int TIMEOUT=1500;
                 
 	private final JPanel contentPanel = new JPanel();  

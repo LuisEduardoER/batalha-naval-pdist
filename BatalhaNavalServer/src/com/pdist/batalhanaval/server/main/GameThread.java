@@ -11,6 +11,7 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class GameThread implements Runnable{
 
 	private Jogo jogo;
+	
 	private Socket jogador1;
 	private Socket jogador2;
 	private ObjectOutputStream out1;

@@ -34,7 +34,7 @@ public class ListarJogos extends JDialog {
 	private ArrayList<String> nomeJogos = null;
 
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	public ListarJogos(Mensagem listajogos) {
 		
 		setResizable(false);  setModal(true);
@@ -49,14 +49,14 @@ public class ListarJogos extends JDialog {
 		// Get ListaJogo		
 		nomeJogos = listajogos.getNomesJogos();			
 		
-		DefaultListModel modelListaJogos = new DefaultListModel();  //novo ListModel		
+		DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //novo ListModel		
 		for(int i=0; i<nomeJogos.size()-1;i++)
 		{
 			modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
 		}
 		
 		//Lista options
-		JList lista = new JList(modelListaJogos);	
+		JList<String> lista = new JList<String>(modelListaJogos);	
 		lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
 		lista.setSelectedIndex(0); //selecionar o 1º
 		lista.setLayoutOrientation(JList.VERTICAL); 		
@@ -104,9 +104,10 @@ public class ListarJogos extends JDialog {
 		contentPanel.add(Criar);
 		
 //=======Eventos
+		//TODO A lista de jogos devera ser actualizada de x em x segundos
 		btnEntrar.addActionListener(new ActionListener() {
 			   public void actionPerformed(ActionEvent evt) {	
-				   
+				 //TODO
 				   JOptionPane.showMessageDialog(contentPanel,"ENTRAR - TODO!");				   
 							  
 			   }
@@ -115,7 +116,10 @@ public class ListarJogos extends JDialog {
 		Criar.addActionListener(new ActionListener() {
 			   public void actionPerformed(ActionEvent evt) {	
 				   
-				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");				   
+				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");	
+				 //TODO
+				   //Enviar msg ao servidor para criar novo jogo
+				   //Devera entrar no jogo e esperar por um 2º adversario
 							  
 			   }
 		});

@@ -44,6 +44,9 @@ public class AtendeCliente extends Thread{
 			//tratar mensagens recebidas e enviar respostas
 			try {					
 				
+				//TODO O jogador quer criar um novo jogo / seleciona um jogo e entra
+				//TODO rever a cena do tabuleiro, n vale a pena complicar muito
+				
 				Mensagem msg = (Mensagem) in.readObject();					
 				switch(msg.getType()){
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
@@ -165,7 +168,7 @@ public class AtendeCliente extends Thread{
 		msg.addNomesJogos("ISEC");
 		msg.addNomesJogos("DEIS");
 		msg.addNomesJogos("LOSERS");	
-		msg.addNomesJogos("2");
+		msg.addNomesJogos("Entra se tens coragem!");
 		msg.addNomesJogos("3");
 		msg.addNomesJogos("4");
 		msg.addNomesJogos("5");
