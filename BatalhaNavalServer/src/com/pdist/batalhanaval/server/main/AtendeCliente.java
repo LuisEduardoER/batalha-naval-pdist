@@ -164,7 +164,14 @@ public class AtendeCliente extends Thread{
 		msg.addNomesJogos("BNAVAL FTW");
 		msg.addNomesJogos("ISEC");
 		msg.addNomesJogos("DEIS");
-		msg.addNomesJogos("LOSERS");		
+		msg.addNomesJogos("LOSERS");	
+		msg.addNomesJogos("2");
+		msg.addNomesJogos("3");
+		msg.addNomesJogos("4");
+		msg.addNomesJogos("5");
+		msg.addNomesJogos("6");
+		msg.addNomesJogos("7");
+		msg.addNomesJogos("8");
 
 
 		out.flush();

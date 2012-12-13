@@ -2,14 +2,20 @@ package com.pdist.batalhanaval.client.dialogs;
 
 import java.awt.BorderLayout;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 import javax.swing.border.BevelBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JSeparator;
@@ -17,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
+
 
 public class ListarJogos extends JDialog {
 
@@ -27,7 +34,7 @@ public class ListarJogos extends JDialog {
 	private ArrayList<String> nomeJogos = null;
 
 	
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public ListarJogos(Mensagem listajogos) {
 		
 		setResizable(false);  setModal(true);
@@ -39,29 +46,26 @@ public class ListarJogos extends JDialog {
 		contentPanel.setLayout(null);
 		
 		
-		//ListaJogo - Provisorio TODO
+		// Get ListaJogo		
+		nomeJogos = listajogos.getNomesJogos();			
 		
-		nomeJogos = listajogos.getNomesJogos();		
+		DefaultListModel modelListaJogos = new DefaultListModel();  //novo ListModel		
+		for(int i=0; i<nomeJogos.size()-1;i++)
+		{
+			modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
+		}
 		
-		String[] listaJogos = { "", "", "", "", ""};		
-		listaJogos[0] = nomeJogos.get(0);
-		listaJogos[1] = nomeJogos.get(1);
-		listaJogos[2] = nomeJogos.get(2);
-		listaJogos[3] = nomeJogos.get(3);
-		listaJogos[4] = nomeJogos.get(4);
-		
-		@SuppressWarnings("unchecked")
-		JList lista = new JList(listaJogos);
-		lista .setSelectedIndex(2); //selecionar o 3º
-		
-		lista .setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lista .setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		lista .setBounds(49, 50, 181, 120);
-		contentPanel.add(lista);	
-		
-		//TESTE
-		
-		
+		//Lista options
+		JList lista = new JList(modelListaJogos);	
+		lista.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
+		lista.setSelectedIndex(0); //selecionar o 1º
+		lista.setLayoutOrientation(JList.VERTICAL); 		
+		lista.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lista.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		//lista.setBounds(49, 50, 181, 120);		
+		JScrollPane listaScroll = new JScrollPane(lista);   //para aparecer o scroll na lista
+		listaScroll.setBounds(49, 50, 181, 120);		
+		contentPanel.add(listaScroll);	
 		
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -98,5 +102,25 @@ public class ListarJogos extends JDialog {
 		Criar.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		Criar.setBounds(377, 181, 106, 33);
 		contentPanel.add(Criar);
+		
+//=======Eventos
+		btnEntrar.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent evt) {	
+				   
+				   JOptionPane.showMessageDialog(contentPanel,"ENTRAR - TODO!");				   
+							  
+			   }
+		});
+		
+		Criar.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent evt) {	
+				   
+				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");				   
+							  
+			   }
+		});
+		
+		
+		
 	}
 }
