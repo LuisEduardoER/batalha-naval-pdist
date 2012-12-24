@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import com.pdist.batalhanaval.client.dialogs.NovoJogo_Ip;
 import com.pdist.batalhanaval.client.dialogs.NovoJogo_Multicast;
+import com.pdist.batalhanaval.client.listeners.MenuActionListener;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 import java.awt.Toolkit;
@@ -26,7 +27,8 @@ public class BatalhaNaval_Client implements ActionListener {
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
-
+	private MenuActionListener menuListener = new MenuActionListener();
+	
 
 	public static void main(String[] args)
 	{		
@@ -55,8 +57,10 @@ public class BatalhaNaval_Client implements ActionListener {
 		menuBar.setBounds(0, 0, 800, 21);
 		BatalhaNavalUI.getContentPane().add(menuBar);
 		
+		
 		JMenu mnJogo = new JMenu("Jogo");
 		menuBar.add(mnJogo);
+		
 		
 		//Depois alterar esta forma?
 		JMenuItem mntmNovoJogo = new JMenuItem("Novo Jogo - IP/Port");
@@ -67,11 +71,18 @@ public class BatalhaNaval_Client implements ActionListener {
 		
 		JMenuItem mntmSair = new JMenuItem("Sair");
 		mnJogo.add(mntmSair);
-		mntmSair.addActionListener(new ActionListener() {
+		
+		
+		//ACTION LISTENER
+		mntmSair.addActionListener(menuListener);
+		mntmNovoJogo.addActionListener(menuListener);
+		mntmNovoJogo2.addActionListener(menuListener);
+		
+		/*mntmSair.addActionListener(new ActionListener() {
 			   public void actionPerformed(ActionEvent evt) {						   
 				   System.exit(0);
 			   }
-		});
+		});*/
 		
 		JMenu mnOpes = new JMenu("Op\u00E7\u00F5es");
 		menuBar.add(mnOpes);
@@ -118,7 +129,7 @@ public class BatalhaNaval_Client implements ActionListener {
 		
 		
 //----Novo Jogo - Evento---
-	mntmNovoJogo.addActionListener(new ActionListener() {
+	/*mntmNovoJogo.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent evt) {	
 			   			   
 			   try {			
@@ -152,7 +163,7 @@ public class BatalhaNaval_Client implements ActionListener {
 				}
 			  
 		   }
-	});
+	});*/
 		
 	
 	
