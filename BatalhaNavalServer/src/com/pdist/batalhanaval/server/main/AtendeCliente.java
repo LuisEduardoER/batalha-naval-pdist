@@ -39,11 +39,13 @@ public class AtendeCliente extends Thread{
 		
 	}
 	
-	public void run(){
-		System.out.println("NOVO CLIENTE");
+	public void run(){		
 		while(true){			
 			//tratar mensagens recebidas e enviar respostas
 			try {					
+				
+				//TODO O jogador quer criar um novo jogo / seleciona um jogo e entra
+				//TODO rever a cena do tabuleiro, n vale a pena complicar muito
 				
 				Mensagem msg = (Mensagem) in.readObject();					
 				switch(msg.getType()){
@@ -152,16 +154,34 @@ public class AtendeCliente extends Thread{
 	private void sendListaJogos(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_JOGOS_RESPONSE);
 		
+		/*
 		for(int i = 0;i<VarsGlobais.nJogos;i++){
 			msg.addNomesJogadores1(VarsGlobais.jogos.get(i).getC1().getNome());
 			msg.addNomesJogadores2(VarsGlobais.jogos.get(i).getC2().getNome());
 			String nomeJogo = "Jogo num "+(i+1);
 			msg.addNomesJogos(nomeJogo);
-		}
+		}*/
 		
+		//PROVISARIO (pa teste)		
+		msg.addNomesJogos("Jogo 1");
+		msg.addNomesJogos("BNAVAL FTW");
+		msg.addNomesJogos("ISEC");
+		msg.addNomesJogos("DEIS");
+		msg.addNomesJogos("LOSERS");	
+		msg.addNomesJogos("Entra se tens coragem!");
+		msg.addNomesJogos("3");
+		msg.addNomesJogos("4");
+		msg.addNomesJogos("5");
+		msg.addNomesJogos("6");
+		msg.addNomesJogos("7");
+		msg.addNomesJogos("8");
+
+
 		out.flush();
 		out.writeObject(msg);
 		out.flush();
+		
+		System.out.println("Responde a Lista de Jogos");
 	}
 	
 	private void sendInvite(Mensagem msg) throws IOException{

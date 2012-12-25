@@ -2,33 +2,25 @@ package com.pdist.batalhanaval.client.main;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.StringTokenizer;
-
 import javax.swing.*;
 
-import com.pdist.batalhanaval.client.dialogs.NovoJogo_Ip;
-import com.pdist.batalhanaval.client.dialogs.NovoJogo_Multicast;
 import com.pdist.batalhanaval.client.listeners.MenuActionListener;
-import com.pdist.batalhanaval.server.macros.Macros;
+import com.pdist.batalhanaval.client.jogo.Jogo;
 
 import java.awt.Toolkit;
 import java.awt.SystemColor;
 
 
-public class BatalhaNaval_Client implements ActionListener {
+public class BatalhaNaval_Client {
 
 	private JFrame BatalhaNavalUI;
-	private JButton[][] botao = new JButton[12][12];
-	private JButton[][] botaoAdv = new JButton[12][12];
-	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
-	private ImageIcon agua = new ImageIcon("Imagens/agua.png"); 
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
+
 	private MenuActionListener menuListener = new MenuActionListener();
 	
+
 
 	public static void main(String[] args)
 	{		
@@ -43,10 +35,11 @@ public class BatalhaNaval_Client implements ActionListener {
 
 	
 	private void initialize() {
+		
 		BatalhaNavalUI = new JFrame();
-		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage(BatalhaNaval_Client.class.getResource("/javax/swing/plaf/metal/icons/ocean/computer.gif")));
+		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagens/barcos/barcoPequenoFIRE_1.png"));
 		BatalhaNavalUI.setResizable(false);
-		BatalhaNavalUI.setTitle("Batalha Naval v0.1");
+		BatalhaNavalUI.setTitle("Batalha Naval v0.4");
 		BatalhaNavalUI.getContentPane().setBackground(SystemColor.controlHighlight);
 		BatalhaNavalUI.setBounds(100, 100, 775, 500);
 		BatalhaNavalUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,10 +55,9 @@ public class BatalhaNaval_Client implements ActionListener {
 		menuBar.add(mnJogo);
 		
 		
-		//Depois alterar esta forma?
 		JMenuItem mntmNovoJogo = new JMenuItem("Novo Jogo - IP/Port");
 		mnJogo.add(mntmNovoJogo);
-		//Depois alterar esta forma?
+
 		JMenuItem mntmNovoJogo2 = new JMenuItem("Novo Jogo - Multicast");
 		mnJogo.add(mntmNovoJogo2);		
 		
@@ -122,14 +114,20 @@ public class BatalhaNaval_Client implements ActionListener {
 		BatalhaNavalUI.getContentPane().add(lblEstado);
 		
 		
-		
-//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
-		criaMapaUtilizador(70,70); 				
-		criaMapaAdversario(400,70); 		
+//=========So iniciar depois de login.. blabla =========
+		new Jogo(BatalhaNavalUI);	
+//=========So iniciar depois de login.. blabla =========
+	
+	
+
 		
 		
 //----Novo Jogo - Evento---
 	/*mntmNovoJogo.addActionListener(new ActionListener() {
+
+//----EVENTO - Novo Jogo TCP/IP---
+	mntmNovoJogo.addActionListener(new ActionListener() {
+
 		   public void actionPerformed(ActionEvent evt) {	
 			   			   
 			   try {			
@@ -146,7 +144,8 @@ public class BatalhaNaval_Client implements ActionListener {
 			  
 		   }
 	});
-	
+
+//----EVENTO - Novo Jogo MULTICAST + TCP/IP---
 	mntmNovoJogo2.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent evt) {	
 			   			   
@@ -154,7 +153,7 @@ public class BatalhaNaval_Client implements ActionListener {
 					if(!VarsGlobais.NovoJogoThreadCreated){
 						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
 						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						dialog.setVisible(true);	
+						dialog.setVisible(true);						
 					}
 					
 				} catch (Exception e1) {
@@ -163,82 +162,29 @@ public class BatalhaNaval_Client implements ActionListener {
 				}
 			  
 		   }
-	});*/
-		
+
+	});*/	
 	
+
 	
 	}
 	
-//EVENTO BOTOES
-	 public void actionPerformed(ActionEvent e) {	
-		 
-		 StringTokenizer tokens = new StringTokenizer(new String(e.getSource().toString()),",");
-		 tokens.nextToken().trim();
-		 int x = Integer.parseInt(tokens.nextToken().trim());
-	     int y = Integer.parseInt(tokens.nextToken().trim());	 
-		  
-	     for(int i=0; i<10; i++){
-			   for(int j=0; j<10; j++){	
-				   
-				   if(botao[i][j].getBounds().x == x &&
-						   botao[i][j].getBounds().y == y)
-				   {				 		
-					   
-					   botao[i][j].setIcon(aguaAlvo);					   
-						//  BatalhaNavalUI.repaint();	  
-				   
-				   }
-				   
-				   else if(botaoAdv[i][j].getBounds().x == x &&
-						   botaoAdv[i][j].getBounds().y == y)
-				   {				 		
-					   
-					   botaoAdv[i][j].setIcon(aguaAlvo);					   
-						//  BatalhaNavalUI.repaint();	  
-				   
-				   }
-				   
-				   
-			   }
-	     }
-	 }
-	 
-	 public void criaMapaUtilizador(int x,int y) //TESTE
-	 {
-		  for(int i=0; i<Macros.SIZE_X; i++){
-			   for(int j=0; j<Macros.SIZE_Y; j++){			   
-				 
-			    botao[i][j] = new JButton(agua);	 
-			    botao[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
-			    botao[i][j].addActionListener((ActionListener) this);			 
-			    BatalhaNavalUI.getContentPane().add(botao[i][j]);
-			   }
-		  }
-	 }
-
-	 public void criaMapaAdversario(int x,int y) //TESTE
-	 {
-		  for(int i=0; i<10; i++){
-			   for(int j=0; j<10; j++){			   
-				 
-			    botaoAdv[i][j] = new JButton(agua);		 
-			    botaoAdv[i][j].setBounds(x+(j*30), y+(i*30), Macros.TAM_X, Macros.TAM_Y);
-			    botaoAdv[i][j].addActionListener((ActionListener) this);				    		    
-			    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);
-			   }
-		  }
-	 }
 	 
 	 public static void setNomeJogador1(String nome)
 	 {
 		 lblJogador_1.setText(nome);			 
 	 }
+	 
 	 public static void setNomeJogador2(String nome)
 	 {
 		 lblJogador_2.setText(nome);			 
 	 }
+	 
 	 public static void setEstado(String estado)
 	 {
 		 lblEstado.setText(estado);			 
 	 }
+
+
+	
 }

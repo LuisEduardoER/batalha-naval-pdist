@@ -1,6 +1,7 @@
 package com.pdist.batalhanaval.server.main;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -11,13 +12,14 @@ public class BatalhaNaval_Server {
 	 * */	
 	
 	private static ServerSocket ss;
-	//===========Porta fixa do servidor==============
+//===========Porta fixa do servidor TCP==============
 	private static int ServerPort = 5001;
-	//===========Porta fixa do servidor==============
+//===========Porta fixa do servidor TCP==============
 	
 	public static void main(String[] args) throws IOException {
 		
-	System.out.println("===== Inicio Servidor (Port:"+ServerPort+")=====");
+	System.out.println("===== Inicio Servidor (IP Local: "+InetAddress.getLocalHost()+" | Port:"+ServerPort+")=====");
+	
 	int numCliente=0;
 	Socket client = null;
 	
@@ -40,9 +42,12 @@ public class BatalhaNaval_Server {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
 			if(client !=  null)
 				client.close();
+			
+			System.out.println("Erro ao criar o ServeSocket, já existe um servidor em funcionamento nessa porta!");		
+			System.out.println("Servidor a fechar...");
+					return;			
 			
 		} 
 		

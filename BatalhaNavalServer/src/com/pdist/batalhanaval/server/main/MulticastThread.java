@@ -11,7 +11,10 @@ public class MulticastThread extends Thread{
 	protected MulticastSocket s;
     protected DatagramPacket pkt;
     protected DatagramPacket send;
-    protected int port = 5001;
+ //===========PORT e IP fixo do servidor MULICAST==============
+    protected static int port = 5001;
+    protected static String MulticastIP = "225.1.1.1";
+//===========PORT e IP fixo do servidor MULICAST==============
     protected InetAddress ip;//Nosso ip
     protected InetAddress group;//ip de broadcast
     protected InetAddress ip_client;//ip do cliente que pede
@@ -23,7 +26,10 @@ public class MulticastThread extends Thread{
     
     public MulticastThread(){
     	try {
-			group = InetAddress.getByName("230.1.1.1");
+//=========== GROUP IP MULICAST==============
+			group = InetAddress.getByName(MulticastIP);
+//=========== GROUP IP MULICAST==============
+			
 			ip = InetAddress.getLocalHost();
 			
 			s = new MulticastSocket(port);
@@ -43,6 +49,9 @@ public class MulticastThread extends Thread{
     	
     	if(s == null || running == false)
     		return;
+    	
+    	System.out.println("==== Thread Multicast (IP: "+MulticastIP+" | Port:"+port+") ====");
+    	
     	
     	while(running){
     		try {
