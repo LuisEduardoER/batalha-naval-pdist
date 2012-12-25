@@ -28,22 +28,26 @@ import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 
-public class ListarJogoseJogadores extends JDialog {
+public class ListaJogosEJogadores extends JDialog {
 
 	
 	private static final long serialVersionUID = 4394138207569213899L;
 	private final JPanel contentPanel = new JPanel();
 	private ArrayList<String> nomeJogos = null;
+	private ArrayList<String> nomeJogadores = null;
 	
 	private String nomeJogador;
 	
-	private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //novo ListModel
-	private JList<String> listaJogos = new JList<String>(modelListaJogos);
+	private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //LISTA JOGOS
+	private JList<String> listaJogos = new JList<String>(modelListaJogos);  //LISTA JOGOS
+	
+	private DefaultListModel<String> modelListaJogadores = new DefaultListModel<String>();  //LISTA JOGADORES
+	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES
 	
 
 	
 
-	public ListarJogoseJogadores(String nomeJogador) throws IOException {
+	public ListaJogosEJogadores(String nomeJogador) throws IOException {
 		
 		setResizable(false);  setModal(true);
 		setTitle("Novo Jogo - Listar Jogos/Jogadores");
@@ -55,11 +59,21 @@ public class ListarJogoseJogadores extends JDialog {
 		
 		this.nomeJogador = nomeJogador;
 		
+		//TODO Receber e enviar convites e estar a sincronizar de X em X segundos (criar thread e colocar la os metodos daqui)
+		
 			
 		try {
 			getListaJogos(sendListaJogosRequest()); //envia pedido ao servidor e recebe lista de jogos
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(contentPanel,"PEDIR LISTA JOGOS - Erro na ligação ao servidor");
+			return;
+		}   
+		
+		
+		try {
+			getListaJogadores(sendListaJogadoresRequest()); //envia pedido ao servidor e recebe lista de jogadores
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(contentPanel,"PEDIR LISTA JOGADORES - Erro na ligação ao servidor");
 			return;
 		}   
 		
@@ -79,16 +93,6 @@ public class ListarJogoseJogadores extends JDialog {
 		btnEnviarConvite.setBounds(358, 216, 128, 33);
 		contentPanel.add(btnEnviarConvite);
 		
-		/*
-		JList<String> list = new JList<String>((ListModel) null);
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setSelectedIndex(0);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		list.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		list.setBounds(327, 51, 179, 135);
-		contentPanel.add(list);
-		*/
 		
 		JLabel lblConvidarJogadores = new JLabel("Jogadores Online:");
 		lblConvidarJogadores.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -150,15 +154,59 @@ public class ListarJogoseJogadores extends JDialog {
 			modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
 		}
 		
-		//Lista Jogos 
 		listaJogos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
 		listaJogos.setSelectedIndex(0); //selecionar o 1º
 		listaJogos.setLayoutOrientation(JList.VERTICAL); 		
 		listaJogos.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		//lista.setBounds(49, 50, 181, 120);		
+		listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
 		JScrollPane listaScroll = new JScrollPane(listaJogos);   //para aparecer o scroll na lista
 		listaScroll.setBounds(49, 50, 181, 135);		
 		contentPanel.add(listaScroll);
 	}
+	
+	
+	   public Mensagem sendListaJogadoresRequest() throws IOException{   	  
+	    	  
+       	
+           Mensagem msg = new Mensagem(Macros.MSG_LISTA_ONLINE);
+           msg.setMsgText(nomeJogador);      
+           
+           
+           SocketClient_TCP.getOut().flush();
+           SocketClient_TCP.getOut().writeObject(msg);
+           SocketClient_TCP.getOut().flush();
+           
+           try{
+             	
+               msg = (Mensagem) SocketClient_TCP.getIn().readObject(); 
+               
+               } catch (Exception  e) {                                                    
+                   JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogadores!");
+                   VarsGlobais.NovoJogoThreadCreated = false;                     
+               }
+           
+           return msg;
+   }
+	
+	
+	public void getListaJogadores(Mensagem listajogadores) //lista de jogadores que NAO estao a jogar..
+	{
+		nomeJogadores = listajogadores.getNomesClientes();		
+		
+		
+		for(int i=0; i<nomeJogadores.size();i++)
+		{
+			modelListaJogadores.addElement(nomeJogadores.get(i)); 
+		}
+		
+		listaJogadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
+		listaJogadores.setSelectedIndex(0); //selecionar o 1º
+		listaJogadores.setLayoutOrientation(JList.VERTICAL); 		
+		listaJogadores.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		listaJogadores.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
+		JScrollPane listaScroll = new JScrollPane(listaJogadores);   
+		listaScroll.setBounds(327, 51, 181, 135);		
+		contentPanel.add(listaScroll);
+	}
+	
 }

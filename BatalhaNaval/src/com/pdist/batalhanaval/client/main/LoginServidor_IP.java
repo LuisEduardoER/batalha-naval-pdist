@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
-import com.pdist.batalhanaval.client.dialogs.ListarJogoseJogadores;
+import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 
@@ -77,7 +77,7 @@ public class LoginServidor_IP implements Runnable {
                                                 BatalhaNaval_Client.setEstado("A aguardar jogador 2...");                                               
                                                                                        
                                                 
-                                                ListarJogoseJogadores dialog = new ListarJogoseJogadores(nome);
+                                                ListaJogosEJogadores dialog = new ListaJogosEJogadores(nome);
                         						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                         						dialog.setVisible(true);	                                              
                                                 
