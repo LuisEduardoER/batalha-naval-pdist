@@ -114,58 +114,12 @@ public class BatalhaNaval_Client {
 		BatalhaNavalUI.getContentPane().add(lblEstado);
 		
 		
+		
 //=========So iniciar depois de login.. blabla =========
 		new Jogo(BatalhaNavalUI);	
 //=========So iniciar depois de login.. blabla =========
 	
 	
-
-		
-		
-//----Novo Jogo - Evento---
-	/*mntmNovoJogo.addActionListener(new ActionListener() {
-
-//----EVENTO - Novo Jogo TCP/IP---
-	mntmNovoJogo.addActionListener(new ActionListener() {
-
-		   public void actionPerformed(ActionEvent evt) {	
-			   			   
-			   try {			
-					if(!VarsGlobais.NovoJogoThreadCreated){
-						NovoJogo_Ip dialog = new NovoJogo_Ip();
-						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						dialog.setVisible(true);	
-					}
-					
-				} catch (Exception e1) {
-					//TRATAR
-					e1.printStackTrace();
-				}
-			  
-		   }
-	});
-
-//----EVENTO - Novo Jogo MULTICAST + TCP/IP---
-	mntmNovoJogo2.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent evt) {	
-			   			   
-			   try {			
-					if(!VarsGlobais.NovoJogoThreadCreated){
-						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
-						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-						dialog.setVisible(true);						
-					}
-					
-				} catch (Exception e1) {
-					//TRATAR
-					e1.printStackTrace();
-				}
-			  
-		   }
-
-	});*/	
-	
-
 	
 	}
 	

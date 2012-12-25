@@ -46,7 +46,8 @@ public class Jogo implements ActionListener{
 	
 	public Jogo(JFrame jogo) {
 		
-		this.BatalhaNavalUI = jogo;
+		this.BatalhaNavalUI = jogo;		
+		
 		
 		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
 				criaMapaUtilizador(70,70); 				

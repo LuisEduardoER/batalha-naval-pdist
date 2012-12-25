@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -12,7 +13,7 @@ import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
-import com.pdist.batalhanaval.client.dialogs.ListarJogos;
+import com.pdist.batalhanaval.client.dialogs.ListarJogoseJogadores;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 
@@ -29,6 +30,7 @@ public class LoginServidor_IP implements Runnable {
 	protected String nome;
 	protected Mensagem msg = null;
 	protected int TIMEOUT=1500;
+	public static SocketClient_TCP socketclass;
                 
 	private final JPanel contentPanel = new JPanel();  
 
@@ -39,9 +41,11 @@ public class LoginServidor_IP implements Runnable {
                     this.servPort = Integer.parseInt(porto);
                     this.nome = nome;
                     this.logIn = false;   
-                    socket = new Socket(servAddr,servPort);  
-                    SocketClient_TCP.setSocket(socket);    //armazena o socket na class static (depois de criado)                   
                     
+                                        
+                    socketclass = new SocketClient_TCP(servAddr,servPort,contentPanel);  //armazena o socket na class static (depois de criado)  
+                                        
+                    this.socket = SocketClient_TCP.getSocket();
 	}                       
         
 
@@ -50,24 +54,21 @@ public class LoginServidor_IP implements Runnable {
         public void run() {
                 
                  try{
-        
-                	 socket.setSoTimeout(TIMEOUT); //necessario para alguns trycatch
-                	 
-                            }catch(Exception e)
+                       	
+             			
+             			socket.setSoTimeout(TIMEOUT); //timeout para o socket (deve estar fora da classe tcp para fzr return aqui)
+             			
+             	            }catch(Exception e)
                             { 
-                                 JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor");
+                            	JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor - TIMEOUT");
                                  VarsGlobais.NovoJogoThreadCreated = false;  
-                                         return;
+                                return;
                             }
-                                
-                                
+                                                                
                                                                         
                                 
-                                try {
-                                        out = new ObjectOutputStream(socket.getOutputStream());
-                                        in = new ObjectInputStream(socket.getInputStream());
-                                } catch (IOException e1) {
-                                        e1.printStackTrace(); }
+                                out = SocketClient_TCP.getOut();
+								in = SocketClient_TCP.getIn();
                 
                 while(true){                    
                         try {                                           
@@ -89,14 +90,12 @@ public class LoginServidor_IP implements Runnable {
                                                 //Teste=====
                                                 BatalhaNaval_Client.setNomeJogador1(nome);
                                                 BatalhaNaval_Client.setNomeJogador2("A aguardar..");
-                                                BatalhaNaval_Client.setEstado("A aguardar jogador 2...");
+                                                BatalhaNaval_Client.setEstado("A aguardar jogador 2...");                                               
+                                                                                       
                                                 
-                                                //Cria Lista de Jogos dialog
-                                                msg=sendListaJogosRequest();                                               
-                                                
-                                                ListarJogos dialog = new ListarJogos(msg);
+                                                ListarJogoseJogadores dialog = new ListarJogoseJogadores(nome);
                         						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                        						dialog.setVisible(true);	                                               
+                        						dialog.setVisible(true);	                                              
                                                 
                                                 
                                                 //========                                                
@@ -121,26 +120,7 @@ public class LoginServidor_IP implements Runnable {
                 sendLoginRequest();
         }
         
-        public Mensagem sendListaJogosRequest() throws IOException{
-        	
-            Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
-            msg.setMsgText(nome);
-            
-            out.flush();
-            out.writeObject(msg);
-            out.flush();
-            
-            try{
-              	
-                msg = (Mensagem) in.readObject(); 
-                
-                } catch (Exception  e) {                                                    
-                    JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogos");
-                    VarsGlobais.NovoJogoThreadCreated = false;                     
-                }
-            
-            return msg;
-    }
+     
         
         public void sendLoginRequest() throws IOException{
                 Mensagem msg = new Mensagem(Macros.MSG_LOGIN_REQUEST);

@@ -163,12 +163,12 @@ public class AtendeCliente extends Thread{
 		}*/
 		
 		//PROVISARIO (pa teste)		
-		msg.addNomesJogos("Jogo 1");
-		msg.addNomesJogos("BNAVAL FTW");
-		msg.addNomesJogos("ISEC");
-		msg.addNomesJogos("DEIS");
-		msg.addNomesJogos("LOSERS");	
-		msg.addNomesJogos("Entra se tens coragem!");
+		msg.addNomesJogos(" ( Exemplo only )");
+		msg.addNomesJogos("Jogador 1 vs Jogador 2");
+		msg.addNomesJogos("Mitra vs Cigano");
+		msg.addNomesJogos("Xino vs Americano");
+		msg.addNomesJogos("barbosa vs duraes");	
+		msg.addNomesJogos("batatas vs ketchup");
 		msg.addNomesJogos("3");
 		msg.addNomesJogos("4");
 		msg.addNomesJogos("5");
