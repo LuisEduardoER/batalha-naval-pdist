@@ -1,11 +1,7 @@
 package com.pdist.batalhanaval.client.main;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -21,16 +17,12 @@ import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 public class LoginServidor_IP implements Runnable {
         
         
-	protected Socket socket;
-	protected ObjectOutputStream out;
-	protected ObjectInputStream in;
 	protected boolean logIn;
 	protected InetAddress servAddr = null;
 	protected int servPort;
 	protected String nome;
 	protected Mensagem msg = null;
 	protected int TIMEOUT=1500;
-	public static SocketClient_TCP socketclass;
                 
 	private final JPanel contentPanel = new JPanel();  
 
@@ -40,35 +32,27 @@ public class LoginServidor_IP implements Runnable {
                     this.servAddr = InetAddress.getByName(IP);
                     this.servPort = Integer.parseInt(porto);
                     this.nome = nome;
-                    this.logIn = false;   
-                    
+                    this.logIn = false;                       
                                         
-                    socketclass = new SocketClient_TCP(servAddr,servPort,contentPanel);  //armazena o socket na class static (depois de criado)  
-                                        
-                    this.socket = SocketClient_TCP.getSocket();
+                    new SocketClient_TCP(servAddr,servPort,contentPanel);  //cria class/socket/ligacao TCP 
+     
 	}                       
-        
-
-                
+                        
         @Override
         public void run() {
                 
                  try{
-                       	
-             			
-             			socket.setSoTimeout(TIMEOUT); //timeout para o socket (deve estar fora da classe tcp para fzr return aqui)
-             			
-             	            }catch(Exception e)
+                       	             			
+                	 SocketClient_TCP.getSocket().setSoTimeout(TIMEOUT); //timeout para o socket (deve estar fora da classe tcp para fzr return aqui)
+             			                	 
+             	     }catch(Exception e)
                             { 
-                            	JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor - TIMEOUT");
-                                 VarsGlobais.NovoJogoThreadCreated = false;  
-                                return;
+                            JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor - TIMEOUT");
+                            VarsGlobais.NovoJogoThreadCreated = false;  
+                            return;
                             }
-                                                                
-                                                                        
-                                
-                                out = SocketClient_TCP.getOut();
-								in = SocketClient_TCP.getIn();
+                             
+                 
                 
                 while(true){                    
                         try {                                           
@@ -76,7 +60,7 @@ public class LoginServidor_IP implements Runnable {
                                         sendLoginRequest();                                     
                                 }
                                 
-                                msg = (Mensagem) in.readObject();
+                                msg = (Mensagem) SocketClient_TCP.getIn().readObject();
                                 switch(msg.getType()){                                  
                                         case Macros.MSG_LOGIN_FAIL:
                                                 sendLoginResponse();
@@ -125,9 +109,9 @@ public class LoginServidor_IP implements Runnable {
         public void sendLoginRequest() throws IOException{
                 Mensagem msg = new Mensagem(Macros.MSG_LOGIN_REQUEST);
                 msg.setMsgText(nome);
-                out.flush();
-                out.writeObject(msg);
-                out.flush();
+                SocketClient_TCP.getOut().flush();
+                SocketClient_TCP.getOut().writeObject(msg);
+                SocketClient_TCP.getOut().flush();
         }
         
         public void noteAlreadyLogged(){

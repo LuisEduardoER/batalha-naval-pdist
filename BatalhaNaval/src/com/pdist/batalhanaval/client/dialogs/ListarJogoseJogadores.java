@@ -17,19 +17,15 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
-import javax.swing.JTextField;
 
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 import com.pdist.batalhanaval.client.main.VarsGlobais;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
-import javax.swing.ListModel;
 
 
 public class ListarJogoseJogadores extends JDialog {
@@ -41,13 +37,9 @@ public class ListarJogoseJogadores extends JDialog {
 	
 	private String nomeJogador;
 	
-	DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //novo ListModel
-	JList<String> listaJogos = new JList<String>(modelListaJogos);	
+	private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //novo ListModel
+	private JList<String> listaJogos = new JList<String>(modelListaJogos);
 	
-	//TESTE
-	public Mensagem msg;
-	public ObjectOutputStream out=null;
-	public ObjectInputStream in=null;
 
 	
 
@@ -63,31 +55,15 @@ public class ListarJogoseJogadores extends JDialog {
 		
 		this.nomeJogador = nomeJogador;
 		
-		
-		out = SocketClient_TCP.getOut();
-        in = SocketClient_TCP.getIn();
-		
 			
-		
-		System.out.println("TESTE 1");
-		
 		try {
-			msg = sendListaJogosRequest(); //envia pedido ao servidor e recebe lista de jogos
+			getListaJogos(sendListaJogosRequest()); //envia pedido ao servidor e recebe lista de jogos
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(contentPanel,"PEDIR JOGOS - Erro na ligação ao servidor");
+			JOptionPane.showMessageDialog(contentPanel,"PEDIR LISTA JOGOS - Erro na ligação ao servidor");
 			return;
 		}   
 		
-		System.out.println("TESTE 2");
-		
-		getListaJogos(msg);
-		
-		
-		
-		
-		// Get ListaJogo		
-		
-		
+			
 		JLabel lblListaDeJogos = new JLabel("Jogos Activos:");
 		lblListaDeJogos.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lblListaDeJogos.setBounds(77, 13, 158, 26);
@@ -142,22 +118,18 @@ public class ListarJogoseJogadores extends JDialog {
 	
       public Mensagem sendListaJogosRequest() throws IOException{   	  
     	  
-    	 
-    	  
-    	  System.out.println("SOCKET"+SocketClient_TCP.getSocket().toString());
-       	
+    	        	
            Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
-           msg.setMsgText(nomeJogador);
+           msg.setMsgText(nomeJogador);      
            
            
-           
-           out.flush();
-           out.writeObject(msg);
-           out.flush();
+           SocketClient_TCP.getOut().flush();
+           SocketClient_TCP.getOut().writeObject(msg);
+           SocketClient_TCP.getOut().flush();
            
            try{
              	
-               msg = (Mensagem) in.readObject(); 
+               msg = (Mensagem) SocketClient_TCP.getIn().readObject(); 
                
                } catch (Exception  e) {                                                    
                    JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogos");

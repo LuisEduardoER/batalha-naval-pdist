@@ -5,14 +5,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class SocketClient_TCP {
 
-	protected static final int TIMEOUT = 1500;
+
+	//private static final int TIMEOUT = 1500;
 
 	protected static Socket socket = null; 
 	
@@ -22,11 +22,14 @@ public class SocketClient_TCP {
 	protected static ObjectOutputStream out=null;
 	protected static ObjectInputStream in=null;
 	
+	protected static JPanel contentPanel;
+	
 	
 	public SocketClient_TCP(InetAddress servAddr, int servPort, JPanel contentPanel )	{
 		
 		SocketClient_TCP.servAddr = servAddr;
 		SocketClient_TCP.servPort = servPort;
+		SocketClient_TCP.contentPanel = contentPanel;
 		
 		try{         
 			
@@ -37,19 +40,19 @@ public class SocketClient_TCP {
             	JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor - CRIAR SOCKET");
                 VarsGlobais.NovoJogoThreadCreated = false;                 
                 return;
-            }
+            }		
 		
 		
-		
-		 try {
+	    try {
 			 
 			out = new ObjectOutputStream(SocketClient_TCP.socket.getOutputStream()); //cria OutputStream
 			
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(contentPanel,"Erro na ligação ao servidor - OUT STREAM");
 		}
+	    
 		 
-         try {
+        try {
         	 
 			in = new ObjectInputStream(SocketClient_TCP.socket.getInputStream());  //cria InputStream
 			
@@ -99,6 +102,18 @@ public class SocketClient_TCP {
 	public static void setIn(ObjectInputStream in) {
 		SocketClient_TCP.in = in;
 	}
+	
+	/*
+	public static void setSoCketTimeout(){
+		
+		 try {
+			SocketClient_TCP.socket.setSoTimeout(TIMEOUT);
+		} catch (SocketException e) {
+        	JOptionPane.showMessageDialog(SocketClient_TCP.contentPanel,"Erro na ligação ao servidor - TIMEOUT (SocketClient_TCP)");
+
+		} 
+	}
+	*/
 	
 	
 }
