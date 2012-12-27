@@ -121,6 +121,8 @@ public class Jogo implements ActionListener{
 						   	   	socket.setSoTimeout(1500); //timeout 1,5s
 						   	   	//enviar coordenadas
 						   	   	ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+						   	   	
+						  //#############AS MENSAGENS ESTAO PRE-DEFINIDAS E TÊM ESTRUTURA FIXA. TÊM DE VER COMO ESTÀ A SE TRATADO NO SERVIDOR !#########
 						   	   	out.writeObject(new Integer(( (i+1)*10 ) + (j+1)) ); //ex.: enviar x6, y3 -> 60+3 = 63 (os +1 é para acertar o index)
 						   	   	out.flush();
 						   	   	}catch(Exception exc){ 

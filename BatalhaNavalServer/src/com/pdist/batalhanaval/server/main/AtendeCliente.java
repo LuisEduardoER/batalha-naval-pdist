@@ -67,6 +67,11 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador
 						setTabuleiro(msg);
 						break;
+					case Macros.MSG_ATACAR:
+						if(game!=null)
+							if(game.getJogo().isStarted())
+								setAtaque(msg);
+						break;
 					
 				}					
 			} catch (IOException | NullPointerException e) {
@@ -301,6 +306,60 @@ public class AtendeCliente extends Thread{
 	}
 
 	private void setGame(GameThread game){this.game = game;}
+	
+	private void setAtaque(Mensagem msg){
+		
+		int t = 0;
+		
+		//ATACA NO TABULEIRO ADVERSARIO
+		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
+			if(game.getJogo().getTurn() == 1){
+				int pos = msg.getPosTab();
+				if(pos<0 || pos> (game.getJogo().getC2().getTabuleiro().getTabuleiro().size()-1))
+					msg.setType(Macros.MSG_ATACAR_FAIL);
+				else
+					if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isShooted())
+						msg.setType(Macros.MSG_ATACAR_FAIL);
+					else{
+						msg.setType(Macros.MSG_ATACAR_SUCCESS);
+						game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
+						game.getJogo().setTurn(2);	
+						t = 2;
+					}	
+			}
+			
+		}else{
+			if(game.getJogo().getTurn() == 2){
+				int pos = msg.getPosTab();
+				if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))
+					msg.setType(Macros.MSG_ATACAR_FAIL);
+				else
+					if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isShooted())
+						msg.setType(Macros.MSG_ATACAR_FAIL);
+					else{
+						msg.setType(Macros.MSG_ATACAR_SUCCESS);
+						game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
+						game.getJogo().setTurn(1);	
+						t = 1;
+					}	
+			}
+		}
+			
+		
+			try {
+			out.flush();
+			out.writeObject(msg);
+			out.flush();
+			
+			if(msg.getType() == Macros.MSG_ATACAR_SUCCESS)
+				game.notifyAtack(t);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+			
+	
 }
 
 

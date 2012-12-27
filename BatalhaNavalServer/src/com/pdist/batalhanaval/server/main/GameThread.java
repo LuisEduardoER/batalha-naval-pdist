@@ -3,6 +3,7 @@ package com.pdist.batalhanaval.server.main;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.controlo.Jogo;
 import com.pdist.batalhanaval.server.macros.Macros;
@@ -67,30 +68,32 @@ public class GameThread implements Runnable{
 		}
 		
 		while(!jogo.isFim()){
-			try{
-				if(jogo.getTurn() == 1)//jogador 1 a jogar
-				{
-					out1.flush();
-					out1.writeObject(msg);
-					out1.flush();
-				}else // jogador 2 a jogar
-				{
-					out2.flush();
-					out2.writeObject(msg);
-					out2.flush();	
-				}
-			}catch(IOException e){
-				System.out.println("Ligação caiu");
-				VarsGlobais.jogos.remove(jogo);
-				VarsGlobais.nJogos--;
-				VarsGlobais.nClientes = VarsGlobais.nClientes+2;
-				VarsGlobais.ClientesOn.add(jogo.getC1());
-				VarsGlobais.ClientesOn.add(jogo.getC2());
-				break;
-			}
-		}
-		
+	
+			
+		}		
 	}
 
 	public Jogo getJogo(){return jogo;}
+	public void notifyAtack(int jog) throws IOException{
+		if(jog == 1){
+			Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
+			ArrayList<Integer> array = new ArrayList<Integer>();
+			for(int i = 0;i < jogo.getC1().getTabuleiro().getTabuleiro().size();i++)
+				array.add(jogo.getC1().getTabuleiro().getTabuleiro().get(i).getImage());
+			
+			out1.flush();
+			out1.writeObject(msg);
+			out1.flush();
+		}else{
+			Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
+			ArrayList<Integer> array = new ArrayList<Integer>();
+			for(int i = 0;i < jogo.getC2().getTabuleiro().getTabuleiro().size();i++)
+				array.add(jogo.getC2().getTabuleiro().getTabuleiro().get(i).getImage());
+			
+			out2.flush();
+			out2.writeObject(msg);
+			out2.flush();
+		}
+	}
+	
 }

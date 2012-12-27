@@ -14,6 +14,7 @@ public class Mensagem implements Serializable {
 	 */
 	private static final long serialVersionUID = -3510385339259903686L;
 		private int type;
+		private int posTab;
 		private String msg_text;
 		private String responseText;
 		private Letra letra;
@@ -39,6 +40,7 @@ public class Mensagem implements Serializable {
 			nomesJogos = new ArrayList<String>(); //e inicializar os arraylist!!!
 			responseText="";
 			tabuleiro = null;
+			posTab = -1;
 		}		
 		public Mensagem(int type, String msg_text){
 			this.type = type;
@@ -52,6 +54,7 @@ public class Mensagem implements Serializable {
 			nomesJogos = null;
 			responseText="";
 			tabuleiro = null;
+			posTab = -1;
 		}
 		public Mensagem(int type, Letra letra, Numero numero){
 			this.type = type;
@@ -65,6 +68,7 @@ public class Mensagem implements Serializable {
 			nomesJogos = null;
 			responseText="";
 			tabuleiro = null;
+			posTab = -1;
 		}
 		public Mensagem(int type, Cliente cliente1, Cliente cliente2){
 			this.type = type;
@@ -78,6 +82,7 @@ public class Mensagem implements Serializable {
 			nomesJogos = null;
 			responseText="";
 			tabuleiro = null;
+			posTab = -1;
 		}
 		
 		
@@ -93,6 +98,7 @@ public class Mensagem implements Serializable {
 		public ArrayList<String> getNomesJogos(){return nomesJogos;}
 		public String getResponseText(){return responseText;}
 		public ArrayList<Integer> getTabuleiro(){return tabuleiro;}
+		public int getPosTab(){return posTab;}
 		
 		//Setters
 		public void setType(int type){this.type = type;}
@@ -106,6 +112,7 @@ public class Mensagem implements Serializable {
 		public void setNomesJogos(ArrayList<String> nomesJogos){this.nomesJogos = nomesJogos;}
 		public void setResponseText(String responseText){this.responseText = responseText;}
 		public void setTabuleiro(ArrayList<Integer> tabuleiro){this.tabuleiro = tabuleiro;}
+		public void setPosTab(int posTab){this.posTab = posTab;}
 		
 		//usar os nomes de clientes
 		public void addNomesClientes(String nome){nomesClientes.add(nome);}
