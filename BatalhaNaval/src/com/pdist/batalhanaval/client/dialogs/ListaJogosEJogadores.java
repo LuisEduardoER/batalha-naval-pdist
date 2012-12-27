@@ -114,11 +114,7 @@ public class ListaJogosEJogadores extends JDialog {
 					   JOptionPane.showMessageDialog(contentPanel, "Já convidou alguém, tem de aguardar resposta.");
 					   return;
 				   }
-				   
-				   //PARA TESTE APENAS. RETIRAR!!!!
-				  /* try{
-				   receberConvites();
-				   }catch(Exception e){}*/
+				  
 				   
 				   //verificar se o user está a convidar-se a si proprio
 				   if( getNomeJogador().equals(listaJogadores.getSelectedValue()) ){
@@ -142,7 +138,8 @@ public class ListaJogosEJogadores extends JDialog {
 					   JOptionPane.showMessageDialog(contentPanel, "Erro a enviar convite.");
 					   convidou = false; //convite nao foi enviado com sucesso
 				   }
-				   
+				  
+				   /* posto no AtendeServidor
 				  //TODO Receber convites
 				   try{
 					   
@@ -154,7 +151,7 @@ public class ListaJogosEJogadores extends JDialog {
 					   JOptionPane.showMessageDialog(contentPanel, "Erro a receber convite.");
 				   }catch(ClassNotFoundException e){
 					   JOptionPane.showMessageDialog(contentPanel, "erro: classNotFound");
-				   }
+				   }*/
 				   
 				   
 			   }
@@ -163,6 +160,7 @@ public class ListaJogosEJogadores extends JDialog {
 			
 	}
 	
+	/* posto no AtendeServidor
 	//receber os convites feitos por outros jogadores
 	public void receberConvites(Mensagem msg) throws IOException{
 		
@@ -197,11 +195,8 @@ public class ListaJogosEJogadores extends JDialog {
 			return;
 		}
 		//o ignorar nao envia nada, quem enviou o convite faz timeout
-		
-
-		
-		
-	}
+			
+	}*/
 	
 	
 	//GET (por causa do actionListener)
@@ -235,7 +230,7 @@ public class ListaJogosEJogadores extends JDialog {
 			if(msg.getType() == Macros.MSG_INICIAR_RESPONSE){
 				if(msg.getMsgText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
 					JOptionPane.showMessageDialog(contentPanel, "Convite aceite! \n a iniciar jogo..");
-					//TODO iniciar jogo!!
+					//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 				}
 				if(msg.getMsgText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
 					JOptionPane.showMessageDialog(contentPanel, "Convite rejeitado.");

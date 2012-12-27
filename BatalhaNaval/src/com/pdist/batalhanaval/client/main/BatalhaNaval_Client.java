@@ -116,13 +116,13 @@ public class BatalhaNaval_Client {
 		
 		
 //=========So iniciar depois de login.. blabla =========
-		new Jogo(BatalhaNavalUI);	
+		new Jogo(BatalhaNavalUI);
 //=========So iniciar depois de login.. blabla =========
 	
 	
 	
 	}
-	
+
 	 
 	 public static void setNomeJogador1(String nome)
 	 {

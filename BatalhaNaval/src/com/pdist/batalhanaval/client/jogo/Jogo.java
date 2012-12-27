@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 
+import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 import com.pdist.batalhanaval.server.macros.Macros;
 
@@ -42,7 +43,9 @@ public class Jogo implements ActionListener{
 	
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
 	//PARA LIGAÇÕES
-	private Socket socket = null;
+	private static Socket socket = null;
+	
+	private Thread t; //thread do AtendeServidor
 	
 	public Jogo(JFrame jogo) {
 		
@@ -51,9 +54,16 @@ public class Jogo implements ActionListener{
 		
 		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
 				criaMapaUtilizador(70,70); 				
-				criaMapaAdversario(400,70); 	
+				criaMapaAdversario(400,70);
+			
+		//CRIAR A THREAD DE ATENDIMENTO
+		//socket = SocketClient_TCP.getSocket();
+		//t = new AtendeServidor(socket, BatalhaNavalUI);
+		//t = new AtendeServidor(SocketClient_TCP.getSocket(), BatalhaNavalUI); //NULL POINTER
+		//t.start();
+		//t.setDaemon(true); //??
+		
 	}
-	
 	
 	//EVENTO BOTOES
 		 public void actionPerformed(ActionEvent e) {	
@@ -116,12 +126,11 @@ public class Jogo implements ActionListener{
 						   //mudar icone conforme
 
 						   try{
-							   	//socket para enviar as coordenadas
-						   	   	socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
+							   	//socket para enviar as coordenadas							   
+							    socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
 						   	   	socket.setSoTimeout(1500); //timeout 1,5s
 						   	   	//enviar coordenadas
 						   	   	ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-						   	   	
 						  //#############AS MENSAGENS ESTAO PRE-DEFINIDAS E TÊM ESTRUTURA FIXA. TÊM DE VER COMO ESTÀ A SE TRATADO NO SERVIDOR !#########
 						   	   	out.writeObject(new Integer(( (i+1)*10 ) + (j+1)) ); //ex.: enviar x6, y3 -> 60+3 = 63 (os +1 é para acertar o index)
 						   	   	out.flush();
@@ -214,7 +223,4 @@ public class Jogo implements ActionListener{
 		 }
 	
 	
-	
-	
-
 }

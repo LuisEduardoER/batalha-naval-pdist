@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
+import com.pdist.batalhanaval.client.jogo.Jogo;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
 
@@ -34,8 +36,8 @@ public class LoginServidor_IP implements Runnable {
                     this.nome = nome;
                     this.logIn = false;                       
                                         
-                    new SocketClient_TCP(servAddr,servPort,contentPanel);  //cria class/socket/ligacao TCP 
-     
+                    new SocketClient_TCP(servAddr,servPort,contentPanel);  //cria class/socket/ligacao TCP
+
 	}                       
                         
         @Override
