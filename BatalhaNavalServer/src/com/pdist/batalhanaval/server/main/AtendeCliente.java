@@ -210,9 +210,26 @@ public class AtendeCliente extends Thread{
 	private void getResponse(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_INICIAR_RESPONSE);
 		
-		//se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido
-		if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
-			out.writeObject(msg);
+		//NAO É PRECISO.. SE FOR IGNORADO, O CLIENTE FAZ TIMEOUT
+		   //se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido
+		   //if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
+		   //	out.writeObject(msg);
+		
+		//avisar o jogador que o seu convite foi recusado
+		if(msg.getResponseText() == Macros.REJEITAR_PEDIDO){
+			Socket s = null;
+			ObjectOutputStream out2 = null;
+			
+			s = cliente.getMySocket();
+			out2 = new ObjectOutputStream(s.getOutputStream());
+			msg.setMsgText(Macros.REJEITAR_PEDIDO);
+			
+			if(out2 != null){
+				out2.flush();
+				out2.writeObject(msg);
+				out2.flush();
+			}			
+		}
 		
 		if(msg.getResponseText() == Macros.ACEITAR_PEDIDO){
 			Cliente c2 = null;

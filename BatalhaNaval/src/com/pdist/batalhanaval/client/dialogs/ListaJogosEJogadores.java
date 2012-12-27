@@ -17,6 +17,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
 import javax.swing.JSeparator;
@@ -44,9 +45,10 @@ public class ListaJogosEJogadores extends JDialog {
 	private DefaultListModel<String> modelListaJogadores = new DefaultListModel<String>();  //LISTA JOGADORES
 	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES
 	
-
+	private boolean convidou; //para apenas deixar efectuar um convite de cada vez
 	
 
+	
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
 		
 		setResizable(false);  setModal(true);
@@ -58,6 +60,8 @@ public class ListaJogosEJogadores extends JDialog {
 		contentPanel.setLayout(null);
 		
 		this.nomeJogador = nomeJogador;
+		
+		this.convidou = false; //ainda nao convidou ninguem
 		
 		//TODO Receber e enviar convites e estar a sincronizar de X em X segundos (criar thread e colocar la os metodos daqui)
 		
@@ -99,49 +103,175 @@ public class ListaJogosEJogadores extends JDialog {
 		lblConvidarJogadores.setBounds(338, 13, 158, 26);
 		contentPanel.add(lblConvidarJogadores);
 		
-//DEPOIS ALTERAR PARA PACKAGE LISTENERS...		
+//DEPOIS ALTERAR PARA PACKAGE LISTENERS...	
 		btnEnviarConvite.addActionListener(new ActionListener() { 
 			   public void actionPerformed(ActionEvent evt) {	
 				   
 				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");	
 				   
-				    //TODO
+				   //já convidou alguem, tem de esperar a resposta ate poder convidar outra vez
+				   if(convidou == true){
+					   JOptionPane.showMessageDialog(contentPanel, "Já convidou alguém, tem de aguardar resposta.");
+					   return;
+				   }
+				   
+				   //PARA TESTE APENAS. RETIRAR!!!!
+				  /* try{
+				   receberConvites();
+				   }catch(Exception e){}*/
+				   
+				   //verificar se o user está a convidar-se a si proprio
+				   if( getNomeJogador().equals(listaJogadores.getSelectedValue()) ){
+					   JOptionPane.showMessageDialog(contentPanel, "Não se pode convidar a si mesmo!");
+					   return;
+				   }
+				   
+				   
 				   //Enviar msg ao servidor para convidar o X jogador
 				   //Se o jogador aceitar (ter timeout) o jogo é iniciado
+				   try{
+					   //enviar convite
+					   sendConvite();
+					   //aguardar resposta (timeout 15s)
+					   receberRespostaConvite();
+					   //se tiver sido aceite, fecha janela dos convites e começa o jogo
+				   }catch(SocketTimeoutException e){
+					   JOptionPane.showMessageDialog(contentPanel, "Não foi obtida resposta do outro jogador");
+					   convidou = false; //convite ignorado? pode convidar outra vez
+				   }catch(IOException e){
+					   JOptionPane.showMessageDialog(contentPanel, "Erro a enviar convite.");
+					   convidou = false; //convite nao foi enviado com sucesso
+				   }
 				   
-				   //TODO Receber convites
-							  
+				  //TODO Receber convites
+				   try{
+					   
+					   Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject();
+					   if(msg.getType() == Macros.MSG_INICIAR_RESPONSE) //se for um convite
+						   receberConvites(msg);
+					   
+				   }catch(IOException e){
+					   JOptionPane.showMessageDialog(contentPanel, "Erro a receber convite.");
+				   }catch(ClassNotFoundException e){
+					   JOptionPane.showMessageDialog(contentPanel, "erro: classNotFound");
+				   }
+				   
+				   
 			   }
 		});
 		
+			
+	}
+	
+	//receber os convites feitos por outros jogadores
+	public void receberConvites(Mensagem msg) throws IOException{
 		
+		msg.setType(Macros.MSG_PEDIDO_RESPONSE);
+		
+		int opcao; //opcao escolhida na dialog box
+		Object[] options = {"Aceitar", "Rejeitar", "Ignorar"};
+		String msgConvite = "Recebeu um convite de: " + msg.getMsgText();
+		String title = "Convite";
+		opcao = JOptionPane.showOptionDialog(contentPanel, msgConvite, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);
+		
+		if(opcao == JOptionPane.YES_OPTION){
+			JOptionPane.showMessageDialog(contentPanel, "SIM");//remover depois
+			msg.setResponseText(Macros.ACEITAR_PEDIDO);
+			
+			//enviar mensagem ao servidor
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+	        SocketClient_TCP.getOut().flush();
+	        
+	        return;
+		}
+		if(opcao == JOptionPane.NO_OPTION){
+			JOptionPane.showMessageDialog(contentPanel, "NAO"); //remover depois
+			msg.setResponseText(Macros.REJEITAR_PEDIDO);
+			
+			//enviar resposta ao servidor
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+	        SocketClient_TCP.getOut().flush();
+			
+			return;
+		}
+		//o ignorar nao envia nada, quem enviou o convite faz timeout
+		
+
 		
 		
 	}
 	
 	
-      public Mensagem sendListaJogosRequest() throws IOException{   	  
+	//GET (por causa do actionListener)
+	public String getNomeJogador(){
+		return nomeJogador;
+	}
+	
+	//enviar um pedido ao servidor para que este envie um pedido (convite) a um certo jogador
+	public void sendConvite() throws IOException{
+		
+		//dizer ao servidor que se quer iniciar um jogo e passar o nome do jogador a convidar
+		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, listaJogadores.getSelectedValue());
+		
+		//enviar mensagem
+		SocketClient_TCP.getOut().flush();
+		SocketClient_TCP.getOut().writeObject(msg);
+        SocketClient_TCP.getOut().flush();
+        
+        convidou = true; //para saber que já convidou alguem e não deixar convidar outro
+	}
+	
+	//receber a resposta do servidor (sobre o convite que foi feito anteriormente)
+	public void receberRespostaConvite() throws IOException{
+		
+		//definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
+      	SocketClient_TCP.getSocket().setSoTimeout(15000);
+		
+		try{
+			//deve receber uma Mensagem estilo ( Mensagem(int type, String msg_text) )
+			Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject();
+			if(msg.getType() == Macros.MSG_INICIAR_RESPONSE){
+				if(msg.getMsgText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
+					JOptionPane.showMessageDialog(contentPanel, "Convite aceite! \n a iniciar jogo..");
+					//TODO iniciar jogo!!
+				}
+				if(msg.getMsgText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
+					JOptionPane.showMessageDialog(contentPanel, "Convite rejeitado.");
+					return;
+				}
+			}
+		}catch(ClassNotFoundException e){
+			JOptionPane.showMessageDialog(contentPanel, "ListaJogosEJogadores.java->receberRespostaConvite: erro classNotFound");
+		}
+		
+	}
+	
+	
+	
+	public Mensagem sendListaJogosRequest() throws IOException{   	  
     	  
     	        	
-           Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
-           msg.setMsgText(nomeJogador);      
+		Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
+        msg.setMsgText(nomeJogador);      
            
            
-           SocketClient_TCP.getOut().flush();
-           SocketClient_TCP.getOut().writeObject(msg);
-           SocketClient_TCP.getOut().flush();
+        SocketClient_TCP.getOut().flush();
+        SocketClient_TCP.getOut().writeObject(msg);
+        SocketClient_TCP.getOut().flush();
            
-           try{
+        try{
              	
-               msg = (Mensagem) SocketClient_TCP.getIn().readObject(); 
+        	msg = (Mensagem) SocketClient_TCP.getIn().readObject(); 
                
-               } catch (Exception  e) {                                                    
-                   JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogos");
-                   VarsGlobais.NovoJogoThreadCreated = false;                     
-               }
+            } catch (Exception  e) {                                                    
+            	JOptionPane.showMessageDialog(contentPanel,"Erro ao obter lista de jogos");
+                VarsGlobais.NovoJogoThreadCreated = false;                     
+            }
            
-           return msg;
-   }
+        return msg;
+	}
 	
 	
 	public void getListaJogos(Mensagem listajogos)
