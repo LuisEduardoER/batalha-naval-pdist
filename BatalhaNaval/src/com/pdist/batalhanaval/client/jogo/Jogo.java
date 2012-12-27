@@ -62,6 +62,8 @@ public class Jogo implements ActionListener{
 		//t = new AtendeServidor(SocketClient_TCP.getSocket(), BatalhaNavalUI); //NULL POINTER
 		//t.start();
 		//t.setDaemon(true); //??
+				
+				BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
 		
 	}
 	

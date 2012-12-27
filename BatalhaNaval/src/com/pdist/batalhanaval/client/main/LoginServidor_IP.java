@@ -83,7 +83,10 @@ public class LoginServidor_IP implements Runnable {
                         						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                         						dialog.setVisible(true);	                                              
                                                 
-                                                
+                        						//========= NOVO JOGO =========
+                        						new Jogo(BatalhaNaval_Client.getBatalhaNavalUI());
+                        						//========= NOVO JOGO =========
+                        						
                                                 //========                                                
                                                 break;
                                 }                                       

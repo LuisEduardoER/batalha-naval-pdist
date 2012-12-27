@@ -13,7 +13,7 @@ import java.awt.SystemColor;
 
 public class BatalhaNaval_Client {
 
-	private JFrame BatalhaNavalUI;
+	private static JFrame BatalhaNavalUI; //Provisorio...ou nao..
 	private static JLabel lblJogador_1 = new JLabel("<nome>");
 	private static JLabel lblJogador_2 = new JLabel("<nome>");
 	private static JLabel lblEstado = new JLabel("a aguardar login... (teste)");
@@ -115,9 +115,7 @@ public class BatalhaNaval_Client {
 		
 		
 		
-//=========So iniciar depois de login.. blabla =========
-		new Jogo(BatalhaNavalUI);
-//=========So iniciar depois de login.. blabla =========
+
 	
 	
 	
@@ -139,6 +137,17 @@ public class BatalhaNaval_Client {
 		 lblEstado.setText(estado);			 
 	 }
 
+
+	public static JFrame getBatalhaNavalUI() {
+		return BatalhaNavalUI;
+	}
+
+
+	public static void setBatalhaNavalUI(JFrame batalhaNavalUI) {
+		BatalhaNavalUI = batalhaNavalUI;
+	}
+
+	 
 
 	
 }
