@@ -38,6 +38,8 @@ public class Macros {
 	public static final int MSG_ATACAR_SUCCESS = 20;
 	public static final int MSG_ACTUALIZAR_YOUR_TAB = 21;
 	
+	public static final int MSG_NOTIFY_CHANGES = 22;
+	
 	public static final String ACEITAR_PEDIDO = "aceitar";
 	public static final String REJEITAR_PEDIDO = "rejeitar";
 	public static final String IGNORAR_PEDIDO = "ignorar"; // pode ser com timeOut depois de receber a proposta

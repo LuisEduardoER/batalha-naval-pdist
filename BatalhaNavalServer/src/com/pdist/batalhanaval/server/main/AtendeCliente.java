@@ -133,6 +133,8 @@ public class AtendeCliente extends Thread{
 				VarsGlobais.ClientesOn.add(cliente);
 				VarsGlobais.nClientes++;
 				
+				notifyChanges();
+				
 				System.out.println("O cliente "+VarsGlobais.ClientesOn.get(VarsGlobais.nClientes-1).getNome()+" esta logado.");
 				System.out.println("Estão logados "+VarsGlobais.nClientes+" clientes");
 			}
@@ -142,6 +144,31 @@ public class AtendeCliente extends Thread{
 			out.writeObject(msg);
 			out.flush();
 			System.out.println("Ja esta logado");
+		}
+	}
+	
+	
+	private void notifyChanges(){
+		for(int i = 0; i<VarsGlobais.ClientesOn.size()-2;i++){
+			Mensagem msg = new Mensagem(Macros.MSG_NOTIFY_CHANGES);
+			try {
+				ObjectOutputStream o = (ObjectOutputStream) VarsGlobais.ClientesOn.get(i).getMySocket().getOutputStream();
+			
+				o.flush();
+				o.writeObject(msg);
+				o.flush();
+				
+			} catch (IOException e) {
+				//admite-se que o cliente fechou
+				try {
+					VarsGlobais.ClientesOn.get(i).getMySocket().close();				
+					VarsGlobais.ClientesOn.get(i).getMyThread().finalize();
+					VarsGlobais.ClientesOn.remove(i);
+					VarsGlobais.nClientes--;
+				} catch (Throwable e1) {					
+					e1.printStackTrace();
+				}			
+			}			
 		}
 	}
 
@@ -244,6 +271,7 @@ public class AtendeCliente extends Thread{
 				}
 			
 			startNewGame(cliente,c2);
+			
 		}
 	}
 	
@@ -256,6 +284,7 @@ public class AtendeCliente extends Thread{
 		
 		jog2.getMyThread().setGame(jogo);		
 		game = jogo;
+		notifyChanges();
 	}
 
 	@SuppressWarnings("null")
