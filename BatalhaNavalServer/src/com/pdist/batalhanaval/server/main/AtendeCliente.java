@@ -47,7 +47,7 @@ public class AtendeCliente extends Thread{
 				//TODO O jogador quer criar um novo jogo / seleciona um jogo e entra
 				//TODO rever a cena do tabuleiro, n vale a pena complicar muito
 				
-				Mensagem msg = (Mensagem) in.readObject();					
+				Mensagem msg = (Mensagem) in.readObject();
 				switch(msg.getType()){
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
 						getLoginRequest(msg);	
@@ -241,6 +241,8 @@ public class AtendeCliente extends Thread{
 
 	private void getResponse(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_INICIAR_RESPONSE);
+		
+		System.out.println("RECEBIDA RESPOSTA DO CONVITE");
 		
 		//NAO É PRECISO.. SE FOR IGNORADO, O CLIENTE FAZ TIMEOUT
 		   //se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido

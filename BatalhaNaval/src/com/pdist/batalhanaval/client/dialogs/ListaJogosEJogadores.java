@@ -121,6 +121,8 @@ public class ListaJogosEJogadores extends JDialog {
 				   try{
 					   //enviar convite
 					   sendConvite();
+					 //definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
+				     SocketClient_TCP.getSocket().setSoTimeout(15000);
 					   //aguardar resposta (timeout 15s)
 					   //receberRespostaConvite();
 					   //se tiver sido aceite, fecha janela dos convites e começa o jogo
@@ -130,19 +132,6 @@ public class ListaJogosEJogadores extends JDialog {
 					   JOptionPane.showMessageDialog(contentPanel, "Erro a enviar convite.");
 				   }
 				  
-				   /* posto no AtendeServidor
-				  //TODO Receber convites
-				   try{
-					   
-					   Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject();
-					   if(msg.getType() == Macros.MSG_INICIAR_RESPONSE) //se for um convite
-						   receberConvites(msg);
-					   
-				   }catch(IOException e){
-					   JOptionPane.showMessageDialog(contentPanel, "Erro a receber convite.");
-				   }catch(ClassNotFoundException e){
-					   JOptionPane.showMessageDialog(contentPanel, "erro: classNotFound");
-				   }*/
 				   
 				   
 			   }
@@ -150,45 +139,7 @@ public class ListaJogosEJogadores extends JDialog {
 		
 			
 	}
-	
-	/* posto no AtendeServidor
-	//receber os convites feitos por outros jogadores
-	public void receberConvites(Mensagem msg) throws IOException{
 		
-		msg.setType(Macros.MSG_PEDIDO_RESPONSE);
-		
-		int opcao; //opcao escolhida na dialog box
-		Object[] options = {"Aceitar", "Rejeitar", "Ignorar"};
-		String msgConvite = "Recebeu um convite de: " + msg.getMsgText();
-		String title = "Convite";
-		opcao = JOptionPane.showOptionDialog(contentPanel, msgConvite, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);
-		
-		if(opcao == JOptionPane.YES_OPTION){
-			JOptionPane.showMessageDialog(contentPanel, "SIM");//remover depois
-			msg.setResponseText(Macros.ACEITAR_PEDIDO);
-			
-			//enviar mensagem ao servidor
-			SocketClient_TCP.getOut().flush();
-			SocketClient_TCP.getOut().writeObject(msg);
-	        SocketClient_TCP.getOut().flush();
-	        
-	        return;
-		}
-		if(opcao == JOptionPane.NO_OPTION){
-			JOptionPane.showMessageDialog(contentPanel, "NAO"); //remover depois
-			msg.setResponseText(Macros.REJEITAR_PEDIDO);
-			
-			//enviar resposta ao servidor
-			SocketClient_TCP.getOut().flush();
-			SocketClient_TCP.getOut().writeObject(msg);
-	        SocketClient_TCP.getOut().flush();
-			
-			return;
-		}
-		//o ignorar nao envia nada, quem enviou o convite faz timeout
-			
-	}*/
-	
 	
 	//GET (por causa do actionListener)
 	public String getNomeJogador(){
@@ -207,11 +158,9 @@ public class ListaJogosEJogadores extends JDialog {
         SocketClient_TCP.getOut().flush();
         
 	}
-	
-	//receber a resposta do servidor (sobre o convite que foi feito anteriormente)
-	
-	//########PORQUE È QUE ISTO ESTÀ AQUI E NO ATENDE SERVIDOR ???? ###############################
-	/*public void receberRespostaConvite() throws IOException{
+	/*PASSADO PARA O ATENDE_SERVIDOR
+	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)
+	public void receberRespostaConvite() throws IOException{
 		
 		//definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
       	SocketClient_TCP.getSocket().setSoTimeout(15000);
