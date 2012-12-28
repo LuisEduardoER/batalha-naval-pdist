@@ -5,7 +5,6 @@ import java.awt.Font;
 import javax.swing.*;
 
 import com.pdist.batalhanaval.client.listeners.MenuActionListener;
-import com.pdist.batalhanaval.client.jogo.Jogo;
 
 import java.awt.Toolkit;
 import java.awt.SystemColor;
@@ -24,8 +23,8 @@ public class BatalhaNaval_Client {
 
 	public static void main(String[] args)
 	{		
-		BatalhaNaval_Client window = new BatalhaNaval_Client();
-		window.BatalhaNavalUI.setVisible(true);				
+		new BatalhaNaval_Client();
+		BatalhaNaval_Client.BatalhaNavalUI.setVisible(true);				
 	}
 
 

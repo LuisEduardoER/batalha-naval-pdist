@@ -39,7 +39,7 @@ public class Jogo implements ActionListener{
 	private ImageIcon barcoMedio3 = new ImageIcon("Imagens/barcos/barcoMedio_3.png");
 	private ImageIcon barcoMedio4 = new ImageIcon("Imagens/barcos/barcoMedio_4.png");
 	
-	
+		
 	
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
 	//PARA LIGAÇÕES
@@ -47,14 +47,17 @@ public class Jogo implements ActionListener{
 	
 	private Thread t; //thread do AtendeServidor
 	
-	public Jogo(JFrame jogo) {
+	public Jogo(JFrame BatalhaNavalUI) {
 		
-		this.BatalhaNavalUI = jogo;		
+		this.BatalhaNavalUI = BatalhaNavalUI;		
+		
 		
 		
 		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
 				criaMapaUtilizador(70,70); 				
 				criaMapaAdversario(400,70);
+				
+		BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
 			
 		
 		socket = SocketClient_TCP.getSocket();
@@ -62,9 +65,10 @@ public class Jogo implements ActionListener{
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
 		t = new AtendeServidor(BatalhaNavalUI,socket);
 		t.start();
-		//t.setDaemon(true); //necessario?	
+		//t.setDaemon(true); //necessario?		
+
 		
-		BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
+		
 		
 	}
 	
@@ -220,7 +224,8 @@ public class Jogo implements ActionListener{
 				    botaoAdv[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
 				    botaoAdv[i][j].addActionListener((ActionListener) this);	
 				    botaoAdv[i][j].setRolloverIcon(mira);
-				    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);
+				    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);				    
+				  
 				   }
 			  }
 		 }

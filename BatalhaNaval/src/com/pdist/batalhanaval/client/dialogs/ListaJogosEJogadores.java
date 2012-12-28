@@ -48,6 +48,7 @@ public class ListaJogosEJogadores extends JDialog {
 
 	
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
+		setAlwaysOnTop(true);
 		
 		setResizable(false);  
 		setModal(false);

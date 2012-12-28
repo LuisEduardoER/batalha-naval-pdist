@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -84,6 +83,7 @@ public class LoginServidor_IP implements Runnable {
                         						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
                         						dialog.setVisible(true);
                         						
+                        					                        						
                         						//========= NOVO JOGO =========
                         						new Jogo(BatalhaNaval_Client.getBatalhaNavalUI());
                         						//========= NOVO JOGO =========
