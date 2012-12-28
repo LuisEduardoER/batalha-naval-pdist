@@ -1,5 +1,7 @@
 package com.pdist.batalhanaval.client.main;
 
+import java.net.Socket;
+
 
 public class VarsGlobais {
 	//CLIENTE

@@ -60,11 +60,11 @@ public class Jogo implements ActionListener{
 		socket = SocketClient_TCP.getSocket();
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
-		t = new AtendeServidor(BatalhaNavalUI);
+		t = new AtendeServidor(BatalhaNavalUI,socket);
 		t.start();
 		//t.setDaemon(true); //necessario?	
 		
-				BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
+		BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
 		
 	}
 	

@@ -49,7 +49,8 @@ public class ListaJogosEJogadores extends JDialog {
 	
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
 		
-		setResizable(false);  setModal(true);
+		setResizable(false);  
+		setModal(false);
 		setTitle("Novo Jogo - Listar Jogos/Jogadores");
 		setBounds(100, 100, 552, 310);
 		getContentPane().setLayout(new BorderLayout());
@@ -121,7 +122,7 @@ public class ListaJogosEJogadores extends JDialog {
 					   //enviar convite
 					   sendConvite();
 					   //aguardar resposta (timeout 15s)
-					   receberRespostaConvite();
+					   //receberRespostaConvite();
 					   //se tiver sido aceite, fecha janela dos convites e começa o jogo
 				   }catch(SocketTimeoutException e){
 					   JOptionPane.showMessageDialog(contentPanel, "Não foi obtida resposta do outro jogador");
@@ -208,7 +209,9 @@ public class ListaJogosEJogadores extends JDialog {
 	}
 	
 	//receber a resposta do servidor (sobre o convite que foi feito anteriormente)
-	public void receberRespostaConvite() throws IOException{
+	
+	//########PORQUE È QUE ISTO ESTÀ AQUI E NO ATENDE SERVIDOR ???? ###############################
+	/*public void receberRespostaConvite() throws IOException{
 		
 		//definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
       	SocketClient_TCP.getSocket().setSoTimeout(15000);
@@ -230,7 +233,7 @@ public class ListaJogosEJogadores extends JDialog {
 			JOptionPane.showMessageDialog(contentPanel, "ListaJogosEJogadores.java->receberRespostaConvite: erro classNotFound");
 		}
 		
-	}
+	}*/
 	
 	
 	

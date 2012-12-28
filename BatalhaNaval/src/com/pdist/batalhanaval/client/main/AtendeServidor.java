@@ -16,18 +16,26 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class AtendeServidor extends Thread{
 
 	protected JFrame jogoFrame;
+	protected Socket mySocket;
+	protected ObjectInputStream in;
+	protected ObjectOutputStream out;
 	
 	//CONSTRUTOR
-	public AtendeServidor(JFrame jFrame){
+	public AtendeServidor(JFrame jFrame, Socket mySocket){
 
 		jogoFrame = jFrame;
-		
-		//desactivar o timeout do socket COMO ESTA PODERA DAR PROBLEMAS MAIS TARDE se o timeout for alterado a meio!!
+		this.mySocket = mySocket;
 		try {
 			SocketClient_TCP.getSocket().setSoTimeout(0);
-		} catch (SocketException e) {
-			JOptionPane.showMessageDialog(jogoFrame, "Erro no construtor da thread ao definir o timeout do socket");
+			mySocket.setSoTimeout(0);
+			in = new ObjectInputStream(mySocket.getInputStream());
+			out = new ObjectOutputStream(mySocket.getOutputStream());
+			
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		
 		
 	}
 	
@@ -38,7 +46,7 @@ public class AtendeServidor extends Thread{
 		//tratar as mensagens recebidas
 		while(true){
 			try{
-				Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject(); //ERRO IOEXCEPTION AO RECEBER CONVITE
+				Mensagem msg = (Mensagem) in.readObject(); //ERRO IOEXCEPTION AO RECEBER CONVITE
 				JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //remover depois
 				
 				switch(msg.getType()){
@@ -62,7 +70,7 @@ public class AtendeServidor extends Thread{
 	
 	//receber os convites feitos por outros jogadores
 	public void receberConvites(Mensagem msg) throws IOException{
-			
+		System.out.println("Convite Recebido");		
 		msg.setType(Macros.MSG_PEDIDO_RESPONSE);
 			
 		int opcao; //opcao escolhida na dialog box
@@ -78,25 +86,30 @@ public class AtendeServidor extends Thread{
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
 				
 			//enviar mensagem ao servidor
-			SocketClient_TCP.getOut().flush();
-			SocketClient_TCP.getOut().writeObject(msg);
-	        SocketClient_TCP.getOut().flush();
+			out.flush();
+			out.writeObject(msg);
+			out.flush();
 		        
 	        return;
-		}
-		if(opcao == JOptionPane.NO_OPTION){
+		}else if(opcao == JOptionPane.NO_OPTION){
 			//JOptionPane.showMessageDialog(contentPanel, "NAO"); //remover depois
 			JOptionPane.showMessageDialog(jogoFrame, "NAO"); //remover depois
 			msg.setResponseText(Macros.REJEITAR_PEDIDO);
 			
 			//enviar resposta ao servidor
-			SocketClient_TCP.getOut().flush();
-			SocketClient_TCP.getOut().writeObject(msg);
-	        SocketClient_TCP.getOut().flush();
+			out.flush();
+			out.writeObject(msg);
+			out.flush();
 				
 			return;
+		}else{
+			msg.setResponseText(Macros.IGNORAR_PEDIDO);
+			
+			//enviar resposta ao servidor
+			out.flush();
+			out.writeObject(msg);
+			out.flush();
 		}
-		//o ignorar nao envia nada, quem enviou o convite faz timeout
 				
 	}
 	

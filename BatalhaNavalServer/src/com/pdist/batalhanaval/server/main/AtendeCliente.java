@@ -146,8 +146,7 @@ public class AtendeCliente extends Thread{
 			System.out.println("Ja esta logado");
 		}
 	}
-	
-	
+		
 	private void notifyChanges(){
 		for(int i = 0; i<VarsGlobais.ClientesOn.size()-2;i++){
 			Mensagem msg = new Mensagem(Macros.MSG_NOTIFY_CHANGES);
@@ -220,6 +219,7 @@ public class AtendeCliente extends Thread{
 		msg.setType(Macros.MSG_PEDIDO_JOGO);
 		Socket s = null;
 		ObjectOutputStream out2 = null;
+		System.out.println("Enviado convite de: "+cliente.getNome()+"\nPara: "+msg.getMsgText());
 		
 		//no campo MsgText vem o nome do jogador a convidar e depois vai o nome de quem convidou
 		for(int i = 0;i<VarsGlobais.nClientes;i++){
@@ -235,6 +235,7 @@ public class AtendeCliente extends Thread{
 			out2.flush();
 			out2.writeObject(msg);
 			out2.flush();
+			System.out.println("\n\nEnviado pedido de resposta!");
 		}
 	}
 
@@ -243,8 +244,8 @@ public class AtendeCliente extends Thread{
 		
 		//NAO É PRECISO.. SE FOR IGNORADO, O CLIENTE FAZ TIMEOUT
 		   //se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido
-		   //if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
-		   //	out.writeObject(msg);
+		   if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
+		   	out.writeObject(msg);
 		
 		//avisar o jogador que o seu convite foi recusado
 		if(msg.getResponseText() == Macros.REJEITAR_PEDIDO){

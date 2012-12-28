@@ -56,7 +56,7 @@ public class LoginServidor_IP implements Runnable {
                              
                  
                 
-                while(true){                    
+                while(!logIn){                    
                         try {                                           
                                 if(!logIn){
                                         sendLoginRequest();                                     
@@ -78,14 +78,17 @@ public class LoginServidor_IP implements Runnable {
                                                 BatalhaNaval_Client.setNomeJogador2("A aguardar..");
                                                 BatalhaNaval_Client.setEstado("A aguardar jogador 2...");                                               
                                                                                        
-                                                
+                                              
+                        						
                                                 ListaJogosEJogadores dialog = new ListaJogosEJogadores(nome);
                         						dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                        						dialog.setVisible(true);	                                              
-                                                
+                        						dialog.setVisible(true);
+                        						
                         						//========= NOVO JOGO =========
                         						new Jogo(BatalhaNaval_Client.getBatalhaNavalUI());
                         						//========= NOVO JOGO =========
+                                                
+                        						
                         						
                                                 //========                                                
                                                 break;
