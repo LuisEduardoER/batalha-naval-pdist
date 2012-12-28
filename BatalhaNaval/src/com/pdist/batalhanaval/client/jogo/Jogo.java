@@ -56,13 +56,14 @@ public class Jogo implements ActionListener{
 				criaMapaUtilizador(70,70); 				
 				criaMapaAdversario(400,70);
 			
-		//CRIAR A THREAD DE ATENDIMENTO
-		//socket = SocketClient_TCP.getSocket();
-		//t = new AtendeServidor(socket, BatalhaNavalUI);
-		//t = new AtendeServidor(SocketClient_TCP.getSocket(), BatalhaNavalUI); //NULL POINTER
-		//t.start();
-		//t.setDaemon(true); //??
-				
+		
+		socket = SocketClient_TCP.getSocket();
+		
+		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
+		t = new AtendeServidor(BatalhaNavalUI);
+		t.start();
+		//t.setDaemon(true); //necessario?	
+		
 				BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
 		
 	}

@@ -195,16 +195,15 @@ public class AtendeCliente extends Thread{
 		ObjectOutputStream out2 = null;
 		
 		//no campo MsgText vem o nome do jogador a convidar e depois vai o nome de quem convidou
-		
 		for(int i = 0;i<VarsGlobais.nClientes;i++){
 			if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
-				s = VarsGlobais.ClientesOn.get(i).getMySocket();
+				s = VarsGlobais.ClientesOn.get(i).getMySocket();	
 				out2 = new ObjectOutputStream(s.getOutputStream());
 				msg.setMsgText(cliente.getNome());
 				break;
 			}				
 		}
-		
+
 		if(out2 != null){
 			out2.flush();
 			out2.writeObject(msg);

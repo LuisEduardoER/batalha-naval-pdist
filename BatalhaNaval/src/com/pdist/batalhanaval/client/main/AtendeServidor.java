@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -13,49 +15,49 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 public class AtendeServidor extends Thread{
 
-	protected Socket socket;
-	protected ObjectOutputStream out;
-	protected ObjectInputStream in;
 	protected JFrame jogoFrame;
 	
 	//CONSTRUTOR
-	public AtendeServidor(Socket s, JFrame jFrame){
+	public AtendeServidor(JFrame jFrame){
 
-		socket = s;
 		jogoFrame = jFrame;
 		
+		//desactivar o timeout do socket COMO ESTA PODERA DAR PROBLEMAS MAIS TARDE se o timeout for alterado a meio!!
 		try {
-			in = new ObjectInputStream(socket.getInputStream());
-			out = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
-			System.out.println("Conexão falhou");	
-			return;
+			SocketClient_TCP.getSocket().setSoTimeout(0);
+		} catch (SocketException e) {
+			JOptionPane.showMessageDialog(jogoFrame, "Erro no construtor da thread ao definir o timeout do socket");
 		}
+		
 	}
 	
 	
 	//RUN
 	public void run(){
-		JOptionPane.showMessageDialog(jogoFrame, "RUN RUN RUN RUN");
+		JOptionPane.showMessageDialog(jogoFrame, "RUN RUN RUN RUN (thread)");
 		//tratar as mensagens recebidas
 		while(true){
 			try{
+				Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject(); //ERRO IOEXCEPTION AO RECEBER CONVITE
+				JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //remover depois
 				
-				Mensagem msg = (Mensagem) in.readObject();		
 				switch(msg.getType()){
-					case Macros.MSG_INICIAR_RESPONSE: //user recebeu um convite
+					case Macros.MSG_PEDIDO_JOGO: //user recebeu um convite
 						receberConvites(msg);	
 						break;
 				}
-						
+				
+			}catch(SocketTimeoutException e){
+				JOptionPane.showMessageDialog(jogoFrame, "Erro Timeout socket na thread");
+			}catch(NullPointerException e){
+				JOptionPane.showMessageDialog(jogoFrame, "Erro NULLPOINTER na thread");
 			}catch(IOException e){
-				//JOptionPane.showMessageDialog(contentPanel, "Erro a receber convite.");
 				JOptionPane.showMessageDialog(jogoFrame, "Erro de leitura na thread");
 			}catch(ClassNotFoundException e){
-				//JOptionPane.showMessageDialog(contentPanel, "erro: classNotFound");
 				JOptionPane.showMessageDialog(jogoFrame, "Erro na thread: classNotFound");
 			}//fim try catch	
 		}//fim while(true)
+		
 	}
 	
 	//receber os convites feitos por outros jogadores

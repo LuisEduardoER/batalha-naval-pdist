@@ -45,8 +45,6 @@ public class ListaJogosEJogadores extends JDialog {
 	private DefaultListModel<String> modelListaJogadores = new DefaultListModel<String>();  //LISTA JOGADORES
 	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES
 	
-	private boolean convidou; //para apenas deixar efectuar um convite de cada vez
-	
 
 	
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
@@ -61,7 +59,6 @@ public class ListaJogosEJogadores extends JDialog {
 		
 		this.nomeJogador = nomeJogador;
 		
-		this.convidou = false; //ainda nao convidou ninguem
 		
 		//TODO Receber e enviar convites e estar a sincronizar de X em X segundos (criar thread e colocar la os metodos daqui)
 		
@@ -109,11 +106,6 @@ public class ListaJogosEJogadores extends JDialog {
 				   
 				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");	
 				   
-				   //já convidou alguem, tem de esperar a resposta ate poder convidar outra vez
-				   if(convidou == true){
-					   JOptionPane.showMessageDialog(contentPanel, "Já convidou alguém, tem de aguardar resposta.");
-					   return;
-				   }
 				  
 				   
 				   //verificar se o user está a convidar-se a si proprio
@@ -133,10 +125,8 @@ public class ListaJogosEJogadores extends JDialog {
 					   //se tiver sido aceite, fecha janela dos convites e começa o jogo
 				   }catch(SocketTimeoutException e){
 					   JOptionPane.showMessageDialog(contentPanel, "Não foi obtida resposta do outro jogador");
-					   convidou = false; //convite ignorado? pode convidar outra vez
 				   }catch(IOException e){
 					   JOptionPane.showMessageDialog(contentPanel, "Erro a enviar convite.");
-					   convidou = false; //convite nao foi enviado com sucesso
 				   }
 				  
 				   /* posto no AtendeServidor
@@ -209,13 +199,12 @@ public class ListaJogosEJogadores extends JDialog {
 		
 		//dizer ao servidor que se quer iniciar um jogo e passar o nome do jogador a convidar
 		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, listaJogadores.getSelectedValue());
-		
+				
 		//enviar mensagem
 		SocketClient_TCP.getOut().flush();
 		SocketClient_TCP.getOut().writeObject(msg);
         SocketClient_TCP.getOut().flush();
         
-        convidou = true; //para saber que já convidou alguem e não deixar convidar outro
 	}
 	
 	//receber a resposta do servidor (sobre o convite que foi feito anteriormente)
