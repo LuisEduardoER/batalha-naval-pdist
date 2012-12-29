@@ -235,33 +235,25 @@ public class AtendeCliente extends Thread{
 
 	private void getResponse(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_INICIAR_RESPONSE);
-		if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
-			out.writeObject(msg);
 		
-		//avisar o jogador que o seu convite foi recusado
-		if(msg.getResponseText() == Macros.REJEITAR_PEDIDO){
-			
-			msg.setMsgText(Macros.REJEITAR_PEDIDO);
-					
-			out.flush();
-			out.writeObject(msg);
-						
+		for(int i = 0;i<VarsGlobais.nClientes;i++){
+			if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){				
+				VarsGlobais.ClientesOn.get(i).getMyThread().out.flush();
+				VarsGlobais.ClientesOn.get(i).getMyThread().out.writeObject(msg);	
+				VarsGlobais.ClientesOn.get(i).getMyThread().out.flush();
+				break;
+			}				
 		}
-		
-		if(msg.getResponseText() == Macros.ACEITAR_PEDIDO){
+				
+		if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){
 			Cliente c2 = null;
 			for(int i = 0; i< VarsGlobais.nClientes;i++)
 				if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
 					c2 = VarsGlobais.ClientesOn.get(i);
 					break;
 				}
-			
-			msg.setMsgText(Macros.ACEITAR_PEDIDO);
-			
-			out.flush();
-			out.writeObject(msg);
-			startNewGame(cliente,c2);
-			
+						
+			startNewGame(cliente,c2);			
 		}
 	}
 	
@@ -270,6 +262,7 @@ public class AtendeCliente extends Thread{
 		j.setC1(jog1);
 		j.setC2(jog2);
 				
+		System.out.println("\n\nNovo Jogo\n"+jog1.getNome()+" VS "+jog2.getNome());
 		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket());
 		
 		jog2.getMyThread().setGame(jogo);		

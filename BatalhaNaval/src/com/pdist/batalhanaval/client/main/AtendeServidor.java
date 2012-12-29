@@ -44,7 +44,6 @@ public class AtendeServidor extends Thread{
 				
 				switch(msg.getType()){
 					case Macros.MSG_PEDIDO_JOGO: //user recebeu um convite
-						System.out.println("Convite Recebido");
 						receberConvites(msg);	
 						break;
 					case Macros.MSG_INICIAR_RESPONSE: //resposta do convite (aceitou? rejeitou?)
