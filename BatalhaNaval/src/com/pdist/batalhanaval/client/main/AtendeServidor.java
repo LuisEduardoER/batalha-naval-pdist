@@ -14,8 +14,6 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class AtendeServidor extends Thread{
 
 	protected JFrame jogoFrame;
-	protected ObjectInputStream in;
-	protected ObjectOutputStream out;
 	
 	
 	//CONSTRUTOR
@@ -24,9 +22,7 @@ public class AtendeServidor extends Thread{
 		try {
 			SocketClient_TCP.getSocket().setSoTimeout(0);
 			
-			in = new ObjectInputStream(SocketClient_TCP.getIn());
-			out = new ObjectOutputStream(SocketClient_TCP.getOut());
-			
+						
 		} catch (IOException e1) {
 			//SERVIDOR DESLIGOU
 			return;
@@ -43,7 +39,7 @@ public class AtendeServidor extends Thread{
 		//tratar as mensagens recebidas
 		while(true){
 			try{				
-				msg = (Mensagem) in.readObject();
+				msg = (Mensagem) SocketClient_TCP.getIn().readObject();
 				JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //so para testes
 				
 				switch(msg.getType()){
@@ -86,23 +82,26 @@ public class AtendeServidor extends Thread{
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
 				
 			//enviar mensagem ao servidor
-			out.flush();
-			out.writeObject(msg);
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+			SocketClient_TCP.getOut().flush();
 		        
 		}else if(opcao == JOptionPane.NO_OPTION){
 			JOptionPane.showMessageDialog(jogoFrame, "NAO"); //remover depois
 			msg.setResponseText(Macros.REJEITAR_PEDIDO);
 			
 			//enviar resposta ao servidor
-			out.flush();
-			out.writeObject(msg);
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+			SocketClient_TCP.getOut().flush();
 				
 		}else{
 			msg.setResponseText(Macros.IGNORAR_PEDIDO);
 			
 			//enviar resposta ao servidor
-			out.flush();
-			out.writeObject(msg);
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+			SocketClient_TCP.getOut().flush();
 		}
 				
 	}
