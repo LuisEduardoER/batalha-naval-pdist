@@ -247,5 +247,77 @@ public class ListaJogosEJogadores extends JDialog {
 		listaScroll.setBounds(327, 51, 181, 135);		
 		contentPanel.add(listaScroll);
 	}
+
+
+	public ArrayList<String> getNomeJogos() {
+		return nomeJogos;
+	}
+
+
+	public void setNomeJogos(ArrayList<String> nomeJogos) {
+		this.nomeJogos = nomeJogos;
+	}
+
+
+	public ArrayList<String> getNomeJogadores() {
+		return nomeJogadores;
+	}
+
+
+	public void setNomeJogadores(ArrayList<String> nomeJogadores) {
+		this.nomeJogadores = nomeJogadores;
+	}
+
+
+	public DefaultListModel<String> getModelListaJogos() {
+		return modelListaJogos;
+	}
+
+
+	public void setModelListaJogos(DefaultListModel<String> modelListaJogos) {
+		this.modelListaJogos = modelListaJogos;
+	}
+
+
+	public JList<String> getListaJogos() {
+		return listaJogos;
+	}
+
+
+	public void setListaJogos(JList<String> listaJogos) {
+		this.listaJogos = listaJogos;
+	}
+
+
+	public DefaultListModel<String> getModelListaJogadores() {
+		return modelListaJogadores;
+	}
+
+
+	public void setModelListaJogadores(DefaultListModel<String> modelListaJogadores) {
+		this.modelListaJogadores = modelListaJogadores;
+	}
+
+
+	public JList<String> getListaJogadores() {
+		return listaJogadores;
+	}
+
+
+	public void setListaJogadores(JList<String> listaJogadores) {
+		this.listaJogadores = listaJogadores;
+	}
+
+
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+
+
+	public void setNomeJogador(String nomeJogador) {
+		this.nomeJogador = nomeJogador;
+	}
+	
+	
 	
 }

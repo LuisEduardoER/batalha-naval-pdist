@@ -90,7 +90,7 @@ public class LoginServidor_IP implements Runnable {
                         						
                         					                        						
                         						//========= NOVO JOGO =========
-                        							new Jogo();
+                        							new Jogo(dialog);
                         						//========= NOVO JOGO =========
                                                 
                         						

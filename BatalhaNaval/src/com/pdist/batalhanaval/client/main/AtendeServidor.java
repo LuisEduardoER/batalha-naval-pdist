@@ -3,6 +3,7 @@ package com.pdist.batalhanaval.client.main;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -12,11 +13,13 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class AtendeServidor extends Thread{
 
 	protected JFrame jogoFrame;
+	protected JDialog listajogadores;
 	
 	
 	//CONSTRUTOR
-	public AtendeServidor(JFrame jFrame){
+	public AtendeServidor(JFrame jFrame, JDialog listajogadores){
 		jogoFrame = jFrame;
+		this.listajogadores = listajogadores;
 		try {
 			SocketClient_TCP.getSocket().setSoTimeout(0);
 			
@@ -37,6 +40,7 @@ public class AtendeServidor extends Thread{
 		//tratar as mensagens recebidas
 		while(true){
 			try{				
+												
 				msg = (Mensagem) SocketClient_TCP.getIn().readObject();
 				JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //so para testes
 				
@@ -77,6 +81,7 @@ public class AtendeServidor extends Thread{
 		if(opcao == JOptionPane.YES_OPTION){
 			//JOptionPane.showMessageDialog(jogoFrame, "SIM");//remover depois
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
+			listajogadores.dispose(); //se aceite...para fexar dialog
 				
 			//enviar mensagem ao servidor
 			SocketClient_TCP.getOut().flush();
@@ -105,12 +110,12 @@ public class AtendeServidor extends Thread{
 	
 	
 	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)
-		public void receberRespostaConvite(Mensagem msg) throws IOException{
-			
-			System.out.println("MSGTEXT:"+msg.getMsgText());
-					
+		public void receberRespostaConvite(Mensagem msg) throws IOException{			
+						
 			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
-				JOptionPane.showMessageDialog(jogoFrame, "Convite aceite! \nA iniciar jogo..");
+				JOptionPane.showMessageDialog(jogoFrame, "O Convite foi aceite! \nA iniciar um novo jogo..");
+				listajogadores.dispose(); //para fexar dialog
+			
 				//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 			}
 			if(msg.getResponseText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO

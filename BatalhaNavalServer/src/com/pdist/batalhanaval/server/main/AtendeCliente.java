@@ -64,7 +64,7 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo						
 						getResponse(msg);
 						break;
-					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador
+					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador	
 						setTabuleiro(msg);
 						break;
 					case Macros.MSG_ATACAR:
@@ -246,12 +246,18 @@ public class AtendeCliente extends Thread{
 		Jogo j = new Jogo();
 		j.setC1(jog1);
 		j.setC2(jog2);
+		j.setStarted(true);		
 				
-		System.out.println("\n\nNovo Jogo\n"+jog1.getNome()+" VS "+jog2.getNome());
+		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
+		
+		//TODO atençao a isto... tava a criar só um objecto.. e nao uma thread...!!
+		
 		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket());
+		Thread jogoinic = new Thread(jogo);
 		
 		jog2.getMyThread().setGame(jogo);		
 		game = jogo;
+		jogoinic.start(); //inicia thread...
 		notifyChanges();
 	}
 

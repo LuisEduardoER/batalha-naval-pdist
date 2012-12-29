@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -48,9 +49,9 @@ public class Jogo implements ActionListener{
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
 
 		
-	private Thread t; //thread do AtendeServidor
+	private Thread AtendeServidor; //thread do AtendeServidor
 	
-	public Jogo() {
+	public Jogo(JDialog listajogadores) {
 		
 		
 		BatalhaNavalUI = BatalhaNaval_Client.getBatalhaNavalUI();			
@@ -72,8 +73,8 @@ public class Jogo implements ActionListener{
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
 		
-		t = new AtendeServidor(BatalhaNavalUI);
-		t.start();
+		AtendeServidor = new AtendeServidor(BatalhaNavalUI,listajogadores);
+		AtendeServidor.start();
 				
 		
 	}

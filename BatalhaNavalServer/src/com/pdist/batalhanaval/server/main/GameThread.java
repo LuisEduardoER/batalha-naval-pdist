@@ -25,8 +25,8 @@ public class GameThread implements Runnable{
 		this.jogador2 = jogador2;
 		
 		try {
-			out1 = new ObjectOutputStream(jogador1.getOutputStream());
-			out2 = new ObjectOutputStream(jogador2.getOutputStream());
+			out1 = new ObjectOutputStream(this.jogador1.getOutputStream());
+			out2 = new ObjectOutputStream(this.jogador2.getOutputStream());
 		} catch (IOException e) {
 			System.out.println("Conexão falhou");	
 			return;
@@ -38,6 +38,8 @@ public class GameThread implements Runnable{
 		VarsGlobais.ClientesOn.remove(jogo.getC1());
 		VarsGlobais.ClientesOn.remove(jogo.getC2());
 		
+		System.out.println("Inicia Game Thread..."); //teste
+		
 				
 	}
 	
@@ -45,7 +47,10 @@ public class GameThread implements Runnable{
 	public void run() {
 		Mensagem msg = null;
 		
-		if(!jogo.isStarted()){
+		
+		
+		if(jogo.isStarted()){
+			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
 			try {
 				out1.flush();
