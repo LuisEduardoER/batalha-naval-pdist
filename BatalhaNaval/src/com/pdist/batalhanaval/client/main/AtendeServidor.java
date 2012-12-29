@@ -34,7 +34,7 @@ public class AtendeServidor extends Thread{
 	
 	//RUN
 	public void run(){
-		JOptionPane.showMessageDialog(jogoFrame, "RUN (thread)"); //so para mostrar que a thread ta a correr
+		//JOptionPane.showMessageDialog(jogoFrame, "RUN (thread)"); //so para mostrar que a thread ta a correr
 		Mensagem msg;
 		//tratar as mensagens recebidas
 		while(true){
@@ -72,7 +72,7 @@ public class AtendeServidor extends Thread{
 			
 		int opcao; //opcao escolhida na dialog box
 		Object[] options = {"Aceitar", "Rejeitar", "Ignorar"};
-		String msgConvite = "Recebeu um convite de: " + msg.getMsgText();
+		String msgConvite = "Recebeu um convite de: " + msg.getResponseText();
 		String title = "Convite";
 		opcao = JOptionPane.showOptionDialog(jogoFrame, msgConvite, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);	
 		

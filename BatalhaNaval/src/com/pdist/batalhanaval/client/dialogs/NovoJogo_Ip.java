@@ -82,8 +82,7 @@ public class NovoJogo_Ip extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					   public void actionPerformed(ActionEvent evt) {	
 						   
-						   JOptionPane.showMessageDialog(contentPanel,
-								    "IP: "+inputIP.getText()+"Port: "+inputPorto.getText()+"\nNome: "+inputNome.getText());
+						//   JOptionPane.showMessageDialog(contentPanel,"IP: "+inputIP.getText()+"Port: "+inputPorto.getText()+"\nNome: "+inputNome.getText());
 						   
 						   try {
 							   

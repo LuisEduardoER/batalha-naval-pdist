@@ -98,7 +98,7 @@ public class LoginServidor_Multicast implements Runnable {
        			       		t.start();
        			       		VarsGlobais.NovoJogoThreadCreated = true;   
        			       		running=false;
-       			       	JOptionPane.showMessageDialog(contentPanel,"Conectado com sucesso,  e a ligar via TCP agora!");       			
+       			//       	JOptionPane.showMessageDialog(contentPanel,"Conectado com sucesso,  e a ligar via TCP agora!");       			
        			       		return; 
        			       	}       			       	
        		

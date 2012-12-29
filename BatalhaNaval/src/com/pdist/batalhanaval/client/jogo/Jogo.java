@@ -1,21 +1,20 @@
 package com.pdist.batalhanaval.client.jogo;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 
 
 import com.pdist.batalhanaval.client.main.AtendeServidor;
-import com.pdist.batalhanaval.client.main.SocketClient_TCP;
+import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 public class Jogo implements ActionListener{
@@ -24,6 +23,9 @@ public class Jogo implements ActionListener{
 	private JButton[][] botaoAdv = new JButton[12][12];
 	
 	private JFrame BatalhaNavalUI;
+	
+	private static JLabel lblJogador_1 = new JLabel("<nome?>"); //label JOGADOR 1
+	private static JLabel lblJogador_2 = new JLabel("<nome?>"); //laber JOGADOR 2
 	
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
 	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
@@ -39,6 +41,8 @@ public class Jogo implements ActionListener{
 	private ImageIcon barcoMedio3 = new ImageIcon("Imagens/barcos/barcoMedio_3.png");
 	private ImageIcon barcoMedio4 = new ImageIcon("Imagens/barcos/barcoMedio_4.png");
 	
+	private String background = "Imagens/outros/background2.jpg";
+	
 		
 	
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
@@ -46,32 +50,34 @@ public class Jogo implements ActionListener{
 		
 	private Thread t; //thread do AtendeServidor
 	
-	public Jogo(JFrame BatalhaNavalUI) {
-		
-		this.BatalhaNavalUI = BatalhaNavalUI;		
+	public Jogo() {
 		
 		
+		BatalhaNavalUI = BatalhaNaval_Client.getBatalhaNavalUI();			
+			
+		BatalhaNaval_Client.loadBackground(background);		
+		BatalhaNaval_Client.loadMenuBar();	
+				
 		
 		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
 				criaMapaUtilizador(70,70); 				
 				criaMapaAdversario(400,70);
 				
-		BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
-			
+				
+		criaLabels();
+								
+				
+		BatalhaNavalUI.repaint(); //necessario fazer repaint depois..			
 		
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
 		
 		t = new AtendeServidor(BatalhaNavalUI);
 		t.start();
-		
-		
-		//t.setDaemon(true); //necessario?		
-
-		
-		
+				
 		
 	}
+	
 	
 	//EVENTO BOTOES
 		 public void actionPerformed(ActionEvent e) {	
@@ -184,7 +190,7 @@ public class Jogo implements ActionListener{
 						   
 						   
 						   botaoAdv[i][j].setIcon(aguaAlvo);					   
-							//  BatalhaNavalUI.repaint();		  
+							  
 					   
 					   }
 					   
@@ -235,5 +241,45 @@ public class Jogo implements ActionListener{
 			  }
 		 }
 	
+		 
+		 public void criaLabels()
+		 {
+			    JLabel label = new JLabel("Jogador:");
+				label.setForeground(Color.BLACK);
+				label.setFont(new Font("Tahoma", Font.BOLD, 16));
+				label.setBounds(89, 32, 83, 37);
+				BatalhaNavalUI.getContentPane().add(label);
+				
+			    //Nome Jogador 1
+				lblJogador_1.setForeground(Color.BLACK);
+				lblJogador_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				lblJogador_1.setBounds(169, 32, 163, 37);
+				BatalhaNavalUI.getContentPane().add(lblJogador_1);		
+				
+				JLabel label_1 = new JLabel("Inimigo:");
+				label_1.setForeground(Color.BLACK);
+				label_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+				label_1.setBounds(415, 29, 73, 43);
+				BatalhaNavalUI.getContentPane().add(label_1);			
+				
+				 //Nome Jogador 2
+				lblJogador_2.setForeground(Color.BLACK);
+				lblJogador_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				lblJogador_2.setBounds(490, 29, 192, 43);
+				BatalhaNavalUI.getContentPane().add(lblJogador_2);
+				
+		 }
+		 
+		 public static void setNomeJogador1(String nome)
+		 {
+			 lblJogador_1.setText(nome);			 
+		 }
+		 
+		 public static void setNomeJogador2(String nome)
+		 {
+			 lblJogador_2.setText(nome);			 
+		 }
+		 
+		
 	
 }

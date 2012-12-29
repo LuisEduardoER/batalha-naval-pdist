@@ -71,10 +71,11 @@ public class LoginServidor_IP implements Runnable {
                                                 break;
                                         case Macros.MSG_LOGIN_VALIDATED:
                                                 logIn = true;
-                                                JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
-                                                //Teste=====
-                                                BatalhaNaval_Client.setNomeJogador1(nome);
-                                                BatalhaNaval_Client.setNomeJogador2("A aguardar..");
+                                              //  JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
+                                                
+                                                //TODO Teste (dps tirar daki)=====
+                                                Jogo.setNomeJogador1(nome);
+                                                Jogo.setNomeJogador2("A aguardar..");
                                                 BatalhaNaval_Client.setEstado("A aguardar jogador 2...");                                               
                                                                                        
                                               
@@ -85,7 +86,7 @@ public class LoginServidor_IP implements Runnable {
                         						
                         					                        						
                         						//========= NOVO JOGO =========
-                        						new Jogo(BatalhaNaval_Client.getBatalhaNavalUI());
+                        							new Jogo();
                         						//========= NOVO JOGO =========
                                                 
                         						

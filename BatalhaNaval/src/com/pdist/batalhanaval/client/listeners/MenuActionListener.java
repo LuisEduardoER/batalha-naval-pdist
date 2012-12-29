@@ -15,7 +15,7 @@ public class MenuActionListener implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		String command = arg0.getActionCommand();
 		switch(command){
-			case "Novo Jogo - IP/Port":
+			case "Novo Jogo (IP/Port)":
 				try {			
 					if(!VarsGlobais.NovoJogoThreadCreated){
 						NovoJogo_Ip dialog = new NovoJogo_Ip();
@@ -29,7 +29,7 @@ public class MenuActionListener implements ActionListener{
 				}
 				break;
 				
-			case "Novo Jogo - Multicast":
+			case "Novo Jogo (Multicast)":
 				try {			
 					if(!VarsGlobais.NovoJogoThreadCreated){
 						NovoJogo_Multicast dialog = new NovoJogo_Multicast();
