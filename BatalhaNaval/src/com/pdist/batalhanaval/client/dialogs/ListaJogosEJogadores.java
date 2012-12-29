@@ -48,7 +48,7 @@ public class ListaJogosEJogadores extends JDialog {
 
 	
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
-		setAlwaysOnTop(true);
+		setAlwaysOnTop(false);
 		
 		setResizable(false);  
 		setModal(false);
@@ -123,7 +123,7 @@ public class ListaJogosEJogadores extends JDialog {
 					   //enviar convite
 					   sendConvite();
 					 //definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
-				     SocketClient_TCP.getSocket().setSoTimeout(15000);
+				     //SocketClient_TCP.getSocket().setSoTimeout(15000);
 					   //aguardar resposta (timeout 15s)
 					   //receberRespostaConvite();
 					   //se tiver sido aceite, fecha janela dos convites e começa o jogo
@@ -156,34 +156,9 @@ public class ListaJogosEJogadores extends JDialog {
 		//enviar mensagem
 		SocketClient_TCP.getOut().flush();
 		SocketClient_TCP.getOut().writeObject(msg);
-        SocketClient_TCP.getOut().flush();
         
 	}
-	/*PASSADO PARA O ATENDE_SERVIDOR
-	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)
-	public void receberRespostaConvite() throws IOException{
-		
-		//definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
-      	SocketClient_TCP.getSocket().setSoTimeout(15000);
-		
-		try{
-			//deve receber uma Mensagem estilo ( Mensagem(int type, String msg_text) )
-			Mensagem msg = (Mensagem) SocketClient_TCP.getIn().readObject();
-			if(msg.getType() == Macros.MSG_INICIAR_RESPONSE){
-				if(msg.getMsgText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
-					JOptionPane.showMessageDialog(contentPanel, "Convite aceite! \n a iniciar jogo..");
-					//TODO iniciar jogo!! ou entao é iniciado logo pelo server
-				}
-				if(msg.getMsgText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
-					JOptionPane.showMessageDialog(contentPanel, "Convite rejeitado.");
-					return;
-				}
-			}
-		}catch(ClassNotFoundException e){
-			JOptionPane.showMessageDialog(contentPanel, "ListaJogosEJogadores.java->receberRespostaConvite: erro classNotFound");
-		}
-		
-	}*/
+	
 	
 	
 	

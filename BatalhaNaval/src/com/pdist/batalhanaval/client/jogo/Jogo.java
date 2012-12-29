@@ -42,9 +42,8 @@ public class Jogo implements ActionListener{
 		
 	
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
-	//PARA LIGAÇÕES
-	private static Socket socket = null;
-	
+
+		
 	private Thread t; //thread do AtendeServidor
 	
 	public Jogo(JFrame BatalhaNavalUI) {
@@ -60,11 +59,13 @@ public class Jogo implements ActionListener{
 		BatalhaNavalUI.repaint(); //necessario fazer repaint depois de static..
 			
 		
-		socket = SocketClient_TCP.getSocket();
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
-		t = new AtendeServidor(BatalhaNavalUI,socket);
+		
+		t = new AtendeServidor(BatalhaNavalUI);
 		t.start();
+		
+		
 		//t.setDaemon(true); //necessario?		
 
 		
@@ -128,16 +129,19 @@ public class Jogo implements ActionListener{
 						   }
 						   
 						   
+						   /**ISTO É FEITO NO ATENDE SERVIDOR !!!!!!*/						    
+						   
+						   /*
 						   //enviar coordenada a atacar ao servidor
 						   //receber resposta, se acertou ou nao
 						   //mudar icone conforme
 
 						   try{
-							   	//socket para enviar as coordenadas							   
-							    socket = SocketClient_TCP.getSocket(); //verificar se nao ta null(se ja foi criado no login)
-						   	   	socket.setSoTimeout(1500); //timeout 1,5s
+							   	//socket para enviar as coordenadas				   
+							    
+							    SocketClient_TCP.getSocket().setSoTimeout(1500); //timeout 1,5s
 						   	   	//enviar coordenadas
-						   	   	ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+						   	   	ObjectOutputStream out = new ObjectOutputStream(SocketClient_TCP.getSocket().getOutputStream());
 						  //#############AS MENSAGENS ESTAO PRE-DEFINIDAS E TÊM ESTRUTURA FIXA. TÊM DE VER COMO ESTÀ A SE TRATADO NO SERVIDOR !#########
 						   	   	out.writeObject(new Integer(( (i+1)*10 ) + (j+1)) ); //ex.: enviar x6, y3 -> 60+3 = 63 (os +1 é para acertar o index)
 						   	   	out.flush();
@@ -177,6 +181,7 @@ public class Jogo implements ActionListener{
 							
 								e1.printStackTrace();
 							}*/
+						   
 						   
 						   botaoAdv[i][j].setIcon(aguaAlvo);					   
 							//  BatalhaNavalUI.repaint();		  

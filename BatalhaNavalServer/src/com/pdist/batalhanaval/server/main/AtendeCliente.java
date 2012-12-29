@@ -44,7 +44,7 @@ public class AtendeCliente extends Thread{
 			//tratar mensagens recebidas e enviar respostas
 			try {					
 				
-				//TODO O jogador quer criar um novo jogo / seleciona um jogo e entra
+				//TODO O jogador quer criar um novo jogo
 				//TODO rever a cena do tabuleiro, n vale a pena complicar muito
 				
 				Mensagem msg = (Mensagem) in.readObject();
@@ -61,7 +61,7 @@ public class AtendeCliente extends Thread{
 					case Macros.MSG_INICIAR_JOGO: //o utilizador faz um pedido de jogo
 						sendInvite(msg);
 						break;
-					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo
+					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo						
 						getResponse(msg);
 						break;
 					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador
@@ -217,52 +217,35 @@ public class AtendeCliente extends Thread{
 	
 	private void sendInvite(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_PEDIDO_JOGO);
-		Socket s = null;
-		ObjectOutputStream out2 = null;
 		System.out.println("Enviado convite de: "+cliente.getNome()+"\nPara: "+msg.getMsgText());
 		
 		//no campo MsgText vem o nome do jogador a convidar e depois vai o nome de quem convidou
 		for(int i = 0;i<VarsGlobais.nClientes;i++){
 			if(VarsGlobais.ClientesOn.get(i).getNome().equalsIgnoreCase(msg.getMsgText())){
-				s = VarsGlobais.ClientesOn.get(i).getMySocket();	
-				out2 = new ObjectOutputStream(s.getOutputStream());
 				msg.setMsgText(cliente.getNome());
+				VarsGlobais.ClientesOn.get(i).getMyThread().out.flush();
+				VarsGlobais.ClientesOn.get(i).getMyThread().out.writeObject(msg);
+				System.out.println("SENT");
 				break;
 			}				
 		}
-
-		if(out2 != null){
-			out2.flush();
-			out2.writeObject(msg);
-			out2.flush();
-			System.out.println("\n\nEnviado pedido de resposta!");
-		}
+		
+		
 	}
 
 	private void getResponse(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_INICIAR_RESPONSE);
-		
-		System.out.println("RECEBIDA RESPOSTA DO CONVITE");
-		
-		//NAO É PRECISO.. SE FOR IGNORADO, O CLIENTE FAZ TIMEOUT
-		   //se for ignoarar o próprio cliente deve ter um timeout para fechar o pedido
-		   if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
-		   	out.writeObject(msg);
+		if(msg.getResponseText() != Macros.IGNORAR_PEDIDO)
+			out.writeObject(msg);
 		
 		//avisar o jogador que o seu convite foi recusado
 		if(msg.getResponseText() == Macros.REJEITAR_PEDIDO){
-			Socket s = null;
-			ObjectOutputStream out2 = null;
 			
-			s = cliente.getMySocket();
-			out2 = new ObjectOutputStream(s.getOutputStream());
 			msg.setMsgText(Macros.REJEITAR_PEDIDO);
-			
-			if(out2 != null){
-				out2.flush();
-				out2.writeObject(msg);
-				out2.flush();
-			}			
+					
+			out.flush();
+			out.writeObject(msg);
+						
 		}
 		
 		if(msg.getResponseText() == Macros.ACEITAR_PEDIDO){
@@ -273,6 +256,10 @@ public class AtendeCliente extends Thread{
 					break;
 				}
 			
+			msg.setMsgText(Macros.ACEITAR_PEDIDO);
+			
+			out.flush();
+			out.writeObject(msg);
 			startNewGame(cliente,c2);
 			
 		}
