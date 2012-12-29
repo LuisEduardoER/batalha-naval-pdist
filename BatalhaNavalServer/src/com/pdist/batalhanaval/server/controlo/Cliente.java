@@ -1,5 +1,7 @@
 package com.pdist.batalhanaval.server.controlo;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -15,6 +17,8 @@ public class Cliente implements Serializable{
 	private Tabuleiro tabuleiro;
 	private Socket mySocket;
 	private AtendeCliente myThread;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
 	
 	//Constructores
 	public Cliente(InetAddress ip){
@@ -24,6 +28,8 @@ public class Cliente implements Serializable{
 		tabuleiro = null;
 		mySocket = null;
 		myThread = null;
+		in = null;
+		out = null;
 	}	
 	public Cliente(InetAddress ip, String nome){
 		this.ip = ip;
@@ -32,6 +38,8 @@ public class Cliente implements Serializable{
 		tabuleiro = null;
 		mySocket = null;
 		myThread = null;
+		in = null;
+		out = null;
 	}
 	
 	//Getters
@@ -49,6 +57,21 @@ public class Cliente implements Serializable{
 	public void setTabuleiro(Tabuleiro tabuleiro){this.tabuleiro = tabuleiro;}
 	public void setMySocket(Socket socket){this.mySocket = socket;}
 	public void setMyThread(AtendeCliente myThread){this.myThread = myThread;}
+	
+	
+	//Alterado.. necessario
+	public ObjectInputStream getIn() {
+		return in;
+	}
+	public void setIn(ObjectInputStream in) {
+		this.in = in;
+	}
+	public ObjectOutputStream getOut() {
+		return out;
+	}
+	public void setOut(ObjectOutputStream out) {
+		this.out = out;
+	}
 	
 	
 	

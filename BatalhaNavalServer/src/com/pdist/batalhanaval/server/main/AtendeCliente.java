@@ -30,8 +30,13 @@ public class AtendeCliente extends Thread{
 		
 		
 		try {
-			in = new ObjectInputStream(socket.getInputStream());
+			in = new ObjectInputStream(socket.getInputStream());    //so pode ser criado uma vez (no cria cliente ja actualizei)
 			out = new ObjectOutputStream(socket.getOutputStream());
+			
+			//meti no criaCliente() tb mas nao tava a dar nada, dps alterar isto ou deixar tar
+			cliente.setIn(in);
+			cliente.setOut(out);
+			
 		} catch (IOException e) {
 			System.out.println("Conexão falhou");	
 			return;
@@ -113,6 +118,11 @@ public class AtendeCliente extends Thread{
 	private void criaCliente(){
 		cliente = new Cliente(socket.getInetAddress());
 		cliente.setMySocket(socket);
+		
+		//New.. IN e OUT
+		cliente.setIn(in);
+		cliente.setOut(out);
+		
 		cliente.setMyThread(this);
 		cliente.setOnGame(false);		
 	}
@@ -249,24 +259,18 @@ public class AtendeCliente extends Thread{
 		Jogo j = new Jogo();
 		j.setC1(jog1);
 		j.setC2(jog2);
-		j.setStarted(true);		
 				
 		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
 		
-		//TODO atençao a isto... tava a criar só um objecto.. e nao uma thread...!!
 
-		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket()); //<-- provoca erro IOException na thread do cliente (atendeServico)
-		//GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket(), out); <-- nao da erro, mas usa o mesmo stream para 2 sockets diferentes (nao pode ser assim!)
-		
-		//a versão correcta em principio tera de ser algo assim:
-		//GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket(), ObjectOutputStream OOS_socketjogador1, ObjectOutputStream OOS_socketjogador2);
-		
-		Thread jogoinic = new Thread(jogo);
+		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket()
+				,jog1.getIn(), jog1.getOut()
+				,jog2.getIn(), jog2.getOut());
 		
 		jog2.getMyThread().setGame(jogo);		
 		game = jogo;
-		jogoinic.start(); //inicia thread...
 		notifyChanges();
+		jogo.start(); //inicia a thread aqui...
 	}
 
 	@SuppressWarnings("null")

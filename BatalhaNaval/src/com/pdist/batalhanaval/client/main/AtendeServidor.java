@@ -43,7 +43,7 @@ public class AtendeServidor extends Thread{
 			try{				
 												
 				msg = (Mensagem) SocketClient_TCP.getIn().readObject();
-				JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //so para testes
+			//	JOptionPane.showMessageDialog(jogoFrame, "msg.type ->" + msg.getType()); //so para testes
 				
 				switch(msg.getType()){
 					case Macros.MSG_PEDIDO_JOGO: //user recebeu um convite
@@ -66,7 +66,7 @@ public class AtendeServidor extends Thread{
 						//...
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
-						//...
+						JOptionPane.showMessageDialog(jogoFrame, "TODO: GET TABULEIRO (agora falta gerar o tabuleiro random.. ou nao, e enviar para servidor..)");
 						break;
 
 				}
@@ -131,7 +131,7 @@ public class AtendeServidor extends Thread{
 		public void receberRespostaConvite(Mensagem msg) throws IOException{			
 						
 			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
-				JOptionPane.showMessageDialog(jogoFrame, "O Convite foi aceite! \nA iniciar um novo jogo..");
+				JOptionPane.showMessageDialog(jogoFrame, "O convite foi aceite pelo jogador! \nA iniciar um novo jogo..");
 				listajogadores.dispose(); //para fechar dialog
 				
 				//TODO iniciar jogo!! ou entao é iniciado logo pelo server

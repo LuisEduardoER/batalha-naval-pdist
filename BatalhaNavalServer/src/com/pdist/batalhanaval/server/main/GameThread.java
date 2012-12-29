@@ -1,6 +1,7 @@
 package com.pdist.batalhanaval.server.main;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import com.pdist.batalhanaval.server.controlo.Jogo;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
-public class GameThread implements Runnable{
+public class GameThread extends Thread{
 
 	private Jogo jogo;
 	
@@ -17,43 +18,28 @@ public class GameThread implements Runnable{
 	private Socket jogador2;
 	private ObjectOutputStream out1;
 	private ObjectOutputStream out2;
+	private ObjectInputStream in1;
+	private ObjectInputStream in2;
 	
-	
-	//da bem, mas nao pode ser assim!! porque usa o mesmo OOS para os dois jogadores
-	//public GameThread(Jogo jogo, Socket jogador1, Socket jogador2, ObjectOutputStream out){
-	
-	//em principio tera de ser assim:
-	//public GameThread(j,jog1.getMySocket(), jog2.getMySocket(), ObjectOutputStream OOS_socketjogador1, ObjectOutputStream OOS_socketjogador2){
-		//...
-		//out1 = OOS_socketjogador1;
-		//out2 = OOS_socketjogador2;
-		//...
-	//}
-	
-	public GameThread(Jogo jogo, Socket jogador1, Socket jogador2){
+
+	public GameThread(Jogo jogo, Socket jogador1, Socket jogador2, ObjectInputStream in1, ObjectOutputStream out1,  ObjectInputStream in2 , ObjectOutputStream out2){
 		this.jogo = jogo;
 		this.jogador1 = jogador1;
 		this.jogador2 = jogador2;
 		
-		//out1 = out;
-		//out2 = out;
+		//Alterado
+		this.out1 = out1;
+		this.out2 = out2;
+		this.in1 = in1;
+		this.in2 = in2;
 		
-		try {
-			out1 = new ObjectOutputStream(this.jogador1.getOutputStream());
-			out2 = new ObjectOutputStream(this.jogador2.getOutputStream());
-		} catch (IOException e) {
-			System.out.println("GameThread: Conexão falhou");	
-			return;
-		}
-		
+			
 		
 		VarsGlobais.jogos.add(jogo);
 		VarsGlobais.nJogos++;
 		VarsGlobais.nClientes = VarsGlobais.nClientes-2;
 		VarsGlobais.ClientesOn.remove(jogo.getC1());
 		VarsGlobais.ClientesOn.remove(jogo.getC2());
-		
-		System.out.println("Inicia Game Thread..."); //teste
 		
 				
 	}
@@ -64,7 +50,7 @@ public class GameThread implements Runnable{
 		
 		
 		
-		if(jogo.isStarted()){
+		if(!jogo.isStarted()){
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
 			try {
@@ -72,6 +58,7 @@ public class GameThread implements Runnable{
 				out1.flush();
 				out1.writeObject(msg);
 				out1.flush();
+				
 				out2.flush();
 				out2.writeObject(msg);
 				out2.flush();			
