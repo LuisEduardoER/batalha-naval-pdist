@@ -1,11 +1,14 @@
 package com.pdist.batalhanaval.server.controlo;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 
 import com.pdist.batalhanaval.server.main.AtendeCliente;
 
-public class Cliente {
+//nota: tem de ser serializable para poder ser enviado na mensagem
+
+public class Cliente implements Serializable{
 	private InetAddress ip;
 	private String nome;
 	private boolean onGame;

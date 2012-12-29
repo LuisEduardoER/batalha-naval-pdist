@@ -1,8 +1,11 @@
 package com.pdist.batalhanaval.server.controlo;
 
+import java.io.Serializable;
+
+//nota: tem de ser serializable para poder enviar as coordenadas na mensagem
 
 //Letras no Tabuleiro
-public class Letra {
+public class Letra implements Serializable{
 	private char letra;
 	private int posY;
 	

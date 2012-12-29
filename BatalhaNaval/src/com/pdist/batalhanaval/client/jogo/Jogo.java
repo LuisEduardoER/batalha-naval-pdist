@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -12,11 +13,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 
 import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
+import com.pdist.batalhanaval.client.main.SocketClient_TCP;
+import com.pdist.batalhanaval.server.controlo.Letra;
+import com.pdist.batalhanaval.server.controlo.Numero;
 import com.pdist.batalhanaval.server.macros.Macros;
+import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 public class Jogo implements ActionListener{
 	
@@ -50,6 +56,7 @@ public class Jogo implements ActionListener{
 
 		
 	private Thread AtendeServidor; //thread do AtendeServidor
+	
 	
 	public Jogo(JDialog listajogadores) {
 		
@@ -114,27 +121,46 @@ public class Jogo implements ActionListener{
 					   {				 		
 						   
 						   
+					   //=======TUDO FEITO PELO SERVER - remover depois
 						   //SE NAO ESTA A JOGAR NAO PODERA INTERAGIR COM OS BOTOES!
-						   
 						//   if(VarsGlobais.NovoJogoThreadCreated == false)
 							//   return;
-						   
 						   //SE NAO FOR O SEU TURNO NAO PODERA INTERAGIR COM OS BOTOES!
 						   //if(VarsGlobais.MeuTurno == false)
 						   //	   return;
-						   
 						   //verificar se ja atacou esta coordenada
-						     
-						   
-						   //verificar se ja atacou esta coordenada
-						   if(quadAtacados.isEmpty() != true){
+						   /*if(quadAtacados.isEmpty() != true){
 							   for(int k=0; k<quadAtacados.size(); k++){
 								   if(quadAtacados.get(k) == (( (i+1)*10 ) + (j+1)) ){
 									   return; //ja foi atacada
 								   }
 							   }
+						   }*/
+						   
+						   
+						   
+						  //====ATACAR UMA COORDENADA===
+						   
+						   //verificar se é o turno do jogador (FEITO PELO SERVER)
+						   
+						   //enviar coordenada a atacar ao servidor
+						      //Letra y = new Letra(char, numero);
+						      //Numero x = new Numero(char, numero);
+						   Letra coord_y = new Letra('a', y);
+						   Numero coord_x = new Numero('1', x);
+						   
+						   Mensagem msg = new Mensagem(Macros.MSG_ATACAR, coord_y, coord_x); //atacar, Y(letra), X(numero)
+						   try{
+							   SocketClient_TCP.getOut().flush();
+							   SocketClient_TCP.getOut().writeObject(msg);
+							   SocketClient_TCP.getOut().flush();
+						   }catch(IOException exp){
+							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(IOException)");
 						   }
 						   
+						   //recebe a resposta (acertou?) no AtendeServidor
+							   
+						  //=====ATACAR UMA COORDENADA (fim)=================
 						   
 						   /**ISTO É FEITO NO ATENDE SERVIDOR !!!!!!*/						    
 						   
@@ -175,12 +201,8 @@ public class Jogo implements ActionListener{
 						   		JOptionPane.showMessageDialog(BatalhaNavalUI.getContentPane(),"Erro a receber a resposta do servidor(ao enviar coordenada)");
 						   		//VarsGlobais.MeuTurno = true;
 						   		//return;
-						   }
-						   		
-						   		
-						   //RETIRAR, APENAS PARA TESTES!!!
-						   		
-						   		
+						   }			   		
+						   //RETIRAR, APENAS PARA TESTES!!!	
 						   //fechar socket
 						   /*try {
 								socket.close();
@@ -190,7 +212,8 @@ public class Jogo implements ActionListener{
 							}*/
 						   
 						   
-						   botaoAdv[i][j].setIcon(aguaAlvo);					   
+						 //SO PARA TESTES, o server é que depois diz qual o icon novo
+						   botaoAdv[i][j].setIcon(aguaAlvo);				   
 							  
 					   
 					   }

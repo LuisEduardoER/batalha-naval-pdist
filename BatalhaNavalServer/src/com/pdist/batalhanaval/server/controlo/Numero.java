@@ -1,6 +1,10 @@
 package com.pdist.batalhanaval.server.controlo;
 
-public class Numero {
+import java.io.Serializable;
+
+//nota: tem de ser serializable para poder enviar as coordenadas na mensagem
+
+public class Numero implements Serializable {
 	private char numero;
 	private int posX;
 

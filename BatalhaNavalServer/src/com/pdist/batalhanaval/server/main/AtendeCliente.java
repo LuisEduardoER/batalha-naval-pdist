@@ -68,9 +68,12 @@ public class AtendeCliente extends Thread{
 						setTabuleiro(msg);
 						break;
 					case Macros.MSG_ATACAR:
+						System.out.println("atacar?"); //so para testes
 						if(game!=null)
-							if(game.getJogo().isStarted())
+							if(game.getJogo().isStarted()){
+								System.out.println("o jogo esta iniciado! ATACAAAAR!!"); //so para testes
 								setAtaque(msg);
+							}
 						break;
 					
 				}					
@@ -251,8 +254,13 @@ public class AtendeCliente extends Thread{
 		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
 		
 		//TODO atençao a isto... tava a criar só um objecto.. e nao uma thread...!!
+
+		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket()); //<-- provoca erro IOException na thread do cliente (atendeServico)
+		//GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket(), out); <-- nao da erro, mas usa o mesmo stream para 2 sockets diferentes (nao pode ser assim!)
 		
-		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket());
+		//a versão correcta em principio tera de ser algo assim:
+		//GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket(), ObjectOutputStream OOS_socketjogador1, ObjectOutputStream OOS_socketjogador2);
+		
 		Thread jogoinic = new Thread(jogo);
 		
 		jog2.getMyThread().setGame(jogo);		
@@ -313,6 +321,7 @@ public class AtendeCliente extends Thread{
 		
 		int t = 0;
 		
+		
 		//ATACA NO TABULEIRO ADVERSARIO
 		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
 			if(game.getJogo().getTurn() == 1){
@@ -321,25 +330,33 @@ public class AtendeCliente extends Thread{
 					msg.setType(Macros.MSG_ATACAR_FAIL);
 				else
 					if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isShooted())
-						msg.setType(Macros.MSG_ATACAR_FAIL);
+						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
 					else{
-						msg.setType(Macros.MSG_ATACAR_SUCCESS);
+						if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isBoat()) 
+							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
+						else
+							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+						
 						game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
 						game.getJogo().setTurn(2);	
 						t = 2;
 					}	
 			}
 			
-		}else{
+		}else{												//jogador 2
 			if(game.getJogo().getTurn() == 2){
 				int pos = msg.getPosTab();
 				if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))
 					msg.setType(Macros.MSG_ATACAR_FAIL);
 				else
 					if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isShooted())
-						msg.setType(Macros.MSG_ATACAR_FAIL);
+						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
 					else{
-						msg.setType(Macros.MSG_ATACAR_SUCCESS);
+						if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isBoat())
+							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
+						else
+							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+						
 						game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
 						game.getJogo().setTurn(1);	
 						t = 1;
@@ -347,13 +364,12 @@ public class AtendeCliente extends Thread{
 			}
 		}
 			
-		
-			try {
+		try {
 			out.flush();
 			out.writeObject(msg);
 			out.flush();
 			
-			if(msg.getType() == Macros.MSG_ATACAR_SUCCESS)
+			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) );
 				game.notifyAtack(t);
 			
 		} catch (IOException e) {

@@ -33,12 +33,16 @@ public class Macros {
 	public static final int MSG_GET_TABULEIRO = 16;
 	public static final int MSG_SET_TABULEIRO = 17;
 	
-	public static final int MSG_ATACAR = 18;
-	public static final int MSG_ATACAR_FAIL = 19;
-	public static final int MSG_ATACAR_SUCCESS = 20;
+	public static final int MSG_ATACAR = 18;//jogador quer atacar o outro
+	public static final int MSG_ATACAR_FAIL = 19;//falhou o tiro
+	public static final int MSG_ATACAR_SUCCESS = 20;//acertou o tiro
 	public static final int MSG_ACTUALIZAR_YOUR_TAB = 21;
+	public static final int MSG_ATACAR_COORD_REPETIDA = 23; //atacar uma coordenada que já foi atacada antes
 	
 	public static final int MSG_NOTIFY_CHANGES = 22;
+	
+	public static final int MSG_VITORIA = 24; //venceu o jogo
+	public static final int MSG_DERROTA = 25; //perdeu o jogo
 	
 	public static final String ACEITAR_PEDIDO = "aceitar";
 	public static final String REJEITAR_PEDIDO = "rejeitar";

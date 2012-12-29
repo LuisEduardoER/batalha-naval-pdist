@@ -1,5 +1,6 @@
 package com.pdist.batalhanaval.server.controlo;
 
+
 public class Jogo {
 	private Cliente c1,c2;
 	private boolean fim;

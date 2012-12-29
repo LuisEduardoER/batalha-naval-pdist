@@ -19,18 +19,33 @@ public class GameThread implements Runnable{
 	private ObjectOutputStream out2;
 	
 	
+	//da bem, mas nao pode ser assim!! porque usa o mesmo OOS para os dois jogadores
+	//public GameThread(Jogo jogo, Socket jogador1, Socket jogador2, ObjectOutputStream out){
+	
+	//em principio tera de ser assim:
+	//public GameThread(j,jog1.getMySocket(), jog2.getMySocket(), ObjectOutputStream OOS_socketjogador1, ObjectOutputStream OOS_socketjogador2){
+		//...
+		//out1 = OOS_socketjogador1;
+		//out2 = OOS_socketjogador2;
+		//...
+	//}
+	
 	public GameThread(Jogo jogo, Socket jogador1, Socket jogador2){
 		this.jogo = jogo;
 		this.jogador1 = jogador1;
 		this.jogador2 = jogador2;
 		
+		//out1 = out;
+		//out2 = out;
+		
 		try {
 			out1 = new ObjectOutputStream(this.jogador1.getOutputStream());
 			out2 = new ObjectOutputStream(this.jogador2.getOutputStream());
 		} catch (IOException e) {
-			System.out.println("Conexão falhou");	
+			System.out.println("GameThread: Conexão falhou");	
 			return;
 		}
+		
 		
 		VarsGlobais.jogos.add(jogo);
 		VarsGlobais.nJogos++;
@@ -53,12 +68,13 @@ public class GameThread implements Runnable{
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
 			try {
+				
 				out1.flush();
 				out1.writeObject(msg);
 				out1.flush();
 				out2.flush();
 				out2.writeObject(msg);
-				out2.flush();
+				out2.flush();			
 				
 			} catch (IOException e) {				
 				System.out.println("Ligação caiu");
@@ -73,7 +89,7 @@ public class GameThread implements Runnable{
 		}
 		
 		while(!jogo.isFim()){
-	
+			
 			
 		}		
 	}

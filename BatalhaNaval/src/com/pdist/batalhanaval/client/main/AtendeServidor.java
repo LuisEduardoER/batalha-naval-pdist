@@ -26,6 +26,7 @@ public class AtendeServidor extends Thread{
 						
 		} catch (IOException e1) {
 			//SERVIDOR DESLIGOU
+			JOptionPane.showMessageDialog(jogoFrame, "O SERVIDOR DESLIGOU");
 			return;
 		}
 		
@@ -51,18 +52,35 @@ public class AtendeServidor extends Thread{
 					case Macros.MSG_INICIAR_RESPONSE: //resposta do convite (aceitou? rejeitou?)
 						receberRespostaConvite(msg);
 						break;
+						
+					case Macros.MSG_ATACAR_COORD_REPETIDA: //atacou uma coordenada que ja tinha atacado antes
+						respostaAtaque(msg);
+						break;
+					case Macros.MSG_ATACAR_FAIL: //falhou o tiro (agua)
+						respostaAtaque(msg);
+						break;
+					case Macros.MSG_ATACAR_SUCCESS: //acertou num barco
+						respostaAtaque(msg);
+						break;
+					case Macros.MSG_ACTUALIZAR_YOUR_TAB: //fui atacado, actualizar tabuleiro
+						//...
+						break;
+					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
+						//...
+						break;
+
 				}
 				
 			}catch(SocketTimeoutException e){
-				JOptionPane.showMessageDialog(jogoFrame, "Erro Timeout socket na thread");
+				JOptionPane.showMessageDialog(jogoFrame, "Erro Timeout socket na thread \n" + e);
 			}catch(NullPointerException e){
-				JOptionPane.showMessageDialog(jogoFrame, "Erro NULLPOINTER na thread");
+				JOptionPane.showMessageDialog(jogoFrame, "Erro NULLPOINTER na thread \n" + e);
 				return;
 			}catch(IOException e){
-				JOptionPane.showMessageDialog(jogoFrame, "Erro de leitura na thread");
+				JOptionPane.showMessageDialog(jogoFrame, "Erro de leitura na thread \n" + e);
 				return;
 			}catch(ClassNotFoundException e){
-				JOptionPane.showMessageDialog(jogoFrame, "Erro na thread: classNotFound");
+				JOptionPane.showMessageDialog(jogoFrame, "Erro na thread: classNotFound \n" + e);
 			}//fim try catch	
 		}//fim while(true)
 		
@@ -114,8 +132,8 @@ public class AtendeServidor extends Thread{
 						
 			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
 				JOptionPane.showMessageDialog(jogoFrame, "O Convite foi aceite! \nA iniciar um novo jogo..");
-				listajogadores.dispose(); //para fexar dialog
-			
+				listajogadores.dispose(); //para fechar dialog
+				
 				//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 			}
 			if(msg.getResponseText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
@@ -128,6 +146,37 @@ public class AtendeServidor extends Thread{
 				return;
 			}
 		}
+		
+		
+	//receber a resposta se acertou ou não num barco do inimigo
+	public void respostaAtaque(Mensagem msg) throws IOException{
+		
+		//ATACOU COORDENADA REPETIDA
+		if(msg.getType() == Macros.MSG_ATACAR_COORD_REPETIDA){
+			JOptionPane.showMessageDialog(jogoFrame, "Já tinha atacado esta posição.\n Ataque outra.");					
+			return;
+		}
+		
+		//FALHOU
+		if(msg.getType() == Macros.MSG_ATACAR_FAIL){
+			JOptionPane.showMessageDialog(jogoFrame, "Água :(");
+
+			//mudar o icone azul no tabuleiro para agua
+			
+			return;
+		}
+		
+		//ACERTOU
+		if(msg.getType() == Macros.MSG_ATACAR_SUCCESS){
+			JOptionPane.showMessageDialog(jogoFrame, "Acertou!");
+			
+			//mudar o icone azul no tabuleiro para uma explosao
+			
+			return;
+		}
+			
+	}
+		
 	
 	
 }
