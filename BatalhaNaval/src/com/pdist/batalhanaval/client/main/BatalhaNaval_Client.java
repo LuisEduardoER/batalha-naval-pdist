@@ -39,7 +39,7 @@ public class BatalhaNaval_Client {
 		BatalhaNavalUI = new JFrame();
 		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagens/barcos/barcoPequenoFIRE_1.png"));
 		BatalhaNavalUI.setResizable(false);
-		BatalhaNavalUI.setTitle("Batalha Naval v0.4");
+		BatalhaNavalUI.setTitle("Batalha Naval");
 		BatalhaNavalUI.getContentPane().setBackground(SystemColor.controlHighlight);
 		BatalhaNavalUI.setBounds(100, 100, 775, 500);
 		BatalhaNavalUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

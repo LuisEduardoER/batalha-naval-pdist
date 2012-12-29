@@ -71,7 +71,11 @@ public class LoginServidor_IP implements Runnable {
                                                 break;
                                         case Macros.MSG_LOGIN_VALIDATED:
                                                 logIn = true;
-                                              //  JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
+                                                
+                                                
+                                                //Atencao ao tirar algumas MSGBOX, ke o socket n é bloqueante e se nao obtem logo resposta.. da erro no servidor
+                                                //(melhorar essa parte.. e ter muita atençao que é importante)
+                                                JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
                                                 
                                                 //TODO Teste (dps tirar daki)=====
                                                 Jogo.setNomeJogador1(nome);

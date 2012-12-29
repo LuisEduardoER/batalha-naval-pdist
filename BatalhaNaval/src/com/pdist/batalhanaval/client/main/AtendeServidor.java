@@ -1,8 +1,6 @@
 package com.pdist.batalhanaval.client.main;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.SocketTimeoutException;
 
 import javax.swing.JFrame;
@@ -72,12 +70,12 @@ public class AtendeServidor extends Thread{
 			
 		int opcao; //opcao escolhida na dialog box
 		Object[] options = {"Aceitar", "Rejeitar", "Ignorar"};
-		String msgConvite = "Recebeu um convite de: " + msg.getResponseText();
-		String title = "Convite";
+		String msgConvite = "Recebeu um convite de: " + msg.getMsgText();	
+		String title = "Convite para um novo jogo!";
 		opcao = JOptionPane.showOptionDialog(jogoFrame, msgConvite, title, JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, null);	
 		
 		if(opcao == JOptionPane.YES_OPTION){
-			JOptionPane.showMessageDialog(jogoFrame, "SIM");//remover depois
+			//JOptionPane.showMessageDialog(jogoFrame, "SIM");//remover depois
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
 				
 			//enviar mensagem ao servidor
@@ -86,7 +84,7 @@ public class AtendeServidor extends Thread{
 			SocketClient_TCP.getOut().flush();
 		        
 		}else if(opcao == JOptionPane.NO_OPTION){
-			JOptionPane.showMessageDialog(jogoFrame, "NAO"); //remover depois
+			//JOptionPane.showMessageDialog(jogoFrame, "NAO"); //remover depois
 			msg.setResponseText(Macros.REJEITAR_PEDIDO);
 			
 			//enviar resposta ao servidor
@@ -108,18 +106,20 @@ public class AtendeServidor extends Thread{
 	
 	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)
 		public void receberRespostaConvite(Mensagem msg) throws IOException{
+			
+			System.out.println("MSGTEXT:"+msg.getMsgText());
 					
-			if(msg.getMsgText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
-				JOptionPane.showMessageDialog(jogoFrame, "Convite aceite! \n a iniciar jogo..");
+			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
+				JOptionPane.showMessageDialog(jogoFrame, "Convite aceite! \nA iniciar jogo..");
 				//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 			}
-			if(msg.getMsgText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
-				JOptionPane.showMessageDialog(jogoFrame, "Convite rejeitado.");
+			if(msg.getResponseText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
+				JOptionPane.showMessageDialog(jogoFrame, "O convite foi rejeitado pelo jogador!");
 				return;
 			}						
 		
-			if(msg.getMsgText().equals(Macros.IGNORAR_PEDIDO)){ //pedido Ignorado
-				JOptionPane.showMessageDialog(jogoFrame, "Convite ignorado.");
+			if(msg.getResponseText().equals(Macros.IGNORAR_PEDIDO)){ //pedido Ignorado
+				JOptionPane.showMessageDialog(jogoFrame, "O convite foi ignorado pelo jogador.");
 				return;
 			}
 		}

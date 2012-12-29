@@ -105,10 +105,7 @@ public class ListaJogosEJogadores extends JDialog {
 //DEPOIS ALTERAR PARA PACKAGE LISTENERS...	
 		btnEnviarConvite.addActionListener(new ActionListener() { 
 			   public void actionPerformed(ActionEvent evt) {	
-				   
-				   JOptionPane.showMessageDialog(contentPanel,"CRIAR - TODO!");	
-				   
-				  
+						  
 				   
 				   //verificar se o user está a convidar-se a si proprio
 				   if( getNomeJogador().equals(listaJogadores.getSelectedValue()) ){

@@ -185,29 +185,14 @@ public class AtendeCliente extends Thread{
 	private void sendListaJogos(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_JOGOS_RESPONSE);
 		
-		/*
+		
 		for(int i = 0;i<VarsGlobais.nJogos;i++){
 			msg.addNomesJogadores1(VarsGlobais.jogos.get(i).getC1().getNome());
 			msg.addNomesJogadores2(VarsGlobais.jogos.get(i).getC2().getNome());
-			String nomeJogo = "Jogo num "+(i+1);
+			String nomeJogo = "Jogo num "+(i+1);				
 			msg.addNomesJogos(nomeJogo);
-		}*/
+		}
 		
-		//PROVISARIO (pa teste)		
-		msg.addNomesJogos(" ( Exemplo only )");
-		msg.addNomesJogos("Jogador 1 vs Jogador 2");
-		msg.addNomesJogos("Mitra vs Cigano");
-		msg.addNomesJogos("Xino vs Americano");
-		msg.addNomesJogos("barbosa vs duraes");	
-		msg.addNomesJogos("batatas vs ketchup");
-		msg.addNomesJogos("3");
-		msg.addNomesJogos("4");
-		msg.addNomesJogos("5");
-		msg.addNomesJogos("6");
-		msg.addNomesJogos("7");
-		msg.addNomesJogos("8");
-
-
 		out.flush();
 		out.writeObject(msg);
 		out.flush();
