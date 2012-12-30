@@ -39,14 +39,14 @@ public class Jogo implements ActionListener{
 	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
 	private ImageIcon mira = new ImageIcon("Imagens/mira.png");
 	//Barcos
-	private ImageIcon barcoPequeno1 = new ImageIcon("Imagens/barcos/barcoPequeno_1.png");
-	private ImageIcon barcoPequeno2 = new ImageIcon("Imagens/barcos/barcoPequeno_2.png");	
-	private ImageIcon barcoPequenoFIRE1 = new ImageIcon("Imagens/barcos/barcoPequenoFIRE_1.png");
-	private ImageIcon barcoPequenoFIRE2 = new ImageIcon("Imagens/barcos/barcoPequenoFIRE_2.png");
-	private ImageIcon barcoMedio1 = new ImageIcon("Imagens/barcos/barcoMedio_1.png");
-	private ImageIcon barcoMedio2 = new ImageIcon("Imagens/barcos/barcoMedio_2.png");
-	private ImageIcon barcoMedio3 = new ImageIcon("Imagens/barcos/barcoMedio_3.png");
-	private ImageIcon barcoMedio4 = new ImageIcon("Imagens/barcos/barcoMedio_4.png");
+	private ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
+	private ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
+	private ImageIcon barcoDir = new ImageIcon("Imagens/barcos/barco_dir.png");	
+	
+	private ImageIcon barcoEsqFogo = new ImageIcon("Imagens/barcos/fogo/barco_esq_f.png");
+	private ImageIcon barcoMeioFogo = new ImageIcon("Imagens/barcos/fogo/barco_meio_f.png");
+	private ImageIcon barcoDirFogo = new ImageIcon("Imagens/barcos/fogo/barco_dir_f.png");	
+
 	
 	private String background = "Imagens/outros/background2.jpg";
 	
@@ -238,16 +238,18 @@ public class Jogo implements ActionListener{
 				   }
 			  }
 		      //=====Teste BARCOS===	
-			  botao[2][1].setIcon(barcoPequeno1); botao[2][1].setDisabledIcon(barcoPequeno1);
-			  botao[2][2].setIcon(barcoPequeno2); botao[2][2].setDisabledIcon(barcoPequeno2);	
+			  botao[2][1].setIcon(barcoEsq); botao[2][1].setDisabledIcon(barcoEsq);
+			  botao[2][2].setIcon(barcoMeio); botao[2][2].setDisabledIcon(barcoMeio);	
+			  botao[2][3].setIcon(barcoDir); botao[2][3].setDisabledIcon(barcoDir);	
 			  
-			  botao[8][7].setIcon(barcoPequenoFIRE1); botao[8][7].setDisabledIcon(barcoPequenoFIRE1);
-			  botao[8][8].setIcon(barcoPequenoFIRE2); botao[8][8].setDisabledIcon(barcoPequenoFIRE2);
+			  botao[8][7].setIcon(barcoEsqFogo); botao[8][7].setDisabledIcon(barcoEsqFogo);
+			  botao[8][8].setIcon(barcoMeioFogo); botao[8][8].setDisabledIcon(barcoMeioFogo);
+			  botao[8][9].setIcon(barcoDirFogo); botao[8][9].setDisabledIcon(barcoDirFogo);
 			  
-			  botao[5][4].setIcon(barcoMedio1); botao[5][4].setDisabledIcon(barcoMedio1);	
-			  botao[5][5].setIcon(barcoMedio2); botao[5][5].setDisabledIcon(barcoMedio2);
-			  botao[5][6].setIcon(barcoMedio3); botao[5][6].setDisabledIcon(barcoMedio3);
-			  botao[5][7].setIcon(barcoMedio4); botao[5][7].setDisabledIcon(barcoMedio4);
+			  botao[5][4].setIcon(barcoEsq); botao[5][4].setDisabledIcon(barcoEsq);	
+			  botao[5][5].setIcon(barcoMeio); botao[5][5].setDisabledIcon(barcoMeio);
+			  botao[5][6].setIcon(barcoMeio); botao[5][6].setDisabledIcon(barcoMeio);
+			  botao[5][7].setIcon(barcoDir); botao[5][7].setDisabledIcon(barcoDir);
 		 }
 
 		 public void criaMapaAdversario(int x,int y) //TESTE
