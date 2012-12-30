@@ -5,6 +5,11 @@ import java.io.Serializable;
 //nota: tem de ser serializable para poder enviar as coordenadas na mensagem
 
 public class Numero implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3061587016828900297L;
 	private char numero;
 	private int posX;
 

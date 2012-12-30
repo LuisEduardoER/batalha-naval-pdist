@@ -6,6 +6,10 @@ import java.io.Serializable;
 
 //Letras no Tabuleiro
 public class Letra implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1092146332279996721L;
 	private char letra;
 	private int posY;
 	

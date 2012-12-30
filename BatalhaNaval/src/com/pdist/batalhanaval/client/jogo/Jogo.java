@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
@@ -19,8 +18,10 @@ import javax.swing.JOptionPane;
 import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
+import com.pdist.batalhanaval.client.main.VarsGlobais;
 import com.pdist.batalhanaval.server.controlo.Letra;
 import com.pdist.batalhanaval.server.controlo.Numero;
+import com.pdist.batalhanaval.server.controlo.UnidadeTabuleiro;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -51,7 +52,7 @@ public class Jogo implements ActionListener{
 	private String background = "Imagens/outros/background2.jpg";	
 		
 	
-	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
+//	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
 
 		
 	private Thread AtendeServidor; //thread do AtendeServidor
@@ -224,6 +225,8 @@ public class Jogo implements ActionListener{
 		 
 		 public void criaMapaUtilizador(int x,int y) //TESTE
 		 {
+			     UnidadeTabuleiro uni = new UnidadeTabuleiro(); 
+		 
 			  for(int i=0; i<Macros.SIZE_X; i++){
 				   for(int j=0; j<Macros.SIZE_Y; j++){					   
 					 
@@ -231,25 +234,66 @@ public class Jogo implements ActionListener{
 				    botao[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
 				    botao[i][j].addActionListener((ActionListener) this);			
 				    botao[i][j].setDisabledIcon(agua); //senao aparecia cinzento quando nao esta em "enabled"
-				    botao[i][j].setEnabled(false);				  
+				    botao[i][j].setEnabled(false);		
+				    
+				    uni.setImage(Macros.IMAGEM_AGUA);
+				//    uni.setX(i*30);
+				//    uni.setY(j*30);
+				    
+				    //=====TODO Teste BARCOS FIXO. DEPOIS COLOCAR COM RANDOM OU WHATEVER===					    
+				    if(i==2 && j==1){
+				    	 botao[2][1].setIcon(barcoEsq); botao[2][1].setDisabledIcon(barcoEsq);
+				    	 uni.setImage(Macros.IMAGEM_BARCO_ESQ);
+				    	 }
+				    	 else if(i==2 && j==2){
+				    	 botao[2][2].setIcon(barcoMeio); botao[2][2].setDisabledIcon(barcoMeio);
+				    	 uni.setImage(Macros.IMAGEM_BARCO_MEIO);
+				    	 }
+				    	 else if(i==2 && j==3){
+				    	 botao[2][3].setIcon(barcoDir); botao[2][3].setDisabledIcon(barcoDir);		
+				    	 uni.setImage(Macros.IMAGEM_BARCO_DIR);
+				    	 }
+				    
+				    	 else if(i==7 && j==6){
+				    		 botao[7][6].setIcon(barcoEsq); botao[7][6].setDisabledIcon(barcoEsq);		
+					    	 uni.setImage(Macros.IMAGEM_BARCO_ESQ);
+					    	 }
+				    	 else if(i==7 && j==7){
+				    		 botao[7][7].setIcon(barcoMeio); botao[7][7].setDisabledIcon(barcoMeio);	
+					    	 uni.setImage(Macros.IMAGEM_BARCO_MEIO);
+					    	 }
+				    	 else if(i==7 && j==8){
+				    		 botao[7][8].setIcon(barcoMeio); botao[7][8].setDisabledIcon(barcoMeio);	
+					    	 uni.setImage(Macros.IMAGEM_BARCO_MEIO);
+					    	 }
+				    	 else if(i==7 && j==9){
+					    	 botao[7][9].setIcon(barcoDir); botao[7][9].setDisabledIcon(barcoDir);		
+					    	 uni.setImage(Macros.IMAGEM_BARCO_DIR);
+					    	 }
+				    
+				    VarsGlobais.tabJogador1.add(uni.getImage());
 				
 				    BatalhaNavalUI.getContentPane().add(botao[i][j]);
 				   }
 			  }
-		      //=====Teste BARCOS FIXO===	
-			  botao[2][1].setIcon(barcoEsq); botao[2][1].setDisabledIcon(barcoEsq);
-			  botao[2][2].setIcon(barcoMeio); botao[2][2].setDisabledIcon(barcoMeio);	
-			  botao[2][3].setIcon(barcoDir); botao[2][3].setDisabledIcon(barcoDir);	
 			  
-			  botao[8][7].setIcon(barcoEsqFogo); botao[8][7].setDisabledIcon(barcoEsqFogo);
-			  botao[8][8].setIcon(barcoMeioFogo); botao[8][8].setDisabledIcon(barcoMeioFogo);
-			  botao[8][9].setIcon(barcoDirFogo); botao[8][9].setDisabledIcon(barcoDirFogo);
+					 
+			  /*
+			  botao[8][7].setIcon(barcoEsq); botao[8][7].setDisabledIcon(barcoEsq);
+			  botao[8][8].setIcon(barcoMeio); botao[8][8].setDisabledIcon(barcoMeio);
+			  botao[8][9].setIcon(barcoMeio); botao[8][9].setDisabledIcon(barcoMeio);
+			  botao[8][10].setIcon(barcoDir); botao[8][10].setDisabledIcon(barcoDir);
 			  
 			  botao[5][4].setIcon(barcoEsq); botao[5][4].setDisabledIcon(barcoEsq);	
 			  botao[5][5].setIcon(barcoMeio); botao[5][5].setDisabledIcon(barcoMeio);
 			  botao[5][6].setIcon(barcoMeio); botao[5][6].setDisabledIcon(barcoMeio);
-			  botao[5][7].setIcon(barcoDir); botao[5][7].setDisabledIcon(barcoDir);
+			  botao[5][7].setIcon(barcoMeio); botao[5][7].setDisabledIcon(barcoMeio);
+			  botao[5][8].setIcon(barcoDir); botao[5][8].setDisabledIcon(barcoDir);
+			  */
+			  
 		 }
+	
+		 
 
 		 public void criaMapaAdversario(int x,int y) //TESTE
 		 {

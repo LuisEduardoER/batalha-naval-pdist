@@ -11,6 +11,10 @@ import com.pdist.batalhanaval.server.main.AtendeCliente;
 //nota: tem de ser serializable para poder ser enviado na mensagem
 
 public class Cliente implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 830193890020653451L;
 	private InetAddress ip;
 	private String nome;
 	private boolean onGame;

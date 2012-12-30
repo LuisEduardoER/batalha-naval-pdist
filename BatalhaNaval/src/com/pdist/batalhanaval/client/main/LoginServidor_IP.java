@@ -75,7 +75,7 @@ public class LoginServidor_IP implements Runnable {
                                                 
                                                 //Atencao ao tirar algumas MSGBOX, ke o socket n é bloqueante e se nao obtem logo resposta.. da erro no servidor
                                                 //(melhorar essa parte.. e ter muita atençao que é importante)
-                                                JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
+                                                JOptionPane.showMessageDialog(contentPanel,"Estás ligado ao servidor!\n"+SocketClient_TCP.getSocket().toString());
                                                 
                                                 Jogo.setNomeJogador1(nome);
                                                 Jogo.setNomeJogador2("A aguardar..");

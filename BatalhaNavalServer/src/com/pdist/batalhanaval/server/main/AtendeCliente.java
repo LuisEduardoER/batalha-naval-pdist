@@ -259,6 +259,7 @@ public class AtendeCliente extends Thread{
 		Jogo j = new Jogo();
 		j.setC1(jog1);
 		j.setC2(jog2);
+		j.setStarted(true);
 				
 		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
 		
@@ -273,17 +274,16 @@ public class AtendeCliente extends Thread{
 		jogo.start(); //inicia a thread aqui...
 	}
 
-	@SuppressWarnings("null")
 	private void setTabuleiro(Mensagem msg){
 		
 		Tabuleiro tab = new Tabuleiro();
 		ArrayList<Integer> t = msg.getTabuleiro();
 			
-		UnidadeTabuleiro uni = null;
+		UnidadeTabuleiro uni = new UnidadeTabuleiro(); //TODO UnidadeTabuleiro uni = null; ???, UnidadeTabuleiro uni = new UnidadeTabuleiro(); nao?
 			
 		for(int i = 0; i<Macros.SIZE_X;i++){
 			for(int j = 0;j<Macros.SIZE_Y;j++){
-				uni.setImage(t.get((i*10)+j));
+				uni.setImage(t.get((i*10)+j)); // i*10+ j pk? //TODO isto ta correcto? tanta confusao e trabalho com o tabuleiro n sei pra ke..lol, ja devia receber o tabuleiro preenchido , usando uma class generica.. 
 				uni.setX(i*30);
 				uni.setY(j*30);
 				if(uni.getImage() == Macros.IMAGEM_BARCO_ESQ || uni.getImage() == Macros.IMAGEM_BARCO_MEIO || uni.getImage() == Macros.IMAGEM_BARCO_DIR )
@@ -334,7 +334,7 @@ public class AtendeCliente extends Thread{
 					msg.setType(Macros.MSG_ATACAR_FAIL);
 				else
 					if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isShooted())
-						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA); //TODO isto devia ser logo validado pelo cliente.. assim ha mais comunicacoes escusadas..
 					else{
 						if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isBoat()) 
 							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco

@@ -68,7 +68,9 @@ public class AtendeServidor extends Thread{
 						//...
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
-						JOptionPane.showMessageDialog(jogoFrame, "TODO: GET TABULEIRO (agora falta gerar o tabuleiro random.. ou nao, e enviar para servidor..)");
+						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
+						EnviaTabuleiro(msg);
+						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)ENVIADO TABULEIRO");							
 						break;
 
 				}
@@ -130,6 +132,16 @@ public class AtendeServidor extends Thread{
 			SocketClient_TCP.getOut().flush();
 		}
 				
+	}
+	
+	public void EnviaTabuleiro(Mensagem msg) throws IOException{
+		
+		msg.setTabuleiro(VarsGlobais.tabJogador1);
+		
+		SocketClient_TCP.getOut().flush();
+		SocketClient_TCP.getOut().writeObject(msg);
+		SocketClient_TCP.getOut().flush();			
+		
 	}
 	
 	

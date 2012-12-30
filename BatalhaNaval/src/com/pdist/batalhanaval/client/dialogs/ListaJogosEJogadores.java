@@ -237,7 +237,9 @@ public class ListaJogosEJogadores extends JDialog {
 		
 		for(int i=0; i<nomeJogadores.size();i++)
 		{
+		//	if(!getNomeJogador().equals(nomeJogadores.get(i)) ){ //para nao aparecer o proprio jogador
 			modelListaJogadores.addElement(nomeJogadores.get(i)); 
+		//	}
 		}
 		
 		listaJogadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 

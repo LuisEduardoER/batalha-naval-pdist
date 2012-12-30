@@ -14,24 +14,24 @@ public class GameThread extends Thread{
 
 	private Jogo jogo;
 	
-	private Socket jogador1;
-	private Socket jogador2;
+	//private Socket jogador1;
+	//private Socket jogador2;
 	private ObjectOutputStream out1;
 	private ObjectOutputStream out2;
-	private ObjectInputStream in1;
-	private ObjectInputStream in2;
+//	private ObjectInputStream in1;
+//	private ObjectInputStream in2;
 	
 
 	public GameThread(Jogo jogo, Socket jogador1, Socket jogador2, ObjectInputStream in1, ObjectOutputStream out1,  ObjectInputStream in2 , ObjectOutputStream out2){
 		this.jogo = jogo;
-		this.jogador1 = jogador1;
-		this.jogador2 = jogador2;
+	//	this.jogador1 = jogador1;
+	//	this.jogador2 = jogador2;
 		
 		//Alterado
 		this.out1 = out1;
 		this.out2 = out2;
-		this.in1 = in1;
-		this.in2 = in2;
+//		this.in1 = in1;
+//		this.in2 = in2;
 		
 			
 		
@@ -50,7 +50,7 @@ public class GameThread extends Thread{
 		
 		
 		
-		if(!jogo.isStarted()){
+		if(jogo.isStarted()){
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
 			try {

@@ -31,15 +31,15 @@ public class Mensagem implements Serializable {
 		public Mensagem(int type){
 			this.type = type;
 			msg_text = "";
-			letra = null;
-			numero = null;
+			letra = null;                     //INICIALIZAR SEMPRE AS VARS... SE COLOCAR A NULL O OBJECTO NAO É CRIADO.. A MENOS QUE O METODO INVOCADO O FAÇA..(new...)
+			numero = null;                   //TODO se der algum erro (as vezes ha mas n "avisa").. verificar esta parte e inicializar			
 			cliente = null;
 			nomesClientes = new ArrayList<String>();
 			nomesJogadores1 = new ArrayList<String>();
 			nomesJogadores2 = new ArrayList<String>();
-			nomesJogos = new ArrayList<String>(); //e inicializar os arraylist!!!
+			nomesJogos = new ArrayList<String>(); //inicializar os arraylist!!!
 			responseText="";
-			tabuleiro = null;
+			tabuleiro = new ArrayList<Integer>();
 			posTab = -1;
 		}		
 		public Mensagem(int type, String msg_text){
@@ -48,12 +48,12 @@ public class Mensagem implements Serializable {
 			letra = null;
 			numero = null;
 			cliente = null;
-			nomesClientes = null;
-			nomesJogadores1 = null;
-			nomesJogadores2 = null;
-			nomesJogos = null;
+			nomesClientes = new ArrayList<String>();
+			nomesJogadores1 = new ArrayList<String>();
+			nomesJogadores2 = new ArrayList<String>();
+			nomesJogos = new ArrayList<String>();
 			responseText="";
-			tabuleiro = null;
+			tabuleiro = new ArrayList<Integer>();
 			posTab = -1;
 		}
 		public Mensagem(int type, Letra letra, Numero numero){
@@ -62,12 +62,12 @@ public class Mensagem implements Serializable {
 			this.letra = letra;
 			this.numero = numero;
 			cliente = null;
-			nomesClientes = null;
-			nomesJogadores1 = null;
-			nomesJogadores2 = null;
-			nomesJogos = null;
+			nomesClientes = new ArrayList<String>();
+			nomesJogadores1 = new ArrayList<String>();
+			nomesJogadores2 = new ArrayList<String>();
+			nomesJogos = new ArrayList<String>();
 			responseText="";
-			tabuleiro = null;
+			tabuleiro = new ArrayList<Integer>();
 			posTab = -1;
 		}
 		public Mensagem(int type, Cliente cliente1, Cliente cliente2){
@@ -76,12 +76,12 @@ public class Mensagem implements Serializable {
 			letra = null;
 			numero = null;
 			this.cliente = cliente1;
-			nomesClientes = null;
-			nomesJogadores1 = null;
-			nomesJogadores2 = null;
-			nomesJogos = null;
+			nomesClientes = new ArrayList<String>();
+			nomesJogadores1 = new ArrayList<String>();
+			nomesJogadores2 = new ArrayList<String>();
+			nomesJogos = new ArrayList<String>();
 			responseText="";
-			tabuleiro = null;
+			tabuleiro = new ArrayList<Integer>();
 			posTab = -1;
 		}
 		
