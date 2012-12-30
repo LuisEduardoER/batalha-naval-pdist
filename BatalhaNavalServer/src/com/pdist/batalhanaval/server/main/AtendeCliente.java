@@ -283,7 +283,7 @@ public class AtendeCliente extends Thread{
 			
 		for(int i = 0; i<Macros.SIZE_X;i++){
 			for(int j = 0;j<Macros.SIZE_Y;j++){
-				uni.setImage(t.get((i*10)+j)); // i*10+ j pk? //TODO isto ta correcto? tanta confusao e trabalho com o tabuleiro n sei pra ke..lol, ja devia receber o tabuleiro preenchido , usando uma class generica.. 
+				uni.setImage(t.get((i*10)+j)); // i*10+ j pk? //TODO isto ta correcto? 
 				uni.setX(i*30);
 				uni.setY(j*30);
 				if(uni.getImage() == Macros.IMAGEM_BARCO_ESQ || uni.getImage() == Macros.IMAGEM_BARCO_MEIO || uni.getImage() == Macros.IMAGEM_BARCO_DIR )
@@ -347,7 +347,7 @@ public class AtendeCliente extends Thread{
 					}	
 			}
 			
-		}else{												//jogador 2
+		}else{												//jogador 2 //TODO jogador 2 nao recebe nada!
 			if(game.getJogo().getTurn() == 2){
 				int pos = msg.getPosTab();
 				if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))

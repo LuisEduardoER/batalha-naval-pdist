@@ -136,6 +136,8 @@ public class AtendeServidor extends Thread{
 	
 	public void EnviaTabuleiro(Mensagem msg) throws IOException{
 		
+		msg.setType(Macros.MSG_SET_TABULEIRO);
+			
 		msg.setTabuleiro(VarsGlobais.tabJogador1);
 		
 		SocketClient_TCP.getOut().flush();
