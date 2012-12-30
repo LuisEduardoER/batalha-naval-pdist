@@ -286,7 +286,7 @@ public class AtendeCliente extends Thread{
 				uni.setImage(t.get((i*10)+j));
 				uni.setX(i*30);
 				uni.setY(j*30);
-				if(uni.getImage() == Macros.IMAGEM_BARCO_1 || uni.getImage() == Macros.IMAGEM_BARCO_2)
+				if(uni.getImage() == Macros.IMAGEM_BARCO_ESQ || uni.getImage() == Macros.IMAGEM_BARCO_MEIO || uni.getImage() == Macros.IMAGEM_BARCO_DIR )
 					uni.setOcupied(true);
 				else
 					uni.setOcupied(false);

@@ -49,9 +49,17 @@ public class Macros {
 	public static final String IGNORAR_PEDIDO = "ignorar"; // pode ser com timeOut depois de receber a proposta
 	
 	public static final int IMAGEM_AGUA = 1000;
-	public static final int IMAGEM_SHOTED = 1001;
-	public static final int IMAGEM_BARCO_1 = 1002;//cabeça do barco
-	public static final int IMAGEM_BARCO_2 = 1002;//resto do barco
+	public static final int IMAGEM_FAIL = 1001;
+	public static final int IMAGEM_BARCO_ESQ = 1002;//cabeça do barco
+	public static final int IMAGEM_BARCO_MEIO = 1003;//meio do barco
+	public static final int IMAGEM_BARCO_DIR = 1004;//resto do barco	
+	//com Fogo
+	public static final int IMAGEM_BARCO_ESQ_FOGO = 1005;//cabeça do barco
+	public static final int IMAGEM_BARCO_MEIO_FOGO = 1006;//cabeça do barco
+	public static final int IMAGEM_BARCO_DIR_FOGO = 1007;//resto do barco
+	
+	//provisorio
+	public static final int IMAGEM_SHOTED = 1007;
 	
 	private Macros(){} //Singleton
 	

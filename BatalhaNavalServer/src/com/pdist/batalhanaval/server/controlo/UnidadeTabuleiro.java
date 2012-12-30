@@ -37,7 +37,7 @@ public class UnidadeTabuleiro {
 	public void setOcupied(boolean isBoat) {this.isBoat = isBoat;}
 	public void setShooted(boolean shooted) {
 		if(shooted)
-			image = Macros.IMAGEM_SHOTED;
+			image = Macros.IMAGEM_SHOTED; 
 		this.shooted = shooted;}
 
 	//Verificar se um ponto está na quadricula

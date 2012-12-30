@@ -34,22 +34,21 @@ public class Jogo implements ActionListener{
 	private static JLabel lblJogador_1 = new JLabel("<nome?>"); //label JOGADOR 1
 	private static JLabel lblJogador_2 = new JLabel("<nome?>"); //laber JOGADOR 2
 	
+	//Imagens..
 	private ImageIcon aguaAlvo = new ImageIcon("Imagens/aguaFail.png");
 	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
-	private ImageIcon explosao = new ImageIcon("Imagens/explosao.png");
-	private ImageIcon mira = new ImageIcon("Imagens/mira.png");
+	private ImageIcon mira = new ImageIcon("Imagens/mira.png");	
 	//Barcos
 	private ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
 	private ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
 	private ImageIcon barcoDir = new ImageIcon("Imagens/barcos/barco_dir.png");	
-	
+	//Barcos Fogo
 	private ImageIcon barcoEsqFogo = new ImageIcon("Imagens/barcos/fogo/barco_esq_f.png");
 	private ImageIcon barcoMeioFogo = new ImageIcon("Imagens/barcos/fogo/barco_meio_f.png");
 	private ImageIcon barcoDirFogo = new ImageIcon("Imagens/barcos/fogo/barco_dir_f.png");	
 
-	
-	private String background = "Imagens/outros/background2.jpg";
-	
+	//Bg2
+	private String background = "Imagens/outros/background2.jpg";	
 		
 	
 	private ArrayList<Integer> quadAtacados = new ArrayList<Integer>(); //para saber que coordenadas ja foram atacadas	
@@ -237,7 +236,7 @@ public class Jogo implements ActionListener{
 				    BatalhaNavalUI.getContentPane().add(botao[i][j]);
 				   }
 			  }
-		      //=====Teste BARCOS===	
+		      //=====Teste BARCOS FIXO===	
 			  botao[2][1].setIcon(barcoEsq); botao[2][1].setDisabledIcon(barcoEsq);
 			  botao[2][2].setIcon(barcoMeio); botao[2][2].setDisabledIcon(barcoMeio);	
 			  botao[2][3].setIcon(barcoDir); botao[2][3].setDisabledIcon(barcoDir);	

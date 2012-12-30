@@ -62,8 +62,8 @@ public class Tabuleiro {
 		for(int i=0; i<Macros.SIZE_Y-1;i++){
 			for(int j=0;j<Macros.SIZE_X-1;j++){
 				
-				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_1){
-					if(tabuleiro.get(i*10+j+1).getImage() == Macros.IMAGEM_BARCO_2){
+				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_ESQ){ 
+					if(tabuleiro.get(i*10+j+1).getImage() == Macros.IMAGEM_BARCO_DIR){
 						Ships barco = new Ships();
 						barco.addUnidade(tabuleiro.get(i*10+j));
 						barco.addUnidade(tabuleiro.get(i*10+j+1));
@@ -81,8 +81,8 @@ public class Tabuleiro {
 		//pesquisar barcos verticais
 		for(int i=0; i<Macros.SIZE_Y-1;i++){
 			for(int j=0;j<Macros.SIZE_X-1;j = j+Macros.SIZE_X){						
-				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_1){
-					if(tabuleiro.get(i*10+j+Macros.SIZE_X).getImage() == Macros.IMAGEM_BARCO_2){
+				if(tabuleiro.get(i*10+j).getImage() == Macros.IMAGEM_BARCO_ESQ){
+					if(tabuleiro.get(i*10+j+Macros.SIZE_X).getImage() == Macros.IMAGEM_BARCO_DIR){
 						Ships barco = new Ships();
 						barco.addUnidade(tabuleiro.get(i*10+j));
 						barco.addUnidade(tabuleiro.get(i*10+j+Macros.SIZE_X));

@@ -38,6 +38,7 @@ public class ListaJogosEJogadores extends JDialog {
 	private ArrayList<String> nomeJogadores = null;
 	
 	private String nomeJogador;
+	public static String nomeJogadorConvidado;
 	
 	private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //LISTA JOGOS
 	private JList<String> listaJogos = new JList<String>(modelListaJogos);  //LISTA JOGOS
@@ -147,6 +148,7 @@ public class ListaJogosEJogadores extends JDialog {
 	//enviar um pedido ao servidor para que este envie um pedido (convite) a um certo jogador
 	public void sendConvite() throws IOException{
 		
+		nomeJogadorConvidado = listaJogadores.getSelectedValue();
 		//dizer ao servidor que se quer iniciar um jogo e passar o nome do jogador a convidar
 		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, listaJogadores.getSelectedValue());
 				

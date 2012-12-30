@@ -77,10 +77,9 @@ public class LoginServidor_IP implements Runnable {
                                                 //(melhorar essa parte.. e ter muita atençao que é importante)
                                                 JOptionPane.showMessageDialog(contentPanel,"(Servidor) Estás logado!");
                                                 
-                                                //TODO Teste (dps tirar daki)=====
                                                 Jogo.setNomeJogador1(nome);
                                                 Jogo.setNomeJogador2("A aguardar..");
-                                                BatalhaNaval_Client.setEstado("A aguardar jogador 2...");                                               
+                                                BatalhaNaval_Client.setEstado("A aguardar por um novo jogo...");                                               
                                                                                        
                                               
                         						

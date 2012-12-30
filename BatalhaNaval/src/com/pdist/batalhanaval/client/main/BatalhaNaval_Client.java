@@ -37,7 +37,7 @@ public class BatalhaNaval_Client {
 	private void initialize() {
 		
 		BatalhaNavalUI = new JFrame();
-		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagens/barcos/barcoPequenoFIRE_1.png"));
+		BatalhaNavalUI.setIconImage(Toolkit.getDefaultToolkit().getImage("Imagens/outros/appIcon.png"));
 		BatalhaNavalUI.setResizable(false);
 		BatalhaNavalUI.setTitle("Batalha Naval");
 		BatalhaNavalUI.getContentPane().setBackground(SystemColor.controlHighlight);
@@ -106,7 +106,7 @@ public class BatalhaNaval_Client {
 		BatalhaNavalUI.getContentPane().add(label3);		
 		
 		lblEstado.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblEstado.setBounds(360, 432, 202, 14);
+		lblEstado.setBounds(360, 432, 275, 14);
 		BatalhaNavalUI.getContentPane().add(lblEstado);	
 		
 	

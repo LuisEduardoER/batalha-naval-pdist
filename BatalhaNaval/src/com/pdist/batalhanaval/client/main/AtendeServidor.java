@@ -7,6 +7,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
+import com.pdist.batalhanaval.client.jogo.Jogo;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -99,7 +101,11 @@ public class AtendeServidor extends Thread{
 		if(opcao == JOptionPane.YES_OPTION){
 			//JOptionPane.showMessageDialog(jogoFrame, "SIM");//remover depois
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
+			JOptionPane.showMessageDialog(jogoFrame, "Você aceitou o convite! \nA iniciar um novo jogo..");
 			listajogadores.dispose(); //se aceite...para fexar dialog
+			
+			 Jogo.setNomeJogador2(msg.getMsgText());
+             BatalhaNaval_Client.setEstado("A aguardar que o jogador (X) ataque!"); 
 				
 			//enviar mensagem ao servidor
 			SocketClient_TCP.getOut().flush();
@@ -131,8 +137,11 @@ public class AtendeServidor extends Thread{
 		public void receberRespostaConvite(Mensagem msg) throws IOException{			
 						
 			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
-				JOptionPane.showMessageDialog(jogoFrame, "O convite foi aceite pelo jogador! \nA iniciar um novo jogo..");
+				JOptionPane.showMessageDialog(jogoFrame, "O convite foi aceite pelo jogador! \nA iniciar um novo jogo..");				
 				listajogadores.dispose(); //para fechar dialog
+				
+				 Jogo.setNomeJogador2(ListaJogosEJogadores.nomeJogadorConvidado); //nome do jogador convidado 
+	             BatalhaNaval_Client.setEstado("A aguardar que o jogador (X) ataque!"); 
 				
 				//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 			}
