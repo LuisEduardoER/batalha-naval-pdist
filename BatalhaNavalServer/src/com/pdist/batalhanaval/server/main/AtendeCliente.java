@@ -277,8 +277,12 @@ public class AtendeCliente extends Thread{
 	private void setTabuleiro(Mensagem msg){
 		
 		Tabuleiro tab = new Tabuleiro();
-		ArrayList<Integer> t = msg.getTabuleiro();
-			
+		//ArrayList<Integer> t = msg.getTabuleiro();
+		tab = msg.getTabuleiro();
+		
+		//TEM DE SER ALTERADO!! O TABULEIRO ESTA A SER CRIADO NA GAMETHREAD
+		
+		/*
 		UnidadeTabuleiro uni = new UnidadeTabuleiro(); //TODO UnidadeTabuleiro uni = null; ???, UnidadeTabuleiro uni = new UnidadeTabuleiro(); nao?
 			
 		for(int i = 0; i<Macros.SIZE_X;i++){
@@ -316,7 +320,7 @@ public class AtendeCliente extends Thread{
 		
 		if(game.getJogo().getC1().getTabuleiro() != null && game.getJogo().getC2().getTabuleiro() != null)
 			game.getJogo().setStarted(true);
-		
+		*/
 	}
 
 	private void setGame(GameThread game){this.game = game;}

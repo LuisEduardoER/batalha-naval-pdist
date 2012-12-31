@@ -138,7 +138,7 @@ public class AtendeServidor extends Thread{
 		
 		msg.setType(Macros.MSG_SET_TABULEIRO);
 			
-		msg.setTabuleiro(VarsGlobais.tabJogador1);
+		//msg.setTabuleiro(VarsGlobais.tabJogador1); ????
 		
 		SocketClient_TCP.getOut().flush();
 		SocketClient_TCP.getOut().writeObject(msg);
