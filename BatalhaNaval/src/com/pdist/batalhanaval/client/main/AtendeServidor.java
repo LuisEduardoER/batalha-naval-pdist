@@ -69,8 +69,10 @@ public class AtendeServidor extends Thread{
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
-						EnviaTabuleiro(msg);
-						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)ENVIADO TABULEIRO");							
+						//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro recebido
+						receberTabuleiro(msg);
+						//EnviaTabuleiro(msg); (ver comment da funcao)
+						//JOptionPane.showMessageDialog(jogoFrame, "(TESTE)ENVIADO TABULEIRO");							
 						break;
 
 				}
@@ -134,17 +136,28 @@ public class AtendeServidor extends Thread{
 				
 	}
 	
+	
+	public void receberTabuleiro(Mensagem msg){
+		
+		//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro!
+		//jogoFrame
+		
+		
+	}
+	
+	
+	/*NAO SERA NECESSARIO (server cria tabuleiro, o cliente recebe-o e depois o cliente so ataca e recebe as coordenadas que foram atacadas)
 	public void EnviaTabuleiro(Mensagem msg) throws IOException{
 		
 		msg.setType(Macros.MSG_SET_TABULEIRO);
 			
-		//msg.setTabuleiro(VarsGlobais.tabJogador1); ????
+		msg.setTabuleiro(VarsGlobais.tabJogador1); //????
 		
 		SocketClient_TCP.getOut().flush();
 		SocketClient_TCP.getOut().writeObject(msg);
 		SocketClient_TCP.getOut().flush();			
 		
-	}
+	}*/
 	
 	
 	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)

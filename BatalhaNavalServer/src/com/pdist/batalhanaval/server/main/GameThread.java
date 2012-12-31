@@ -56,14 +56,10 @@ public class GameThread extends Thread{
 		if(jogo.isStarted()){
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			
-			//passar o tabuleiro como argumento
-			msg = new Mensagem(Macros.MSG_GET_TABULEIRO);
+			//a mensagem pode ser a mesma porque o tabuleiro não é random (caso contrario é preciso enviar uma mensagem diferente para cada jogador)
+			msg = new Mensagem(Macros.MSG_GET_TABULEIRO, gerarTabuleiro());
 			try {
-				
-				//Tabuleiro tab = gerarTabuleiro();
-				//msg = new Mensagem(Macros.MSG_GET_TABULEIRO, tab);
-				//gerar outro tabuleiro para o outro jogador
-				
+								
 				out1.flush();
 				out1.writeObject(msg);
 				out1.flush();
