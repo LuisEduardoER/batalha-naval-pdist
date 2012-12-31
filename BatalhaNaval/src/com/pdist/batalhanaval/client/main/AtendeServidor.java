@@ -192,7 +192,9 @@ public class AtendeServidor extends Thread{
 	
 	//receber a RESPOSTA do servidor (sobre o convite que foi feito anteriormente)
 		public void receberRespostaConvite(Mensagem msg) throws IOException{			
-						
+			
+			VarsGlobais.sentConvite = false;
+			
 			if(msg.getResponseText().equals(Macros.ACEITAR_PEDIDO)){ //pedido ACEITE
 				JOptionPane.showMessageDialog(jogoFrame, "O convite foi aceite pelo jogador! \nA iniciar um novo jogo..");				
 				listajogadores.dispose(); //para fechar dialog

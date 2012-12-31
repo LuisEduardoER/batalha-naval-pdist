@@ -119,7 +119,10 @@ public class ListaJogosEJogadores extends JDialog {
 				   //Se o jogador aceitar (ter timeout) o jogo é iniciado
 				   try{
 					   //enviar convite
-					   sendConvite();
+					   if(VarsGlobais.sentConvite==false){ //para impedir spam
+						   sendConvite();
+						   VarsGlobais.sentConvite = true;
+					   }
 					 //definir timeout para 15 segundos (tem 15 segundos para aceitar/rejeitar o convite)
 				     //SocketClient_TCP.getSocket().setSoTimeout(15000);
 					   //aguardar resposta (timeout 15s)
