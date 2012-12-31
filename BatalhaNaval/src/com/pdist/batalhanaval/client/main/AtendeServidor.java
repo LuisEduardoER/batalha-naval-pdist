@@ -74,6 +74,9 @@ public class AtendeServidor extends Thread{
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
 						//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro recebido
 						receberTabuleiro(msg);
+						  //criar o tabuleiro direito para os ataques (talvez seja melhor ficar na classe JOGO)
+						  //criarTabuleiroAtaques(); 
+						
 						//EnviaTabuleiro(msg); (ver comment da funcao)
 						//JOptionPane.showMessageDialog(jogoFrame, "(TESTE)ENVIADO TABULEIRO");							
 						break;
