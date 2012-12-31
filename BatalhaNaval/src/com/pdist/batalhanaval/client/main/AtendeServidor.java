@@ -1,8 +1,11 @@
 package com.pdist.batalhanaval.client.main;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -137,11 +140,35 @@ public class AtendeServidor extends Thread{
 	}
 	
 	
+	//para imprimir o tabuleiro esquerdo (do proprio jogador) conforme os dados do tabuleiro recebido
 	public void receberTabuleiro(Mensagem msg){
+	
+		//BUTOES
+		JButton[][] botao = new JButton[10][10];
+		//IMAGENS
+		ImageIcon agua = new ImageIcon("Imagens/agua.png");
+		ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
 		
-		//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro!
-		//jogoFrame
+		int x = 70;
+		int y = 70;
+			
+		for(int i=0; i<Macros.SIZE_X; i++){
+			   for(int j=0; j<Macros.SIZE_Y; j++){
+				   
+				   botao[i][j] = new JButton(agua);
+				   botao[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
+				  //botao[i][j].addActionListener((ActionListener) this);			
+				   botao[i][j].setDisabledIcon(agua); //senao aparecia cinzento quando nao esta em "enabled"
+				   botao[i][j].setEnabled(false);
+				   //formula marada (i)*10 ) + (j) para obter a quadricula certa
+				   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).isBoat())
+					   botao[i][j].setDisabledIcon(barcoMeio);
+					
+				   jogoFrame.getContentPane().add(botao[i][j]);
+			   }
+		}
 		
+		jogoFrame.repaint();
 		
 	}
 	

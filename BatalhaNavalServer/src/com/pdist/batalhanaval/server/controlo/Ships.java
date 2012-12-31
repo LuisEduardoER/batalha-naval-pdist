@@ -1,10 +1,11 @@
 package com.pdist.batalhanaval.server.controlo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.macros.Macros;
 
-public class Ships {
+public class Ships implements Serializable{
 	private ArrayList<UnidadeTabuleiro> barco;
 	private int xStart, xEnd;
 	private int yStart, yEnd;

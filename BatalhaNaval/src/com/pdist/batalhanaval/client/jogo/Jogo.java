@@ -68,7 +68,7 @@ public class Jogo implements ActionListener{
 				
 		
 		//======(PROVISORIO) EXEMPLO INTERFACE JOGO============
-				criaMapaUtilizador(70,70); 				
+				//criaMapaUtilizador(70,70); 	//ja esta no AtendeServidor			
 				criaMapaAdversario(400,70);
 				
 				
@@ -223,7 +223,9 @@ public class Jogo implements ActionListener{
 		     }
 		 }
 		 
-		 public void criaMapaUtilizador(int x,int y) //TESTE
+		 
+		 //VAI SER O ATENDESERVIDOR A TRATAR DISTO
+		/* public void criaMapaUtilizador(int x,int y) //TESTE
 		 {
 			     UnidadeTabuleiro uni = new UnidadeTabuleiro(); 
 		 
@@ -274,8 +276,8 @@ public class Jogo implements ActionListener{
 				    VarsGlobais.tabJogador1.add(uni.getImage());
 				
 				    BatalhaNavalUI.getContentPane().add(botao[i][j]);
-				   }
-			  }
+				   }*/
+			  //}
 			  
 					 
 			  /*
@@ -291,7 +293,7 @@ public class Jogo implements ActionListener{
 			  botao[5][8].setIcon(barcoDir); botao[5][8].setDisabledIcon(barcoDir);
 			  */
 			  
-		 }
+		 //}
 	
 		 
 

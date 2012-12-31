@@ -1,8 +1,10 @@
 package com.pdist.batalhanaval.server.controlo;
 
+import java.io.Serializable;
+
 import com.pdist.batalhanaval.server.macros.*;
 
-public class UnidadeTabuleiro {
+public class UnidadeTabuleiro implements Serializable{
 	private int x,y;
 	private int image;
 	private boolean isBoat;

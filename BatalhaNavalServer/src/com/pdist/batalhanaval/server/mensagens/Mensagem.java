@@ -135,7 +135,7 @@ public class Mensagem implements Serializable {
 		public void setNomesJogos(ArrayList<String> nomesJogos){this.nomesJogos = nomesJogos;}
 		public void setResponseText(String responseText){this.responseText = responseText;}
 		//public void setTabuleiro(ArrayList<Integer> tabuleiro){this.tabuleiro = tabuleiro;}
-		public void setTabulerio(Tabuleiro tabuleiro){this.tabuleiro = tabuleiro;}
+		public void setTabuleiro(Tabuleiro tabuleiro){this.tabuleiro = tabuleiro;}
 		public void setPosTab(int posTab){this.posTab = posTab;}
 		
 		//usar os nomes de clientes
