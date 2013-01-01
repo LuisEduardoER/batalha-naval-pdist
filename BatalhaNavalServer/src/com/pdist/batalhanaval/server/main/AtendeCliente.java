@@ -338,21 +338,15 @@ public class AtendeCliente extends Thread{
 		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
 			if(game.getJogo().getTurn() == 1){
 				System.out.println("JOGADOR1 TURNO");
-				//int pos = msg.getPosTab();
-				//if(pos<0 || pos> (game.getJogo().getC2().getTabuleiro().getTabuleiro().size()-1)){
-				//if(msg.getLetra().getPosY()<0 || msg.getLetra().getPosY() > game.getJogo().getC2().getTabuleiro().getUnidade(l, n))
-				//if(game.getJogo().getC2().getTabuleiro().getUnidade(msg.getLetra(), msg.getNumero()).isShooted() == true)
 				if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
 					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
 					System.out.println("tentou atacar coordenada repetida");
 				}else{
-					//if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isBoat()) 
 					if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
 						msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
 					else
 						msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
 						
-					//game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
 					game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 					game.getJogo().setTurn(2);	
 					t = 2;
@@ -367,23 +361,15 @@ public class AtendeCliente extends Thread{
 			
 			if(game.getJogo().getTurn() == 2){
 				System.out.println("JOGADOR 2 TURNO"); //teste
-				//int pos = msg.getPosTab();
-				//if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))
-				//	msg.setType(Macros.MSG_ATACAR_FAIL);
 				if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
 					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
 					System.out.println("tentou atacar coordenada repetida");
 				}else{
-					//if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isShooted())
-					//	msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
-					//else{
-						//if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isBoat())
 						if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
 							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
 						else
 							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
 						
-						//game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
 						game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 						game.getJogo().setTurn(1);	
 						t = 1;
