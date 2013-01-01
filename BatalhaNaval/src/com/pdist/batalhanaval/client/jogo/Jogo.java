@@ -27,7 +27,7 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
 public class Jogo implements ActionListener{
 	
-	private JButton[][] botao = new JButton[12][12];
+	//private JButton[][] botao = new JButton[12][12];
 	private JButton[][] botaoAdv = new JButton[12][12];
 	
 	private JFrame BatalhaNavalUI;
@@ -58,6 +58,11 @@ public class Jogo implements ActionListener{
 	private Thread AtendeServidor; //thread do AtendeServidor
 	
 	
+	public JButton getBotaoAdv(int y, int x){
+		return botaoAdv[y][x];
+	}
+	
+	
 	public Jogo(JDialog listajogadores) {
 		
 		
@@ -80,7 +85,7 @@ public class Jogo implements ActionListener{
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
 		
-		AtendeServidor = new AtendeServidor(BatalhaNavalUI,listajogadores);
+		AtendeServidor = new AtendeServidor(BatalhaNavalUI,listajogadores, this);
 		AtendeServidor.start();
 				
 		
@@ -219,7 +224,7 @@ public class Jogo implements ActionListener{
 						   
 						   
 						 //SO PARA TESTES, o server é que depois diz qual o icon novo
-						   botaoAdv[i][j].setIcon(aguaAlvo);				   
+						   //botaoAdv[i][j].setIcon(aguaAlvo);				   
 							  
 					   
 					   }

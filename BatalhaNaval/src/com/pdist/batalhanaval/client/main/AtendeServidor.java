@@ -19,12 +19,16 @@ public class AtendeServidor extends Thread{
 
 	protected JFrame jogoFrame;
 	protected JDialog listajogadores;
+	protected Jogo jogo;
 	
 	
 	//CONSTRUTOR
-	public AtendeServidor(JFrame jFrame, JDialog listajogadores){
+	public AtendeServidor(JFrame jFrame, JDialog listajogadores, Jogo jogo){
 		jogoFrame = jFrame;
 		this.listajogadores = listajogadores;
+		
+		this.jogo = jogo;
+		
 		try {
 			SocketClient_TCP.getSocket().setSoTimeout(0);
 			
@@ -230,6 +234,12 @@ public class AtendeServidor extends Thread{
 	//receber a resposta se acertou ou não num barco do inimigo
 	public void respostaAtaque(Mensagem msg) throws IOException{
 		
+		ImageIcon hit = new ImageIcon("Imagens/aguaHit.png");	
+		ImageIcon fail = new ImageIcon("Imagens/aguaFail.png");
+		
+		int posX = msg.getNumero().getPosX() -1; //-1 para acertar a coisa
+		int posY = msg.getLetra().getPosY() -1;
+		
 		//ATACOU COORDENADA REPETIDA
 		if(msg.getType() == Macros.MSG_ATACAR_COORD_REPETIDA){
 			JOptionPane.showMessageDialog(jogoFrame, "Já tinha atacado esta posição.\n Ataque outra.");					
@@ -241,7 +251,8 @@ public class AtendeServidor extends Thread{
 			JOptionPane.showMessageDialog(jogoFrame, "Água :(");
 
 			//mudar o icone azul no tabuleiro para agua
-			
+			//y, x
+			jogo.getBotaoAdv(posY, posX).setIcon(fail);
 			return;
 		}
 		
@@ -250,7 +261,8 @@ public class AtendeServidor extends Thread{
 			JOptionPane.showMessageDialog(jogoFrame, "Acertou!");
 			
 			//mudar o icone azul no tabuleiro para uma explosao
-			
+			//y,x
+			jogo.getBotaoAdv(posY, posX).setIcon(hit);
 			return;
 		}
 			
