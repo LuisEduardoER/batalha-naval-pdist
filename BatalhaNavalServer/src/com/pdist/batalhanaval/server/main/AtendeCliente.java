@@ -357,7 +357,7 @@ public class AtendeCliente extends Thread{
 			}
 			
 			
-		}else{												//jogador 2 //TODO jogador 2 nao recebe nada!
+		}else{												//jogador 2
 			
 			if(game.getJogo().getTurn() == 2){
 				System.out.println("JOGADOR 2 TURNO"); //teste
@@ -369,6 +369,7 @@ public class AtendeCliente extends Thread{
 							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
 						else
 							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+						
 						
 						game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 						game.getJogo().setTurn(1);	

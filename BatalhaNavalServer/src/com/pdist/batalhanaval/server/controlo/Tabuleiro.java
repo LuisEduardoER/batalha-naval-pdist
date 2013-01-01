@@ -10,21 +10,29 @@ public class Tabuleiro implements Serializable{
 	private ArrayList<Ships> barcos;
 	private int ships;
 	
+	private int numQuadBarco;  //numero de quadriculas barco
+	
 	//construtores
 	public Tabuleiro(){
 		tabuleiro = new ArrayList<UnidadeTabuleiro>();
 		barcos = new ArrayList<Ships>();
 		ships = 0;
+		
+		numQuadBarco = 0;
 	}
 	public Tabuleiro(ArrayList<UnidadeTabuleiro> tabuleiro){
 		this.tabuleiro = tabuleiro;
 		barcos = new ArrayList<Ships>();
 		ships = 0;
+		
+		numQuadBarco = 0;
 	}
 	public Tabuleiro(ArrayList<UnidadeTabuleiro> tabuleiro, ArrayList<Ships> barcos){
 		this.tabuleiro = tabuleiro;
 		this.barcos = barcos;
 		ships = barcos.size();
+		
+		numQuadBarco = 0;
 	}
 	
 	//Getters
@@ -32,12 +40,16 @@ public class Tabuleiro implements Serializable{
 	public ArrayList<Ships> getBarcos() {return barcos;}
 	public int getShips() {return ships;}
 	
+	public int getNumQuadBarcos(){return numQuadBarco;}
+	
 	//Setters
 	public void setTabuleiro(ArrayList<UnidadeTabuleiro> tabuleiro) {this.tabuleiro = tabuleiro;}
 	public void setBarcos(ArrayList<Ships> barcos) {
 		this.barcos = barcos;
 		ships = barcos.size();
 	}
+	
+	public void setNumQuadBarcos(int numQuadBarco){this.numQuadBarco = numQuadBarco;}
 	
 	//Para o caso de se retirarem ou adicionarem barcos
 	public void updateShips() {ships = barcos.size();}

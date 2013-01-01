@@ -58,6 +58,12 @@ public class GameThread extends Thread{
 		jogo.getC1().setTabuleiro(tab1);
 		jogo.getC2().setTabuleiro(tab2);
 		
+		//valores fixos SE OS BARCOS FOREM GERADOS ALEAT. NAO FUNCIONA!!
+		//nota: o numero de quadriculas barco terá de ser igual para os 2, nenhum jogador pode ter mais 
+		//  ou menos barcos do que o outro
+		jogo.getC1().getTabuleiro().setNumQuadBarcos(11);
+		jogo.getC2().getTabuleiro().setNumQuadBarcos(11);
+		
 		
 		if(jogo.isStarted()){
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
