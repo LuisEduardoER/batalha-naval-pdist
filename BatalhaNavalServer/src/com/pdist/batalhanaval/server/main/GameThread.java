@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.controlo.Jogo;
+import com.pdist.batalhanaval.server.controlo.Letra;
+import com.pdist.batalhanaval.server.controlo.Numero;
 import com.pdist.batalhanaval.server.controlo.Ships;
 import com.pdist.batalhanaval.server.controlo.Tabuleiro;
 import com.pdist.batalhanaval.server.controlo.UnidadeTabuleiro;
@@ -95,16 +97,22 @@ public class GameThread extends Thread{
 	}
 
 	public Jogo getJogo(){return jogo;}
-	public void notifyAtack(int jog) throws IOException{
-		
+	//public void notifyAtack(int jog) throws IOException{
+	public void notifyAtack(int jog, int y, int x) throws IOException{	
+	
 		System.out.println("-notifyAtack-"); //so para testes
+		
+		Letra coord_y = new Letra('a', y);
+		Numero coord_x = new Numero('1', x);
+		
+		Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB, coord_y, coord_x);
 		
 		if(jog == 1){
 			System.out.println("-notifyAtack- JOG1"); //so para testes
-			Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
-			ArrayList<Integer> array = new ArrayList<Integer>();
-			for(int i = 0;i < jogo.getC1().getTabuleiro().getTabuleiro().size();i++)
-				array.add(jogo.getC1().getTabuleiro().getTabuleiro().get(i).getImage());
+			//Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
+			//ArrayList<Integer> array = new ArrayList<Integer>();
+			//for(int i = 0;i < jogo.getC1().getTabuleiro().getTabuleiro().size();i++)
+			//	array.add(jogo.getC1().getTabuleiro().getTabuleiro().get(i).getImage());
 			
 			
 			System.out.println("-notifyAtack- JOG1 - about to send"); //so para testes
@@ -114,10 +122,10 @@ public class GameThread extends Thread{
 			System.out.println("-notifyAtack- JOG1 sent"); //so para testes
 		}else{
 			System.out.println("-notifyAtack- JOG2"); //so para testes
-			Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
-			ArrayList<Integer> array = new ArrayList<Integer>();
-			for(int i = 0;i < jogo.getC2().getTabuleiro().getTabuleiro().size();i++)
-				array.add(jogo.getC2().getTabuleiro().getTabuleiro().get(i).getImage());
+			//Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
+			//ArrayList<Integer> array = new ArrayList<Integer>();
+			//for(int i = 0;i < jogo.getC2().getTabuleiro().getTabuleiro().size();i++)
+			//	array.add(jogo.getC2().getTabuleiro().getTabuleiro().get(i).getImage());
 			
 			System.out.println("-notifyAtack- JOG2 about to send"); //so para testes
 			out2.flush();

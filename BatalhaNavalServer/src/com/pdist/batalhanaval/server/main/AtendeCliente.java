@@ -394,7 +394,8 @@ public class AtendeCliente extends Thread{
 			System.out.println(msg.getType()); //para testes
 			
 			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
-				game.notifyAtack(t);
+				game.notifyAtack(t, posY, posX);
+				//game.notifyAtack(t);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

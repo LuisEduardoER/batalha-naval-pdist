@@ -21,6 +21,8 @@ public class AtendeServidor extends Thread{
 	protected JDialog listajogadores;
 	protected Jogo jogo;
 	
+	JButton[][] botao = new JButton[10][10]; //botoes do mapa esquerdo
+	
 	
 	//CONSTRUTOR
 	public AtendeServidor(JFrame jFrame, JDialog listajogadores, Jogo jogo){
@@ -72,8 +74,8 @@ public class AtendeServidor extends Thread{
 						respostaAtaque(msg);
 						break;
 					case Macros.MSG_ACTUALIZAR_YOUR_TAB: //fui atacado, actualizar tabuleiro
-						//...
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)MSG_ACTUALIZAR_YOUR_TAB");
+						actualizarTabuleiro(msg);
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
@@ -152,7 +154,7 @@ public class AtendeServidor extends Thread{
 	public void receberTabuleiro(Mensagem msg){
 	
 		//BUTOES
-		JButton[][] botao = new JButton[10][10];
+		//JButton[][] botao = new JButton[10][10];
 		//IMAGENS (nota: apenas precisa destas imagens porque esta função só é chamada no inicio do jogo)
 		ImageIcon agua = new ImageIcon("Imagens/agua.png");
 		ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
@@ -229,6 +231,36 @@ public class AtendeServidor extends Thread{
 				return;
 			}
 		}
+		
+		
+		
+	//actualiza o mapa (ESQUERDO) com a coordenada que foi atacada	
+	public void actualizarTabuleiro(Mensagem msg) throws IOException{
+		
+		//IMAGENS
+		ImageIcon fail = new ImageIcon("Imagens/aguaFail.png"); //agua
+		ImageIcon hitEsq = new ImageIcon("Imagens/barcos/fogo/barco_esq_f.png"); //explosao esquerda
+		ImageIcon hitMeio = new ImageIcon("Imagens/barcos/fogo/barco_meio_f.png"); //explosao meio
+		ImageIcon hitDir = new ImageIcon("Imagens/barcos/fogo/barco_dir_f.png"); //explosao direita
+		
+		int coordY = msg.getLetra().getPosY() -1; //-1 para acertar a coisa
+		int coordX = msg.getNumero().getPosX() -1;
+		
+		//agua
+		botao[coordY][coordX].setDisabledIcon(fail);
+		
+		//filtrar as imagens
+		
+		//hit esquerdo
+		botao[coordY][coordX].setDisabledIcon(hitEsq);
+		//hit meio
+		botao[coordY][coordX].setDisabledIcon(hitMeio);
+		//hit direito
+		botao[coordY][coordX].setDisabledIcon(hitDir);
+		
+		jogoFrame.repaint();
+		
+	}
 		
 		
 	//receber a resposta se acertou ou não num barco do inimigo
