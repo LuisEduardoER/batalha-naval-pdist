@@ -22,12 +22,12 @@ public class AtendeCliente extends Thread{
 	protected Cliente cliente;
 	protected GameThread game;
 	
+	
 	public AtendeCliente(Socket s){
 		game = null;
 		socket = s;
 		criaCliente();				
 		logIn = false;
-		
 		
 		try {
 			in = new ObjectInputStream(socket.getInputStream());    //so pode ser criado uma vez (no cria cliente ja actualizei)
@@ -275,14 +275,14 @@ public class AtendeCliente extends Thread{
 	}
 
 	private void setTabuleiro(Mensagem msg){
-		
+	/*	
 		Tabuleiro tab = new Tabuleiro();
 		//ArrayList<Integer> t = msg.getTabuleiro();
 		tab = msg.getTabuleiro();
 		
 		//TEM DE SER ALTERADO!! O TABULEIRO ESTA A SER CRIADO NA GAMETHREAD
 		
-		/*
+		
 		UnidadeTabuleiro uni = new UnidadeTabuleiro(); //TODO UnidadeTabuleiro uni = null; ???, UnidadeTabuleiro uni = new UnidadeTabuleiro(); nao?
 			
 		for(int i = 0; i<Macros.SIZE_X;i++){
@@ -329,46 +329,60 @@ public class AtendeCliente extends Thread{
 		
 		int t = 0;
 		
+		int posX = msg.getNumero().getPosX();
+		int posY = msg.getLetra().getPosY();
 		
 		//ATACA NO TABULEIRO ADVERSARIO
 		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
 			if(game.getJogo().getTurn() == 1){
-				int pos = msg.getPosTab();
-				if(pos<0 || pos> (game.getJogo().getC2().getTabuleiro().getTabuleiro().size()-1))
-					msg.setType(Macros.MSG_ATACAR_FAIL);
-				else
-					if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isShooted())
-						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA); //TODO isto devia ser logo validado pelo cliente.. assim ha mais comunicacoes escusadas..
-					else{
-						if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isBoat()) 
-							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
-						else
-							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+				System.out.println("JOGADOR1 TURNO");
+				//int pos = msg.getPosTab();
+				//if(pos<0 || pos> (game.getJogo().getC2().getTabuleiro().getTabuleiro().size()-1)){
+				//if(msg.getLetra().getPosY()<0 || msg.getLetra().getPosY() > game.getJogo().getC2().getTabuleiro().getUnidade(l, n))
+				//if(game.getJogo().getC2().getTabuleiro().getUnidade(msg.getLetra(), msg.getNumero()).isShooted() == true)
+				if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
+					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+					System.out.println("tentou atacar coordenada repetida");
+				}else{
+					//if(game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).isBoat()) 
+					if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
+						msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
+					else
+						msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
 						
-						game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
-						game.getJogo().setTurn(2);	
-						t = 2;
-					}	
+					//game.getJogo().getC2().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
+					game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).setShooted(true);
+					game.getJogo().setTurn(2);	
+					t = 2;
+				}
 			}
 			
+			
 		}else{												//jogador 2 //TODO jogador 2 nao recebe nada!
+			
 			if(game.getJogo().getTurn() == 2){
-				int pos = msg.getPosTab();
-				if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))
-					msg.setType(Macros.MSG_ATACAR_FAIL);
-				else
-					if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isShooted())
-						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
-					else{
-						if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isBoat())
+				System.out.println("JOGADOR 2 TURNO"); //teste
+				//int pos = msg.getPosTab();
+				//if(pos<0 || pos> (game.getJogo().getC1().getTabuleiro().getTabuleiro().size()-1))
+				//	msg.setType(Macros.MSG_ATACAR_FAIL);
+				if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
+					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+					System.out.println("tentou atacar coordenada repetida");
+				}else{
+					//if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isShooted())
+					//	msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+					//else{
+						//if(game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).isBoat())
+						if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
 							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
 						else
 							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
 						
-						game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
+						//game.getJogo().getC1().getTabuleiro().getTabuleiro().get(pos).setShooted(true);
+						game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 						game.getJogo().setTurn(1);	
 						t = 1;
-					}	
+				}
 			}
 		}
 			
@@ -377,7 +391,9 @@ public class AtendeCliente extends Thread{
 			out.writeObject(msg);
 			out.flush();
 			
-			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) );
+			System.out.println(msg.getType()); //para testes
+			
+			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
 				game.notifyAtack(t);
 			
 		} catch (IOException e) {

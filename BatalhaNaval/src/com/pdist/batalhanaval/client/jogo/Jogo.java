@@ -99,7 +99,7 @@ public class Jogo implements ActionListener{
 				   for(int j=0; j<10; j++){	
 					   
 					   //Botoes do MAPA ESQUERDO (so para o jogador visualizar o seu mapa)
-					   if(botao[i][j].getBounds().x == x &&
+					   /*if(botao[i][j].getBounds().x == x &&
 							   botao[i][j].getBounds().y == y)
 					   {	
 						   botao[i][j].setIcon(aguaAlvo);					   
@@ -107,7 +107,7 @@ public class Jogo implements ActionListener{
 						   
 						   //Gerar aleatoriamente os barcos do cliente
 					   
-					   }
+					   }*/
 					   
 					   
 					   //==================
@@ -116,7 +116,8 @@ public class Jogo implements ActionListener{
 					   
 					   //Botoes do MAPA DIREITO (para o jogador ter a possibilidade de acertar nos barcos do inimigo)
 					   
-					   else if(botaoAdv[i][j].getBounds().x == x &&
+					   //else if(botaoAdv[i][j].getBounds().x == x &&
+					   if(botaoAdv[i][j].getBounds().x == x &&
 							   botaoAdv[i][j].getBounds().y == y)
 					   {				 		
 						   
@@ -146,16 +147,21 @@ public class Jogo implements ActionListener{
 						   //enviar coordenada a atacar ao servidor
 						      //Letra y = new Letra(char, numero);
 						      //Numero x = new Numero(char, numero);
-						   Letra coord_y = new Letra('a', y);
-						   Numero coord_x = new Numero('1', x);
+						   //Letra coord_y = new Letra('a', y);
+						   //Numero coord_x = new Numero('1', x);
+						   Letra coord_y = new Letra('a', i+1);
+						   Numero coord_x = new Numero('1', j+1);
+						   
 						   
 						   Mensagem msg = new Mensagem(Macros.MSG_ATACAR, coord_y, coord_x); //atacar, Y(letra), X(numero)
 						   try{
 							   SocketClient_TCP.getOut().flush();
 							   SocketClient_TCP.getOut().writeObject(msg);
 							   SocketClient_TCP.getOut().flush();
+						   }catch(NullPointerException exp){
+							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(NullPointer)" + exp);
 						   }catch(IOException exp){
-							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(IOException)");
+							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(IOException)" + exp);
 						   }
 						   
 						   //recebe a resposta (acertou?) no AtendeServidor

@@ -43,6 +43,7 @@ public class Tabuleiro implements Serializable{
 	public void updateShips() {ships = barcos.size();}
 	
 	
+	
 	//para ir buscar a unidade certa
 	public UnidadeTabuleiro getUnidade(Letra l, Numero n){
 		UnidadeTabuleiro u = new UnidadeTabuleiro();
@@ -56,6 +57,19 @@ public class Tabuleiro implements Serializable{
 		u = tabuleiro.get(pos-1);			
 		return u;
 	}
+	
+	//para ir buscar a unidade certa (com argumentos diferentes)
+		public UnidadeTabuleiro getUnidade(int y, int x){
+
+			for(int i=0; i<tabuleiro.size(); i++){
+				if(tabuleiro.get(i).getX() == x)
+					if(tabuleiro.get(i).getY() == y)
+						return tabuleiro.get(i);
+			}
+
+			return null; //erro
+		}
+	
 	
 	
 	public void setShipsOnTab(){

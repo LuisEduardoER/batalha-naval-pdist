@@ -69,6 +69,7 @@ public class AtendeServidor extends Thread{
 						break;
 					case Macros.MSG_ACTUALIZAR_YOUR_TAB: //fui atacado, actualizar tabuleiro
 						//...
+						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)MSG_ACTUALIZAR_YOUR_TAB");
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
@@ -148,9 +149,12 @@ public class AtendeServidor extends Thread{
 	
 		//BUTOES
 		JButton[][] botao = new JButton[10][10];
-		//IMAGENS
+		//IMAGENS (nota: apenas precisa destas imagens porque esta função só é chamada no inicio do jogo)
 		ImageIcon agua = new ImageIcon("Imagens/agua.png");
+		ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
 		ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
+		ImageIcon barcoDir = new ImageIcon("Imagens/barcos/barco_dir.png");	
+		
 		
 		int x = 70;
 		int y = 70;
@@ -164,8 +168,15 @@ public class AtendeServidor extends Thread{
 				   botao[i][j].setDisabledIcon(agua); //senao aparecia cinzento quando nao esta em "enabled"
 				   botao[i][j].setEnabled(false);
 				   //formula marada (i)*10 ) + (j) para obter a quadricula certa
-				   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).isBoat())
-					   botao[i][j].setDisabledIcon(barcoMeio);
+				   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).isBoat()){
+					   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).getImage() == Macros.IMAGEM_BARCO_ESQ)
+						   botao[i][j].setDisabledIcon(barcoEsq);
+					   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).getImage() == Macros.IMAGEM_BARCO_MEIO)
+						   botao[i][j].setDisabledIcon(barcoMeio);
+					   if(msg.getTabuleiro().getTabuleiro().get( (i)*10 + (j) ).getImage() == Macros.IMAGEM_BARCO_DIR)
+						   botao[i][j].setDisabledIcon(barcoDir);
+				   }
+					   
 					
 				   jogoFrame.getContentPane().add(botao[i][j]);
 			   }
