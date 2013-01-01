@@ -51,18 +51,26 @@ public class GameThread extends Thread{
 	public void run() {
 		Mensagem msg = null;
 		
+		Tabuleiro tab1 = gerarTabuleiro();
+		Tabuleiro tab2 = gerarTabuleiro();
+		jogo.getC1().setTabuleiro(tab1);
+		jogo.getC2().setTabuleiro(tab2);
 		
 		
 		if(jogo.isStarted()){
 			System.out.println("Inicia Mensagens Game Thread...");  //teste
 			
 			//a mensagem pode ser a mesma porque o tabuleiro não é random (caso contrario é preciso enviar uma mensagem diferente para cada jogador)
-			msg = new Mensagem(Macros.MSG_GET_TABULEIRO, gerarTabuleiro());
+			//msg = new Mensagem(Macros.MSG_GET_TABULEIRO, gerarTabuleiro());
 			try {
-								
+				
+				msg = new Mensagem(Macros.MSG_GET_TABULEIRO, tab1);
+				
 				out1.flush();
 				out1.writeObject(msg);
 				out1.flush();
+				
+				msg = new Mensagem(Macros.MSG_GET_TABULEIRO, tab2);
 				
 				out2.flush();
 				out2.writeObject(msg);
@@ -198,9 +206,9 @@ public class GameThread extends Thread{
 		tab = new Tabuleiro(unidades, barcos);
 		
 		//CASO O TABULEIRO SEJA ALEATORIO É PRECISO ALTERAR ISTO
-		jogo.getC1().setTabuleiro(tab);
-		Tabuleiro tab2 = new Tabuleiro(unidades, barcos);
-		jogo.getC2().setTabuleiro(tab2);
+		//jogo.getC1().setTabuleiro(tab);
+		//Tabuleiro tab2 = new Tabuleiro(unidades, barcos);
+		//jogo.getC2().setTabuleiro(tab2);
 		
 		return tab;
 	}
