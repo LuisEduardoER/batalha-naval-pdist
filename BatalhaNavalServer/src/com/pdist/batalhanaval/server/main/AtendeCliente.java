@@ -328,9 +328,11 @@ public class AtendeCliente extends Thread{
 	private void setAtaque(Mensagem msg){
 		
 		int t = 0;
+		int imagem = 0; //imagem da quadricula
 		
 		int posX = msg.getNumero().getPosX();
 		int posY = msg.getLetra().getPosY();
+		
 		
 		//ATACA NO TABULEIRO ADVERSARIO
 		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
@@ -354,6 +356,9 @@ public class AtendeCliente extends Thread{
 					game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 					game.getJogo().setTurn(2);	
 					t = 2;
+					
+					
+					imagem = game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).getImage();
 				}
 			}
 			
@@ -382,6 +387,8 @@ public class AtendeCliente extends Thread{
 						game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
 						game.getJogo().setTurn(1);	
 						t = 1;
+						
+						imagem = game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).getImage();
 				}
 			}
 		}
@@ -393,9 +400,10 @@ public class AtendeCliente extends Thread{
 			
 			System.out.println(msg.getType()); //para testes
 			
+			
 			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
-				game.notifyAtack(t, posY, posX);
-				//game.notifyAtack(t);
+				game.notifyAtack(t, posY, posX, imagem);
+			
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -74,20 +74,25 @@ public class AtendeServidor extends Thread{
 						respostaAtaque(msg);
 						break;
 					case Macros.MSG_ACTUALIZAR_YOUR_TAB: //fui atacado, actualizar tabuleiro
-						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)MSG_ACTUALIZAR_YOUR_TAB");
 						actualizarTabuleiro(msg);
 						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
 						//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro recebido
 						receberTabuleiro(msg);
-						  //criar o tabuleiro direito para os ataques (talvez seja melhor ficar na classe JOGO)
-						  //criarTabuleiroAtaques(); 
 						
 						//EnviaTabuleiro(msg); (ver comment da funcao)
 						//JOptionPane.showMessageDialog(jogoFrame, "(TESTE)ENVIADO TABULEIRO");							
 						break;
-
+						
+					case Macros.MSG_VITORIA:
+						JOptionPane.showMessageDialog(jogoFrame, "VITORIA!");
+						//...
+						break;
+					case Macros.MSG_DERROTA:
+						JOptionPane.showMessageDialog(jogoFrame, "Derrota..");
+						//...
+						break;
 				}
 				
 			}catch(SocketTimeoutException e){
@@ -153,8 +158,6 @@ public class AtendeServidor extends Thread{
 	//para imprimir o tabuleiro esquerdo (do proprio jogador) conforme os dados do tabuleiro recebido
 	public void receberTabuleiro(Mensagem msg){
 	
-		//BUTOES
-		//JButton[][] botao = new JButton[10][10];
 		//IMAGENS (nota: apenas precisa destas imagens porque esta função só é chamada no inicio do jogo)
 		ImageIcon agua = new ImageIcon("Imagens/agua.png");
 		ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
@@ -219,7 +222,6 @@ public class AtendeServidor extends Thread{
 				 Jogo.setNomeJogador2(ListaJogosEJogadores.nomeJogadorConvidado); //nome do jogador convidado 
 	             BatalhaNaval_Client.setEstado("A aguardar que o jogador (X) ataque!"); 
 				
-				//TODO iniciar jogo!! ou entao é iniciado logo pelo server
 			}
 			if(msg.getResponseText().equals(Macros.REJEITAR_PEDIDO)){ //pedido RECUSADO
 				JOptionPane.showMessageDialog(jogoFrame, "O convite foi rejeitado pelo jogador!");
@@ -245,18 +247,27 @@ public class AtendeServidor extends Thread{
 		
 		int coordY = msg.getLetra().getPosY() -1; //-1 para acertar a coisa
 		int coordX = msg.getNumero().getPosX() -1;
+			
+		JOptionPane.showMessageDialog(jogoFrame, "Foi atacado");
+		
+		//FILTRAR AS IMAGENS
+			
+		//JOptionPane.showMessageDialog(jogoFrame, msg.getImagem()); //so para testes
 		
 		//agua
-		botao[coordY][coordX].setDisabledIcon(fail);
-		
-		//filtrar as imagens
+		if(msg.getImagem() == Macros.IMAGEM_FAIL)
+			botao[coordY][coordX].setDisabledIcon(fail);
 		
 		//hit esquerdo
-		botao[coordY][coordX].setDisabledIcon(hitEsq);
+		if(msg.getImagem() == Macros.IMAGEM_BARCO_ESQ)
+			botao[coordY][coordX].setDisabledIcon(hitEsq);
 		//hit meio
-		botao[coordY][coordX].setDisabledIcon(hitMeio);
+		if(msg.getImagem() == Macros.IMAGEM_BARCO_MEIO)
+			botao[coordY][coordX].setDisabledIcon(hitMeio);
 		//hit direito
-		botao[coordY][coordX].setDisabledIcon(hitDir);
+		if(msg.getImagem() == Macros.IMAGEM_BARCO_DIR)
+			botao[coordY][coordX].setDisabledIcon(hitDir);
+		
 		
 		jogoFrame.repaint();
 		
@@ -283,7 +294,6 @@ public class AtendeServidor extends Thread{
 			JOptionPane.showMessageDialog(jogoFrame, "Água :(");
 
 			//mudar o icone azul no tabuleiro para agua
-			//y, x
 			jogo.getBotaoAdv(posY, posX).setIcon(fail);
 			return;
 		}
@@ -293,7 +303,6 @@ public class AtendeServidor extends Thread{
 			JOptionPane.showMessageDialog(jogoFrame, "Acertou!");
 			
 			//mudar o icone azul no tabuleiro para uma explosao
-			//y,x
 			jogo.getBotaoAdv(posY, posX).setIcon(hit);
 			return;
 		}

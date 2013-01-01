@@ -21,7 +21,8 @@ public class UnidadeTabuleiro implements Serializable{
 
 		this.x = x;
 		this.y = y;
-		image = -1;
+		//image = -1;
+		image = Macros.IMAGEM_FAIL; //por default fica esta imagem
 		isBoat = shooted = false;
 	}
 	
@@ -38,8 +39,8 @@ public class UnidadeTabuleiro implements Serializable{
 	public void setImage(int image) {this.image = image;}
 	public void setOcupied(boolean isBoat) {this.isBoat = isBoat;}
 	public void setShooted(boolean shooted) {
-		if(shooted)
-			image = Macros.IMAGEM_SHOTED; 
+		//if(shooted)
+			//image = Macros.IMAGEM_FAIL; isto não é necessario e causa conflitos
 		this.shooted = shooted;}
 
 	//Verificar se um ponto está na quadricula

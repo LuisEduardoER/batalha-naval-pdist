@@ -28,6 +28,8 @@ public class Mensagem implements Serializable {
 		//private ArrayList<Integer> tabuleiro;
 		private Tabuleiro tabuleiro;
 		
+		private int imagem; //imagem da quadricula
+		
 		//construtores
 		public Mensagem(int type){
 			this.type = type;
@@ -43,6 +45,7 @@ public class Mensagem implements Serializable {
 			//tabuleiro = new ArrayList<Integer>();
 			tabuleiro = null;
 			posTab = -1;
+			imagem = -1;
 		}		
 		public Mensagem(int type, String msg_text){
 			this.type = type;
@@ -58,6 +61,7 @@ public class Mensagem implements Serializable {
 			//tabuleiro = new ArrayList<Integer>();
 			tabuleiro = null;
 			posTab = -1;
+			imagem = -1;
 		}
 		public Mensagem(int type, Letra letra, Numero numero){
 			this.type = type;
@@ -73,6 +77,7 @@ public class Mensagem implements Serializable {
 			//tabuleiro = new ArrayList<Integer>();
 			tabuleiro = null;
 			posTab = -1;
+			imagem = -1;
 		}
 		public Mensagem(int type, Cliente cliente1, Cliente cliente2){
 			this.type = type;
@@ -88,6 +93,7 @@ public class Mensagem implements Serializable {
 			//tabuleiro = new ArrayList<Integer>();
 			tabuleiro = null;
 			posTab = -1;
+			imagem = -1;
 		}
 		
 		//mensagem para enviar o tabuleiro
@@ -105,10 +111,12 @@ public class Mensagem implements Serializable {
 			//tabuleiro = new ArrayList<Integer>();
 			tabuleiro = tab;
 			posTab = -1;
+			imagem = -1;
 		}
 		
 		
 		//getters
+		public int getImagem(){return imagem;}
 		public int getType(){return type;}		
 		public String getMsgText(){return msg_text;}
 		public Letra getLetra(){return letra;}
@@ -124,6 +132,7 @@ public class Mensagem implements Serializable {
 		public int getPosTab(){return posTab;}
 		
 		//Setters
+		public void setImagem(int imagem){this.imagem = imagem;}
 		public void setType(int type){this.type = type;}
 		public void setMsgText(String msg_text){this.msg_text = msg_text;}
 		public void setLetra(Letra letra){this.letra = letra;}

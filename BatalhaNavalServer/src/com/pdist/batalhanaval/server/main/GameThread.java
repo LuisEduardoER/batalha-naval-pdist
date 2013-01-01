@@ -98,7 +98,7 @@ public class GameThread extends Thread{
 
 	public Jogo getJogo(){return jogo;}
 	//public void notifyAtack(int jog) throws IOException{
-	public void notifyAtack(int jog, int y, int x) throws IOException{	
+	public void notifyAtack(int jog, int y, int x, int img) throws IOException{	
 	
 		System.out.println("-notifyAtack-"); //so para testes
 		
@@ -106,32 +106,20 @@ public class GameThread extends Thread{
 		Numero coord_x = new Numero('1', x);
 		
 		Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB, coord_y, coord_x);
+		msg.setImagem(img);
 		
 		if(jog == 1){
-			System.out.println("-notifyAtack- JOG1"); //so para testes
-			//Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
-			//ArrayList<Integer> array = new ArrayList<Integer>();
-			//for(int i = 0;i < jogo.getC1().getTabuleiro().getTabuleiro().size();i++)
-			//	array.add(jogo.getC1().getTabuleiro().getTabuleiro().get(i).getImage());
-			
-			
-			System.out.println("-notifyAtack- JOG1 - about to send"); //so para testes
+					
 			out1.flush();
 			out1.writeObject(msg);
 			out1.flush();
-			System.out.println("-notifyAtack- JOG1 sent"); //so para testes
-		}else{
-			System.out.println("-notifyAtack- JOG2"); //so para testes
-			//Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB);
-			//ArrayList<Integer> array = new ArrayList<Integer>();
-			//for(int i = 0;i < jogo.getC2().getTabuleiro().getTabuleiro().size();i++)
-			//	array.add(jogo.getC2().getTabuleiro().getTabuleiro().get(i).getImage());
 			
-			System.out.println("-notifyAtack- JOG2 about to send"); //so para testes
+		}else{
+
 			out2.flush();
 			out2.writeObject(msg);
 			out2.flush();
-			System.out.println("-notifyAtack- JOG2 sent"); //so para testes
+
 		}
 	}
 	
@@ -147,6 +135,7 @@ public class GameThread extends Thread{
 				unidades.add(new UnidadeTabuleiro(j+1, i+1) ); //x-j, y-i
 			}
 		}
+		
 		
 		//gerar posição dos barcos OU (neste caso) definir posições fixas
 		ArrayList<UnidadeTabuleiro> unidades_barco1 = new ArrayList<UnidadeTabuleiro>();
