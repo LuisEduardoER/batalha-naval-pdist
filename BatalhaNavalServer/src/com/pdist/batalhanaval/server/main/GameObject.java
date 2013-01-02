@@ -13,7 +13,7 @@ import com.pdist.batalhanaval.server.controlo.UnidadeTabuleiro;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
-public class GameThread extends Thread{
+public class GameObject{
 
 	private Jogo jogo;
 	
@@ -21,7 +21,7 @@ public class GameThread extends Thread{
 	private ObjectOutputStream out2;
 	
 
-	public GameThread(Jogo jogo, ObjectOutputStream out1, ObjectOutputStream out2){
+	public GameObject(Jogo jogo, ObjectOutputStream out1, ObjectOutputStream out2){
 		this.jogo = jogo;
 		
 		//Alterado
@@ -39,8 +39,7 @@ public class GameThread extends Thread{
 				
 	}
 	
-	@Override
-	public synchronized void run() {
+	public synchronized void start() {
 		Mensagem msg = null;
 		
 		Tabuleiro tab1 = gerarTabuleiro();
@@ -55,8 +54,7 @@ public class GameThread extends Thread{
 		jogo.getC2().getTabuleiro().setNumQuadBarcos(11);
 		
 		
-		if(jogo.isStarted()){
-			System.out.println("Inicia Mensagens Game Thread...");  //teste
+		if(jogo.isStarted()){			
 			
 			//a mensagem pode ser a mesma porque o tabuleiro não é random (caso contrario é preciso enviar uma mensagem diferente para cada jogador)
 			//msg = new Mensagem(Macros.MSG_GET_TABULEIRO, gerarTabuleiro());
@@ -64,12 +62,13 @@ public class GameThread extends Thread{
 				
 				msg = new Mensagem(Macros.MSG_GET_TABULEIRO, tab1);
 				
+				msg.setMsgText(jogo.getC1().getNome()); //USADO PARA AVISAR DE QUEM É O TURNO
 				out1.flush();
 				out1.writeObject(msg);
 				out1.flush();
 				
 				msg = new Mensagem(Macros.MSG_GET_TABULEIRO, tab2);
-				
+				msg.setMsgText(jogo.getC1().getNome());
 				out2.flush();
 				out2.writeObject(msg);
 				out2.flush();			
@@ -86,14 +85,11 @@ public class GameThread extends Thread{
 			
 		}
 		
-		while(!jogo.isFim()){
 			
-			
-		}		
 	}
 
 	public Jogo getJogo(){return jogo;}
-	//public void notifyAtack(int jog) throws IOException{
+	
 	public void notifyAtack(int jog, int y, int x, int img) throws IOException{	
 	
 		System.out.println("-notifyAtack-"); //so para testes
@@ -104,19 +100,21 @@ public class GameThread extends Thread{
 		Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB, coord_y, coord_x);
 		msg.setImagem(img);
 		
-		if(jog == 1){					
+		if(jogo.getTurn() == 1)
+			msg.setMsgText(jogo.getC1().getNome());
+		else
+			msg.setMsgText(jogo.getC2().getNome());
+		
+		if(jog == 1){	
+			
 			out1.flush();
 			out1.writeObject(msg);
 			out1.flush();
-			System.out.println("O Jogador "+jogo.getC1().getNome()+" actualiza o tab");
 			
 		}else{
-
 			out2.flush();
 			out2.writeObject(msg);
 			out2.flush();
-			System.out.println("O Jogador "+jogo.getC2().getNome()+" actualiza o tab");
-
 		}
 	}
 	
@@ -189,12 +187,13 @@ public class GameThread extends Thread{
 		unidades_barco3.add( unidades.get(6) );
 		
 		  //criar o barco em si
-		Ships barco3 = new Ships(unidades_barco3);
+		//Ships barco3 = new Ships(unidades_barco3);
 		
 		  //criar o arraylist dos barcos
 		ArrayList<Ships> barcos = new ArrayList<Ships>();
 		barcos.add(barco1);
 		barcos.add(barco2);
+		
 		
 		//criar o tabuleiro
 		tab = new Tabuleiro(unidades, barcos);

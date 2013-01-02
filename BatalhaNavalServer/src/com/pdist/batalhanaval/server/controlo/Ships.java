@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 public class Ships implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<UnidadeTabuleiro> barco;
 	private int xStart, xEnd;
 	private int yStart, yEnd;

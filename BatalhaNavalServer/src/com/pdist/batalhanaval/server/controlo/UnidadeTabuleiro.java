@@ -5,6 +5,10 @@ import java.io.Serializable;
 import com.pdist.batalhanaval.server.macros.*;
 
 public class UnidadeTabuleiro implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int x,y;
 	private int image;
 	private boolean isBoat;

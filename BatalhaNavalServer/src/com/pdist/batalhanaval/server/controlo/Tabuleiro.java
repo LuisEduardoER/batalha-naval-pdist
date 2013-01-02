@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 public class Tabuleiro implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<UnidadeTabuleiro> tabuleiro;
 	private ArrayList<Ships> barcos;
 	private int ships;

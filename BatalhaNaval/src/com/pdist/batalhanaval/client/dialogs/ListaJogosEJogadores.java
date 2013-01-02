@@ -155,10 +155,12 @@ public class ListaJogosEJogadores extends JDialog {
 		//dizer ao servidor que se quer iniciar um jogo e passar o nome do jogador a convidar
 		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, VarsGlobais.listaJogadores.getSelectedValue());
 				
+		
 		//enviar mensagem
 		SocketClient_TCP.getOut().flush();
 		SocketClient_TCP.getOut().writeObject(msg);
-        
+		SocketClient_TCP.getOut().flush();
+		
 	}
 	
 	

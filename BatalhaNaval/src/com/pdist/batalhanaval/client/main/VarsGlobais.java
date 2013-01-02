@@ -24,5 +24,6 @@ public class VarsGlobais {
 	//para impedir que o user spamme o outro com convites enquanto não receber a resposta do ultimo que mandou
 	public static boolean sentConvite = false;
 	
+	
 	private VarsGlobais(){}
 }

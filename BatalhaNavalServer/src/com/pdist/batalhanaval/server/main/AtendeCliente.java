@@ -17,7 +17,7 @@ public class AtendeCliente extends Thread{
 	protected ObjectInputStream in;
 	protected boolean logIn;
 	protected Cliente cliente;
-	protected GameThread game;
+	protected GameObject game;
 	
 	
 	public AtendeCliente(Socket s){
@@ -65,10 +65,7 @@ public class AtendeCliente extends Thread{
 						break;
 					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo						
 						getResponse(msg);
-						break;
-					case Macros.MSG_SET_TABULEIRO: //Recebeu tabuleiro do utilizador	
-						setTabuleiro(msg);
-						break;
+						break;		
 					case Macros.MSG_ATACAR:
 						System.out.println("atacar?"); //so para testes
 						if(game!=null)
@@ -286,7 +283,7 @@ public class AtendeCliente extends Thread{
 		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
 		
 
-		GameThread jogo = new GameThread(j,	jog1.getOut(),jog2.getOut());
+		GameObject jogo = new GameObject(j,	jog1.getOut(),jog2.getOut());
 		
 		jog2.getMyThread().setGame(jogo);		
 		game = jogo;		
@@ -296,56 +293,9 @@ public class AtendeCliente extends Thread{
 		notifyChangesOnPlayers();
 	}
 
-	private synchronized void setTabuleiro(Mensagem msg){
-	/*	
-		Tabuleiro tab = new Tabuleiro();
-		//ArrayList<Integer> t = msg.getTabuleiro();
-		tab = msg.getTabuleiro();
-		
-		//TEM DE SER ALTERADO!! O TABULEIRO ESTA A SER CRIADO NA GAMETHREAD
-		
-		
-		UnidadeTabuleiro uni = new UnidadeTabuleiro(); //TODO UnidadeTabuleiro uni = null; ???, UnidadeTabuleiro uni = new UnidadeTabuleiro(); nao?
-			
-		for(int i = 0; i<Macros.SIZE_X;i++){
-			for(int j = 0;j<Macros.SIZE_Y;j++){
-				uni.setImage(t.get((i*10)+j)); // i*10+ j pk? //TODO isto ta correcto? 
-				uni.setX(i*30);
-				uni.setY(j*30);
-				if(uni.getImage() == Macros.IMAGEM_BARCO_ESQ || uni.getImage() == Macros.IMAGEM_BARCO_MEIO || uni.getImage() == Macros.IMAGEM_BARCO_DIR )
-					uni.setOcupied(true);
-				else
-					uni.setOcupied(false);
-					
-				
-				
-				if(uni.getImage() == Macros.IMAGEM_SHOTED)
-					uni.setShooted(true);
-				else
-					uni.setShooted(false);
-				
-				
-				
-				tab.getTabuleiro().add(uni);					
-			}
-		}
-			
-		
-		
-		if(cliente.getNome().equalsIgnoreCase(game.getJogo().getC1().getNome())){
-			game.getJogo().getC1().setTabuleiro(tab);
-			game.getJogo().getC1().getTabuleiro().setShipsOnTab();
-		}else{
-			game.getJogo().getC2().setTabuleiro(tab);
-			game.getJogo().getC2().getTabuleiro().setShipsOnTab();
-		}
-		
-		if(game.getJogo().getC1().getTabuleiro() != null && game.getJogo().getC2().getTabuleiro() != null)
-			game.getJogo().setStarted(true);
-		*/
-	}
+	
 
-	private synchronized void setGame(GameThread game){this.game = game;}
+	private synchronized void setGame(GameObject game){this.game = game;}
 	
 	private synchronized void setAtaque(Mensagem msg){
 		
@@ -403,7 +353,8 @@ public class AtendeCliente extends Thread{
 		}
 			
 		try {
-			System.out.println("O Jogador "+cliente.getNome()+" foi notificado do resultado do seu ataque");
+			
+			
 			out.flush();
 			out.writeObject(msg);
 			out.flush();

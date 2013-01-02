@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class BatalhaNaval_Client {
 
-	private static JFrame BatalhaNavalUI; //Provisorio...ou nao..
+	private static JFrame BatalhaNavalUI; 
 	private static JLabel lblEstado = new JLabel("a aguardar login...");	
 	private static MenuActionListener menuListener = new MenuActionListener();
 	private String background = "Imagens/outros/background.jpg";
