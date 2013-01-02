@@ -293,8 +293,6 @@ public class AtendeCliente extends Thread{
 		notifyChangesOnPlayers();
 	}
 
-	
-
 	private synchronized void setGame(GameObject game){this.game = game;}
 	
 	private synchronized void setAtaque(Mensagem msg){
@@ -365,7 +363,9 @@ public class AtendeCliente extends Thread{
 			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
 				game.notifyAtack(t, posY, posX, imagem);
 			
-			
+			if(game.getJogo().isFim()){
+				game = null;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		

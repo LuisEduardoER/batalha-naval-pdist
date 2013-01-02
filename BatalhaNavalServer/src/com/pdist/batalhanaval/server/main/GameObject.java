@@ -93,9 +93,10 @@ public class GameObject{
 	public void notifyAtack(int jog, int y, int x, int img) throws IOException{	
 	
 		System.out.println("-notifyAtack-"); //so para testes
-		
 		Letra coord_y = new Letra('a', y);
 		Numero coord_x = new Numero('1', x);
+	
+		
 		
 		Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB, coord_y, coord_x);
 		msg.setImagem(img);
@@ -111,11 +112,104 @@ public class GameObject{
 			out1.writeObject(msg);
 			out1.flush();
 			
+			//agua
+			if(img == Macros.IMAGEM_FAIL)
+				jogo.getC1().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_FAIL);					
+			//hit esquerdo
+			if(img == Macros.IMAGEM_BARCO_ESQ)
+				jogo.getC1().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_ESQ_FOGO);	
+			//hit meio
+			if(img == Macros.IMAGEM_BARCO_MEIO)
+				jogo.getC1().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_MEIO_FOGO);	
+			//hit direito
+			if(img == Macros.IMAGEM_BARCO_DIR)
+				jogo.getC1().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_DIR_FOGO);	
+			
+			boolean allHit = true;
+			for(int i = 0;i < 10;i++){
+				for(int j = 0;j<10;j++){
+					if(jogo.getC1().getTabuleiro().getUnidade(j+1, i+1).getImage()>1001 &&
+							jogo.getC1().getTabuleiro().getUnidade(j+1, i+1).getImage()<1005){
+						allHit = false;
+						break;
+					}
+				}
+			
+			}
+				
+				
+			System.out.println("ALLHIT: "+allHit);
+			if(allHit)
+				notifyOfEnd(jog);		
+			
 		}else{
 			out2.flush();
 			out2.writeObject(msg);
 			out2.flush();
+			//agua
+			if(img == Macros.IMAGEM_FAIL)
+				jogo.getC2().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_FAIL);					
+			//hit esquerdo
+			if(img == Macros.IMAGEM_BARCO_ESQ)
+				jogo.getC2().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_ESQ_FOGO);	
+			//hit meio
+			if(img == Macros.IMAGEM_BARCO_MEIO)
+				jogo.getC2().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_MEIO_FOGO);	
+			//hit direito
+			if(img == Macros.IMAGEM_BARCO_DIR)
+				jogo.getC2().getTabuleiro().getUnidade(y,x).setImage(Macros.IMAGEM_BARCO_DIR_FOGO);	
+			
+			boolean allHit = true;
+			for(int i = 0;i < 10;i++){
+				for(int j = 0;j<10;j++){
+					if(jogo.getC2().getTabuleiro().getUnidade(j+1, i+1).getImage()>1001 &&
+							jogo.getC2().getTabuleiro().getUnidade(j+1, i+1).getImage()<1005){
+						allHit = false;
+						break;
+					}
+				}
+			
+			}
+				
+			System.out.println("ALLHIT: "+allHit);
+			if(allHit)
+				notifyOfEnd(jog);
 		}
+				
+		
+	}
+		
+	private void notifyOfEnd(int jog)throws IOException{
+		if(jog == 1){//SE o 1 perdeu
+			Mensagem msg = new Mensagem(Macros.MSG_DERROTA);
+			out1.flush();
+			out1.writeObject(msg);
+			out1.flush();
+			
+			msg.setType(Macros.MSG_VITORIA);
+			out2.flush();
+			out2.writeObject(msg);
+			out2.flush();
+		}else{
+			Mensagem msg = new Mensagem(Macros.MSG_DERROTA);
+			out2.flush();
+			out2.writeObject(msg);
+			out2.flush();
+			
+			msg.setType(Macros.MSG_VITORIA);
+			out1.flush();
+			out1.writeObject(msg);
+			out1.flush();
+		}
+		
+		jogo.setFim(true);
+		VarsGlobais.jogos.remove(jogo);
+		VarsGlobais.nJogos--;
+		
+		VarsGlobais.ClientesOn.add(jogo.getC1());
+		VarsGlobais.nClientes++;
+		VarsGlobais.ClientesOn.add(jogo.getC2());
+		VarsGlobais.nClientes++;
 	}
 	
 	//ATENCAO! ISTO NAO ESTA A GERAR ALEATORIAMENTE, OS BARCOS SAO FIXOS

@@ -60,7 +60,7 @@ public class Macros {
 	public static final int IMAGEM_BARCO_DIR_FOGO = 1007;//resto do barco
 	
 	//provisorio
-	public static final int IMAGEM_SHOTED = 1007;
+	public static final int IMAGEM_SHOTED = 1008;
 	
 	private Macros(){} //Singleton
 	

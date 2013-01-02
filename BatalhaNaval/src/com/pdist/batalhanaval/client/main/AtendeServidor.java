@@ -85,10 +85,12 @@ public class AtendeServidor extends Thread{
 						
 					case Macros.MSG_VITORIA:
 						JOptionPane.showMessageDialog(jogoFrame, "VITORIA!");
+						initGame();
 						//...
 						break;
 					case Macros.MSG_DERROTA:
 						JOptionPane.showMessageDialog(jogoFrame, "Derrota..");
+						initGame();
 						//...
 						break;
 					case Macros.MSG_ONLINE_RESPONSE:
@@ -115,6 +117,23 @@ public class AtendeServidor extends Thread{
 	}
 	
 	
+	private void initGame(){	
+		jogoFrame.getContentPane().removeAll();
+		
+		String background = "Imagens/outros/background2.jpg";	
+		BatalhaNaval_Client.loadBackground(background);		
+		BatalhaNaval_Client.loadMenuBar();	
+		BatalhaNaval_Client.setEstado("Á espera de um novo jogo....");
+				
+		
+		jogo.criaMapaAdversario(400, 700);	
+		jogo.criaLabels();
+		
+		listajogadores.setVisible(true);
+		jogoFrame.getContentPane().repaint();
+		
+		
+	}
 	
 	private void showOnline(Mensagem msg){
 		VarsGlobais.modelListaJogadores.clear();
@@ -177,7 +196,6 @@ public class AtendeServidor extends Thread{
 		if(opcao == JOptionPane.YES_OPTION){
 			//JOptionPane.showMessageDialog(jogoFrame, "SIM");//remover depois
 			msg.setResponseText(Macros.ACEITAR_PEDIDO);
-			JOptionPane.showMessageDialog(jogoFrame, "Você aceitou o convite! \nA iniciar um novo jogo..");
 			listajogadores.dispose(); //se aceite...para fexar dialog
 			
 			 Jogo.setNomeJogador2(msg.getMsgText());
@@ -291,9 +309,6 @@ public class AtendeServidor extends Thread{
 		
 		int coordY = msg.getLetra().getPosY() -1; //-1 para acertar a coisa
 		int coordX = msg.getNumero().getPosX() -1;
-			
-		JOptionPane.showMessageDialog(jogoFrame, "Foi atacado");
-		
 		
 		//agua
 		if(msg.getImagem() == Macros.IMAGEM_FAIL)
@@ -314,6 +329,7 @@ public class AtendeServidor extends Thread{
 		}
 		else
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
+		
 		jogoFrame.repaint();
 		
 	}
@@ -337,7 +353,6 @@ public class AtendeServidor extends Thread{
 		
 		//FALHOU
 		if(msg.getType() == Macros.MSG_ATACAR_FAIL){
-			JOptionPane.showMessageDialog(jogoFrame, "Água :(");
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para agua
 			jogo.getBotaoAdv(posY, posX).setIcon(fail);
@@ -346,7 +361,6 @@ public class AtendeServidor extends Thread{
 		
 		//ACERTOU
 		if(msg.getType() == Macros.MSG_ATACAR_SUCCESS){
-			JOptionPane.showMessageDialog(jogoFrame, "Acertou!");
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para uma explosao
 			jogo.getBotaoAdv(posY, posX).setIcon(hit);
