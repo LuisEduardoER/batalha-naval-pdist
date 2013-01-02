@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 
+import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
 import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
 import com.pdist.batalhanaval.client.main.SocketClient_TCP;
@@ -63,7 +64,7 @@ public class Jogo implements ActionListener{
 	}
 	
 	
-	public Jogo(JDialog listajogadores) {
+	public Jogo(ListaJogosEJogadores listajogadores) {
 		
 		
 		BatalhaNavalUI = BatalhaNaval_Client.getBatalhaNavalUI();			

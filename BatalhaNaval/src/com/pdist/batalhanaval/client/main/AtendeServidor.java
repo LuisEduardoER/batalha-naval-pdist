@@ -1,12 +1,10 @@
 package com.pdist.batalhanaval.client.main;
 
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -18,14 +16,14 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class AtendeServidor extends Thread{
 
 	protected JFrame jogoFrame;
-	protected JDialog listajogadores;
+	protected ListaJogosEJogadores listajogadores;
 	protected Jogo jogo;
 	
 	JButton[][] botao = new JButton[10][10]; //botoes do mapa esquerdo
 	
 	
 	//CONSTRUTOR
-	public AtendeServidor(JFrame jFrame, JDialog listajogadores, Jogo jogo){
+	public AtendeServidor(JFrame jFrame, ListaJogosEJogadores listajogadores, Jogo jogo){
 		jogoFrame = jFrame;
 		this.listajogadores = listajogadores;
 		
@@ -76,6 +74,12 @@ public class AtendeServidor extends Thread{
 					case Macros.MSG_ACTUALIZAR_YOUR_TAB: //fui atacado, actualizar tabuleiro
 						actualizarTabuleiro(msg);
 						break;
+					case Macros.MSG_NOTIFY_CHANGES_PLAYERS:
+						actualizaListaJogadores();
+						break;
+					case Macros.MSG_NOTIFY_CHANGES_GAMES:
+						actualizaListaJogos();
+						break;
 					case Macros.MSG_GET_TABULEIRO: //obter tabuleiro do jogo
 						JOptionPane.showMessageDialog(jogoFrame, "(TESTE)GET TABULEIRO");
 						//imprimir o tabuleiro esquerdo conforme os dados do tabuleiro recebido
@@ -93,6 +97,12 @@ public class AtendeServidor extends Thread{
 						JOptionPane.showMessageDialog(jogoFrame, "Derrota..");
 						//...
 						break;
+					case Macros.MSG_ONLINE_RESPONSE:
+						showOnline(msg);
+						break;
+					case Macros.MSG_JOGOS_RESPONSE:
+						showGames(msg);
+						break;
 				}
 				
 			}catch(SocketTimeoutException e){
@@ -108,6 +118,56 @@ public class AtendeServidor extends Thread{
 			}//fim try catch	
 		}//fim while(true)
 		
+	}
+	
+	
+	
+	private void showOnline(Mensagem msg){
+		VarsGlobais.modelListaJogadores.clear();
+		for(int i = 0;i<msg.getNomesClientes().size();i++){
+			if(!msg.getNomesClientes().get(i).equals(listajogadores.getNomeJogador())){
+				VarsGlobais.modelListaJogadores.addElement(msg.getNomesClientes().get(i));
+			}
+		}
+		VarsGlobais.listaJogadores.setModel(VarsGlobais.modelListaJogadores);
+		listajogadores.repaint();
+	}
+	
+	private void showGames(Mensagem msg){
+		
+		VarsGlobais.modelListaJogos.clear();
+		for(int i = 0;i<msg.getNomesJogos().size();i++){			
+			VarsGlobais.modelListaJogos.addElement(msg.getNomesJogos().get(i));
+		}
+		VarsGlobais.listaJogos.setModel(VarsGlobais.modelListaJogos);
+		listajogadores.repaint();
+	}
+	
+	private void actualizaListaJogadores(){
+		try {
+			Mensagem msg = new Mensagem(Macros.MSG_LISTA_ONLINE);
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+			SocketClient_TCP.getOut().flush();
+			
+		} catch (IOException e) {
+			//ERRO A LIGAR AO SERVIDOR
+			JOptionPane.showMessageDialog(jogoFrame,"ERRO NO SERVIDOR.... VAI ENCERRAR");
+			System.exit(-1);
+		}
+	}
+	
+	private void actualizaListaJogos(){
+		try {			
+			Mensagem msg = new Mensagem(Macros.MSG_LISTA_JOGOS);
+			SocketClient_TCP.getOut().flush();
+			SocketClient_TCP.getOut().writeObject(msg);
+			SocketClient_TCP.getOut().flush();
+		} catch (IOException e) {
+			//ERRO A LIGAR AO SERVIDOR
+			JOptionPane.showMessageDialog(jogoFrame,"ERRO NO SERVIDOR.... VAI ENCERRAR");
+			System.exit(-1);
+		}
 	}
 	
 	//receber os convites feitos por outros jogadores

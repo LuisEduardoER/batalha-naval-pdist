@@ -39,7 +39,8 @@ public class Macros {
 	public static final int MSG_ACTUALIZAR_YOUR_TAB = 21;
 	public static final int MSG_ATACAR_COORD_REPETIDA = 23; //atacar uma coordenada que já foi atacada antes
 	
-	public static final int MSG_NOTIFY_CHANGES = 22;
+	public static final int MSG_NOTIFY_CHANGES_PLAYERS = 22;
+	public static final int MSG_NOTIFY_CHANGES_GAMES = 26;
 	
 	public static final int MSG_VITORIA = 24; //venceu o jogo
 	public static final int MSG_DERROTA = 25; //perdeu o jogo

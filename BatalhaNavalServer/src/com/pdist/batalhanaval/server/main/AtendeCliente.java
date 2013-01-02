@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.controlo.Cliente;
 import com.pdist.batalhanaval.server.controlo.Jogo;
-import com.pdist.batalhanaval.server.controlo.Tabuleiro;
-import com.pdist.batalhanaval.server.controlo.UnidadeTabuleiro;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
@@ -83,9 +80,10 @@ public class AtendeCliente extends Thread{
 					
 				}					
 			} catch (IOException | NullPointerException e) {
-				System.out.println("Cliente desligou");
+				System.out.println("Cliente desligou");		
 				VarsGlobais.ClientesOn.remove(cliente);		
 				VarsGlobais.nClientes--;
+				notifyChangesOnPlayers();
 				break;
 			} catch (ClassNotFoundException  e) {
 				System.out.println("ERR: Não é mensagem");				
@@ -98,7 +96,7 @@ public class AtendeCliente extends Thread{
 	}
 	
 	
-	private boolean validaLogin(Mensagem msg){
+	private synchronized boolean validaLogin(Mensagem msg){
 		boolean result = true;
 		
 		//ver se o nome não é repetido
@@ -115,11 +113,10 @@ public class AtendeCliente extends Thread{
 		return result;
 	}
 	
-	private void criaCliente(){
+	private synchronized void criaCliente(){
 		cliente = new Cliente(socket.getInetAddress());
 		cliente.setMySocket(socket);
 		
-		//New.. IN e OUT
 		cliente.setIn(in);
 		cliente.setOut(out);
 		
@@ -128,7 +125,7 @@ public class AtendeCliente extends Thread{
 	}
 	
 	
-	private void getLoginRequest(Mensagem msg) throws IOException{
+	private synchronized void getLoginRequest(Mensagem msg) throws IOException{
 		
 		if(!logIn){
 			if(!validaLogin(msg)){
@@ -146,7 +143,7 @@ public class AtendeCliente extends Thread{
 				VarsGlobais.ClientesOn.add(cliente);
 				VarsGlobais.nClientes++;
 				
-				notifyChanges();
+				notifyChangesOnPlayers();
 				
 				System.out.println("O cliente "+VarsGlobais.ClientesOn.get(VarsGlobais.nClientes-1).getNome()+" esta logado.");
 				System.out.println("Estão logados "+VarsGlobais.nClientes+" clientes");
@@ -160,15 +157,15 @@ public class AtendeCliente extends Thread{
 		}
 	}
 		
-	private void notifyChanges(){
-		for(int i = 0; i<VarsGlobais.ClientesOn.size()-2;i++){
-			Mensagem msg = new Mensagem(Macros.MSG_NOTIFY_CHANGES);
+	private void notifyChangesOnPlayers(){
+		System.out.println("O Jogador "+cliente.getNome()+" foi notificado");
+		for(int i = 0; i<VarsGlobais.ClientesOn.size();i++){
+			Mensagem msg = new Mensagem(Macros.MSG_NOTIFY_CHANGES_PLAYERS);
 			try {
-				ObjectOutputStream o = (ObjectOutputStream) VarsGlobais.ClientesOn.get(i).getMySocket().getOutputStream();
 			
-				o.flush();
-				o.writeObject(msg);
-				o.flush();
+				VarsGlobais.ClientesOn.get(i).getOut().flush();
+				VarsGlobais.ClientesOn.get(i).getOut().writeObject(msg);
+				VarsGlobais.ClientesOn.get(i).getOut().flush();
 				
 			} catch (IOException e) {
 				//admite-se que o cliente fechou
@@ -177,6 +174,32 @@ public class AtendeCliente extends Thread{
 					VarsGlobais.ClientesOn.get(i).getMyThread().finalize();
 					VarsGlobais.ClientesOn.remove(i);
 					VarsGlobais.nClientes--;
+					notifyChangesOnPlayers();
+				} catch (Throwable e1) {					
+					e1.printStackTrace();
+				}			
+			}			
+		}
+	}
+	
+	private void notifyChangesOnGames(){
+		System.out.println("O Jogador "+cliente.getNome()+" foi notificado");
+		for(int i = 0; i<VarsGlobais.ClientesOn.size();i++){
+			Mensagem msg = new Mensagem(Macros.MSG_NOTIFY_CHANGES_GAMES);
+			try {
+			
+				VarsGlobais.ClientesOn.get(i).getOut().flush();
+				VarsGlobais.ClientesOn.get(i).getOut().writeObject(msg);
+				VarsGlobais.ClientesOn.get(i).getOut().flush();
+				
+			} catch (IOException e) {
+				//admite-se que o cliente fechou
+				try {
+					VarsGlobais.ClientesOn.get(i).getMySocket().close();				
+					VarsGlobais.ClientesOn.get(i).getMyThread().finalize();
+					VarsGlobais.ClientesOn.remove(i);
+					VarsGlobais.nClientes--;
+					notifyChangesOnPlayers();
 				} catch (Throwable e1) {					
 					e1.printStackTrace();
 				}			
@@ -185,8 +208,10 @@ public class AtendeCliente extends Thread{
 	}
 
 	private void sendListaOnline(Mensagem msg) throws IOException{
+		System.out.println("O Jogador "+cliente.getNome()+" recebeu lista jogadores");
 		msg.setType(Macros.MSG_ONLINE_RESPONSE);
 		
+		msg.getNomesClientes().clear();
 		for(int i = 0;i<VarsGlobais.nClientes;i++)
 			msg.addNomesClientes(VarsGlobais.ClientesOn.get(i).getNome());
 		
@@ -196,13 +221,11 @@ public class AtendeCliente extends Thread{
 	}
 	
 	private void sendListaJogos(Mensagem msg) throws IOException{
-		msg.setType(Macros.MSG_JOGOS_RESPONSE);
-		
-		
+		System.out.println("O Jogador "+cliente.getNome()+" recebeu lista jogos");
+		msg.setType(Macros.MSG_JOGOS_RESPONSE);		
+		msg.getNomesJogos().clear();
 		for(int i = 0;i<VarsGlobais.nJogos;i++){
-			msg.addNomesJogadores1(VarsGlobais.jogos.get(i).getC1().getNome());
-			msg.addNomesJogadores2(VarsGlobais.jogos.get(i).getC2().getNome());
-			String nomeJogo = "Jogo num "+(i+1);				
+			String nomeJogo = "Jogo num "+(i+1)+": "+VarsGlobais.jogos.get(i).getC1().getNome()+" VS "+VarsGlobais.jogos.get(i).getC2().getNome();				
 			msg.addNomesJogos(nomeJogo);
 		}
 		
@@ -210,7 +233,6 @@ public class AtendeCliente extends Thread{
 		out.writeObject(msg);
 		out.flush();
 		
-		System.out.println("Responde a Lista de Jogos");
 	}
 	
 	private void sendInvite(Mensagem msg) throws IOException{
@@ -231,7 +253,7 @@ public class AtendeCliente extends Thread{
 		
 	}
 
-	private void getResponse(Mensagem msg) throws IOException{
+	private synchronized void getResponse(Mensagem msg) throws IOException{
 		msg.setType(Macros.MSG_INICIAR_RESPONSE);
 		
 		for(int i = 0;i<VarsGlobais.nClientes;i++){
@@ -264,17 +286,17 @@ public class AtendeCliente extends Thread{
 		System.out.println("==\nNovo Jogo!\n"+jog1.getNome()+" VS "+jog2.getNome());
 		
 
-		GameThread jogo = new GameThread(j,jog1.getMySocket(), jog2.getMySocket()
-				,jog1.getIn(), jog1.getOut()
-				,jog2.getIn(), jog2.getOut());
+		GameThread jogo = new GameThread(j,	jog1.getOut(),jog2.getOut());
 		
 		jog2.getMyThread().setGame(jogo);		
-		game = jogo;
-		notifyChanges();
+		game = jogo;		
 		jogo.start(); //inicia a thread aqui...
+		
+		notifyChangesOnGames();
+		notifyChangesOnPlayers();
 	}
 
-	private void setTabuleiro(Mensagem msg){
+	private synchronized void setTabuleiro(Mensagem msg){
 	/*	
 		Tabuleiro tab = new Tabuleiro();
 		//ArrayList<Integer> t = msg.getTabuleiro();
@@ -323,9 +345,9 @@ public class AtendeCliente extends Thread{
 		*/
 	}
 
-	private void setGame(GameThread game){this.game = game;}
+	private synchronized void setGame(GameThread game){this.game = game;}
 	
-	private void setAtaque(Mensagem msg){
+	private synchronized void setAtaque(Mensagem msg){
 		
 		int t = 0;
 		int imagem = 0; //imagem da quadricula
@@ -381,6 +403,7 @@ public class AtendeCliente extends Thread{
 		}
 			
 		try {
+			System.out.println("O Jogador "+cliente.getNome()+" foi notificado do resultado do seu ataque");
 			out.flush();
 			out.writeObject(msg);
 			out.flush();

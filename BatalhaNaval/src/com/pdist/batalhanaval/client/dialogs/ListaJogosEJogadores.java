@@ -40,11 +40,11 @@ public class ListaJogosEJogadores extends JDialog {
 	private String nomeJogador;
 	public static String nomeJogadorConvidado;
 	
-	private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //LISTA JOGOS
+	/*private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //LISTA JOGOS
 	private JList<String> listaJogos = new JList<String>(modelListaJogos);  //LISTA JOGOS
 	
 	private DefaultListModel<String> modelListaJogadores = new DefaultListModel<String>();  //LISTA JOGADORES
-	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES
+	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES*/
 	
 
 	
@@ -109,7 +109,7 @@ public class ListaJogosEJogadores extends JDialog {
 						  
 				   
 				   //verificar se o user está a convidar-se a si proprio
-				   if( getNomeJogador().equals(listaJogadores.getSelectedValue()) ){
+				   if( getNomeJogador().equals(VarsGlobais.listaJogadores.getSelectedValue()) ){
 					   JOptionPane.showMessageDialog(contentPanel, "Não se pode convidar a si mesmo!");
 					   return;
 				   }
@@ -151,9 +151,9 @@ public class ListaJogosEJogadores extends JDialog {
 	//enviar um pedido ao servidor para que este envie um pedido (convite) a um certo jogador
 	public void sendConvite() throws IOException{
 		
-		nomeJogadorConvidado = listaJogadores.getSelectedValue();
+		nomeJogadorConvidado = VarsGlobais.listaJogadores.getSelectedValue();
 		//dizer ao servidor que se quer iniciar um jogo e passar o nome do jogador a convidar
-		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, listaJogadores.getSelectedValue());
+		Mensagem msg = new Mensagem(Macros.MSG_INICIAR_JOGO, VarsGlobais.listaJogadores.getSelectedValue());
 				
 		//enviar mensagem
 		SocketClient_TCP.getOut().flush();
@@ -195,15 +195,15 @@ public class ListaJogosEJogadores extends JDialog {
 		
 		for(int i=0; i<nomeJogos.size();i++)
 		{
-			modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
+			VarsGlobais.modelListaJogos.addElement(nomeJogos.get(i)); //carregar info do jogos para a lista
 		}
 		
-		listaJogos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
-		listaJogos.setSelectedIndex(0); //selecionar o 1º
-		listaJogos.setLayoutOrientation(JList.VERTICAL); 		
-		listaJogos.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
-		JScrollPane listaScroll = new JScrollPane(listaJogos);   //para aparecer o scroll na lista
+		VarsGlobais.listaJogos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
+		VarsGlobais.listaJogos.setSelectedIndex(0); //selecionar o 1º
+		VarsGlobais.listaJogos.setLayoutOrientation(JList.VERTICAL); 		
+		VarsGlobais.listaJogos.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		VarsGlobais.listaJogos.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
+		JScrollPane listaScroll = new JScrollPane(VarsGlobais.listaJogos);   //para aparecer o scroll na lista
 		listaScroll.setBounds(49, 50, 181, 135);		
 		contentPanel.add(listaScroll);
 	}
@@ -211,8 +211,7 @@ public class ListaJogosEJogadores extends JDialog {
 	
 	   public Mensagem sendListaJogadoresRequest() throws IOException{   	  
 	    	  
-       	
-           Mensagem msg = new Mensagem(Macros.MSG_LISTA_ONLINE);
+		   Mensagem msg = new Mensagem(Macros.MSG_LISTA_ONLINE);
            msg.setMsgText(nomeJogador);      
            
            
@@ -240,17 +239,16 @@ public class ListaJogosEJogadores extends JDialog {
 		
 		for(int i=0; i<nomeJogadores.size();i++)
 		{
-		//	if(!getNomeJogador().equals(nomeJogadores.get(i)) ){ //para nao aparecer o proprio jogador
-			modelListaJogadores.addElement(nomeJogadores.get(i)); 
-		//	}
+			if(!listajogadores.getNomesClientes().get(i).equals(this.getNomeJogador()))
+				VarsGlobais.modelListaJogadores.addElement(nomeJogadores.get(i)); 		
 		}
 		
-		listaJogadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
-		listaJogadores.setSelectedIndex(0); //selecionar o 1º
-		listaJogadores.setLayoutOrientation(JList.VERTICAL); 		
-		listaJogadores.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		listaJogadores.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
-		JScrollPane listaScroll = new JScrollPane(listaJogadores);   
+		VarsGlobais.listaJogadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); 
+		VarsGlobais.listaJogadores.setSelectedIndex(0); //selecionar o 1º
+		VarsGlobais.listaJogadores.setLayoutOrientation(JList.VERTICAL); 		
+		VarsGlobais.listaJogadores.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		VarsGlobais.listaJogadores.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));	
+		JScrollPane listaScroll = new JScrollPane(VarsGlobais.listaJogadores);   
 		listaScroll.setBounds(327, 51, 181, 135);		
 		contentPanel.add(listaScroll);
 	}
@@ -277,42 +275,42 @@ public class ListaJogosEJogadores extends JDialog {
 
 
 	public DefaultListModel<String> getModelListaJogos() {
-		return modelListaJogos;
+		return VarsGlobais.modelListaJogos;
 	}
 
 
 	public void setModelListaJogos(DefaultListModel<String> modelListaJogos) {
-		this.modelListaJogos = modelListaJogos;
+		VarsGlobais.modelListaJogos = modelListaJogos;
 	}
 
 
 	public JList<String> getListaJogos() {
-		return listaJogos;
+		return VarsGlobais.listaJogos;
 	}
 
 
 	public void setListaJogos(JList<String> listaJogos) {
-		this.listaJogos = listaJogos;
+		VarsGlobais.listaJogos = listaJogos;
 	}
 
 
 	public DefaultListModel<String> getModelListaJogadores() {
-		return modelListaJogadores;
+		return VarsGlobais.modelListaJogadores;
 	}
 
 
 	public void setModelListaJogadores(DefaultListModel<String> modelListaJogadores) {
-		this.modelListaJogadores = modelListaJogadores;
+		VarsGlobais.modelListaJogadores = modelListaJogadores;
 	}
 
 
 	public JList<String> getListaJogadores() {
-		return listaJogadores;
+		return VarsGlobais.listaJogadores;
 	}
 
 
 	public void setListaJogadores(JList<String> listaJogadores) {
-		this.listaJogadores = listaJogadores;
+		VarsGlobais.listaJogadores = listaJogadores;
 	}
 
 

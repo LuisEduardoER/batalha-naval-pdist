@@ -1,9 +1,7 @@
 package com.pdist.batalhanaval.server.main;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import com.pdist.batalhanaval.server.controlo.Jogo;
@@ -19,24 +17,16 @@ public class GameThread extends Thread{
 
 	private Jogo jogo;
 	
-	//private Socket jogador1;
-	//private Socket jogador2;
 	private ObjectOutputStream out1;
 	private ObjectOutputStream out2;
-//	private ObjectInputStream in1;
-//	private ObjectInputStream in2;
 	
 
-	public GameThread(Jogo jogo, Socket jogador1, Socket jogador2, ObjectInputStream in1, ObjectOutputStream out1,  ObjectInputStream in2 , ObjectOutputStream out2){
+	public GameThread(Jogo jogo, ObjectOutputStream out1, ObjectOutputStream out2){
 		this.jogo = jogo;
-	//	this.jogador1 = jogador1;
-	//	this.jogador2 = jogador2;
 		
 		//Alterado
 		this.out1 = out1;
 		this.out2 = out2;
-//		this.in1 = in1;
-//		this.in2 = in2;
 		
 			
 		
@@ -50,7 +40,7 @@ public class GameThread extends Thread{
 	}
 	
 	@Override
-	public void run() {
+	public synchronized void run() {
 		Mensagem msg = null;
 		
 		Tabuleiro tab1 = gerarTabuleiro();
@@ -114,17 +104,18 @@ public class GameThread extends Thread{
 		Mensagem msg = new Mensagem(Macros.MSG_ACTUALIZAR_YOUR_TAB, coord_y, coord_x);
 		msg.setImagem(img);
 		
-		if(jog == 1){
-					
+		if(jog == 1){					
 			out1.flush();
 			out1.writeObject(msg);
 			out1.flush();
+			System.out.println("O Jogador "+jogo.getC1().getNome()+" actualiza o tab");
 			
 		}else{
 
 			out2.flush();
 			out2.writeObject(msg);
 			out2.flush();
+			System.out.println("O Jogador "+jogo.getC2().getNome()+" actualiza o tab");
 
 		}
 	}
