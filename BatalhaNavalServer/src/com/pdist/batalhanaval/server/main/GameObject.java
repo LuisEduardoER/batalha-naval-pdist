@@ -16,7 +16,7 @@ import com.pdist.batalhanaval.server.mensagens.Mensagem;
 public class GameObject{
 
 	private Jogo jogo;
-	
+	private boolean online;
 	private ObjectOutputStream out1;
 	private ObjectOutputStream out2;
 	
@@ -28,7 +28,7 @@ public class GameObject{
 		this.out1 = out1;
 		this.out2 = out2;
 		
-			
+		online = true;
 		
 		VarsGlobais.jogos.add(jogo);
 		VarsGlobais.nJogos++;
@@ -80,6 +80,7 @@ public class GameObject{
 				VarsGlobais.nClientes = VarsGlobais.nClientes+2;
 				VarsGlobais.ClientesOn.add(jogo.getC1());
 				VarsGlobais.ClientesOn.add(jogo.getC2());
+				online = false;
 				return;
 			}
 			
@@ -90,6 +91,8 @@ public class GameObject{
 
 	public Jogo getJogo(){return jogo;}
 	
+	
+	public boolean getOnline(){return online;}
 	public void notifyAtack(int jog, int y, int x, int img) throws IOException{	
 	
 		System.out.println("-notifyAtack-"); //so para testes

@@ -77,10 +77,17 @@ public class AtendeCliente extends Thread{
 					
 				}					
 			} catch (IOException | NullPointerException e) {
-				System.out.println("Cliente desligou");		
-				VarsGlobais.ClientesOn.remove(cliente);		
-				VarsGlobais.nClientes--;
-				notifyChangesOnPlayers();
+				System.out.println("Cliente desligou");	
+				if(game == null){
+					VarsGlobais.ClientesOn.remove(cliente);		
+					VarsGlobais.nClientes--;
+					notifyChangesOnPlayers();
+				}
+				if(game != null){
+					notificaAdversario();
+					notifyChangesOnPlayers();
+					notifyChangesOnGames();
+				}
 				break;
 			} catch (ClassNotFoundException  e) {
 				System.out.println("ERR: Não é mensagem");				
@@ -303,72 +310,118 @@ public class AtendeCliente extends Thread{
 		int posX = msg.getNumero().getPosX();
 		int posY = msg.getLetra().getPosY();
 		
-		
-		//ATACA NO TABULEIRO ADVERSARIO
-		if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
-			if(game.getJogo().getTurn() == 1){
-				System.out.println("JOGADOR1 TURNO");
-				if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
-					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
-					System.out.println("tentou atacar coordenada repetida");
-				}else{
-					if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
-						msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
-					else
-						msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
-						
-					game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).setShooted(true);
-					game.getJogo().setTurn(2);	
-					t = 2;
-					
-					
-					imagem = game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).getImage();
-				}
-			}
-			
-			
-		}else{												//jogador 2
-			
-			if(game.getJogo().getTurn() == 2){
-				System.out.println("JOGADOR 2 TURNO"); //teste
-				if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
-					msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
-					System.out.println("tentou atacar coordenada repetida");
-				}else{
-						if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
+		if(!game.getOnline())
+			notificaAdversario();
+		else{
+			//ATACA NO TABULEIRO ADVERSARIO
+			if(game.getJogo().getC1().getNome().equalsIgnoreCase(cliente.getNome())){ //jogador 1
+				if(game.getJogo().getTurn() == 1){
+					System.out.println("JOGADOR1 TURNO");
+					if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
+						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+						System.out.println("tentou atacar coordenada repetida");
+					}else{
+						if(game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
 							msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
 						else
 							msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+							
+						game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).setShooted(true);
+						game.getJogo().setTurn(2);	
+						t = 2;
 						
 						
-						game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
-						game.getJogo().setTurn(1);	
-						t = 1;
-						
-						imagem = game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).getImage();
+						imagem = game.getJogo().getC2().getTabuleiro().getUnidade(posY, posX).getImage();
+					}
+				}
+				
+				
+			}else{												//jogador 2
+				
+				if(game.getJogo().getTurn() == 2){
+					System.out.println("JOGADOR 2 TURNO"); //teste
+					if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isShooted() == true){
+						msg.setType(Macros.MSG_ATACAR_COORD_REPETIDA);
+						System.out.println("tentou atacar coordenada repetida");
+					}else{
+							if(game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).isBoat() == true)
+								msg.setType(Macros.MSG_ATACAR_SUCCESS); //se for um barco
+							else
+								msg.setType(Macros.MSG_ATACAR_FAIL); //se nao for um barco (agua)
+							
+							
+							game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).setShooted(true);
+							game.getJogo().setTurn(1);	
+							t = 1;
+							
+							imagem = game.getJogo().getC1().getTabuleiro().getUnidade(posY, posX).getImage();
+					}
 				}
 			}
+				
+			try {
+				
+				
+				out.flush();
+				out.writeObject(msg);
+				out.flush();
+				
+				System.out.println(msg.getType()); //para testes
+				
+				if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
+					game.notifyAtack(t, posY, posX, imagem);
+				
+				if(game.getJogo().isFim()){
+					game = null;
+				}
+			} catch (IOException e) {
+				System.out.println("Cliente desligou");	
+				notificaAdversario();			
+			}
 		}
-			
-		try {
-			
-			
-			out.flush();
-			out.writeObject(msg);
-			out.flush();
-			
-			System.out.println(msg.getType()); //para testes
-			
-			
-			if( (msg.getType() == Macros.MSG_ATACAR_SUCCESS) || (msg.getType() == Macros.MSG_ATACAR_FAIL) )
-				game.notifyAtack(t, posY, posX, imagem);
-			
-			if(game.getJogo().isFim()){
+	}
+	
+	
+	private void notificaAdversario(){
+		if(!game.getJogo().getC1().getNome().equals(cliente.getNome())){
+			Mensagem msg = new Mensagem(Macros.MSG_EXIT_OPPONENT);
+			try {
+				game.getJogo().getC1().getOut().flush();
+				game.getJogo().getC1().getOut().writeObject(msg);
+				game.getJogo().getC1().getOut().flush();
+				
+				VarsGlobais.ClientesOn.add(game.getJogo().getC1());
+				VarsGlobais.nClientes++;
+				VarsGlobais.jogos.remove(game.getJogo());
+				VarsGlobais.nJogos--;
+				game = null;
+			} catch (IOException e) {
+				VarsGlobais.jogos.remove(game.getJogo());
+				VarsGlobais.nJogos--;
 				game = null;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}		
+		}else{
+			Mensagem msg = new Mensagem(Macros.MSG_EXIT_OPPONENT);
+			try {
+				game.getJogo().getC2().getOut().flush();
+				game.getJogo().getC2().getOut().writeObject(msg);
+				game.getJogo().getC2().getOut().flush();
+				
+				VarsGlobais.ClientesOn.add(game.getJogo().getC2());
+				VarsGlobais.nClientes++;
+				VarsGlobais.jogos.remove(game.getJogo());
+				VarsGlobais.nJogos--;
+				game = null;
+				notifyChangesOnPlayers();
+				notifyChangesOnGames();
+			} catch (IOException e) {
+				VarsGlobais.jogos.remove(game.getJogo());
+				VarsGlobais.nJogos--;
+				game = null;
+				notifyChangesOnPlayers();
+				notifyChangesOnGames();
+			}
+		}
 	}
 			
 	

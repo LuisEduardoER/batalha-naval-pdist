@@ -99,6 +99,9 @@ public class AtendeServidor extends Thread{
 					case Macros.MSG_JOGOS_RESPONSE:
 						showGames(msg);
 						break;
+					case Macros.MSG_EXIT_OPPONENT:
+						exitOponent();
+						break;
 				}
 				
 			}catch(SocketTimeoutException e){
@@ -116,6 +119,12 @@ public class AtendeServidor extends Thread{
 		
 	}
 	
+	
+	
+	private void exitOponent(){
+		JOptionPane.showMessageDialog(jogoFrame, "O Seu adversário saiu");
+		initGame();
+	}
 	
 	private void initGame(){	
 		jogoFrame.getContentPane().removeAll();
