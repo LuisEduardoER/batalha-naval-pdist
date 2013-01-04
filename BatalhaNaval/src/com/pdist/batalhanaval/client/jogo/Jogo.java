@@ -12,6 +12,7 @@ import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
 import com.pdist.batalhanaval.client.listeners.JogoActionListener;
 import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
+import com.pdist.batalhanaval.client.main.VarsGlobais;
 import com.pdist.batalhanaval.server.macros.Macros;
 
 
@@ -19,29 +20,22 @@ public class Jogo{
 	
 
 	private static JogoActionListener listener = new JogoActionListener();
-	public static JButton[][] botaoAdv = new JButton[12][12];
+	public static JButton[][] botaoAdv;
 	
-	public static JFrame BatalhaNavalUI;
+	private JFrame BatalhaNavalUI;
 	
 	private static JLabel lblJogador_1 = new JLabel("<nome?>"); //label JOGADOR 1
 	private static JLabel lblJogador_2 = new JLabel("<nome?>"); //laber JOGADOR 2
 	
-	//Imagens..
-	
+	//Imagens..	
 	private static ImageIcon agua = new ImageIcon("Imagens/agua.png");
 	private static ImageIcon mira = new ImageIcon("Imagens/mira.png");	
-		//Bg2
-	public static String background = "Imagens/outros/background2.jpg";	
-		
-	
-
+	//Bg2
+	public static String background = "Imagens/outros/background2.jpg";		
 		
 	private Thread AtendeServidor; //thread do AtendeServidor
 	
 	
-	public static JButton getBotaoAdv(int y, int x){
-		return botaoAdv[y][x];
-	}
 	
 	
 	public Jogo(ListaJogosEJogadores listajogadores) {
@@ -63,17 +57,25 @@ public class Jogo{
 		
 		
 		//CRIAR A THREAD DE ATENDIMENTO de pedidos do servidor
-		
+		if(VarsGlobais.atendeServidorON==false){
 		AtendeServidor = new AtendeServidor(BatalhaNavalUI,listajogadores, this);
 		AtendeServidor.start();
+		VarsGlobais.atendeServidorON=true;
+		}
+		
 				
 		
 	}
 	
-	 
-		 public static void criaMapaAdversario(int x,int y) 
+
+	public JButton getBotaoAdv(int y, int x){
+		return botaoAdv[y][x];
+	}		 		 
+		 
+
+		 public void criaMapaAdversario(int x,int y) 
 		 {
-			 
+			 botaoAdv = new JButton[12][12];
 			 
 			  for(int i=0; i<10; i++){
 				   for(int j=0; j<10; j++){			   

@@ -19,7 +19,18 @@ public class AtendeServidor extends Thread{
 	protected ListaJogosEJogadores listajogadores;
 	protected Jogo jogo;
 	
-	JButton[][] botao = new JButton[10][10]; //botoes do mapa esquerdo
+	protected ImageIcon agua = new ImageIcon("Imagens/agua.png");
+	protected ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
+	protected ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
+	protected ImageIcon barcoDir = new ImageIcon("Imagens/barcos/barco_dir.png");
+	protected ImageIcon fail = new ImageIcon("Imagens/aguaFail.png"); //agua
+	protected ImageIcon hitEsq = new ImageIcon("Imagens/barcos/fogo/barco_esq_f.png"); //explosao esquerda
+	protected ImageIcon hitMeio = new ImageIcon("Imagens/barcos/fogo/barco_meio_f.png"); //explosao meio
+	protected ImageIcon hitDir = new ImageIcon("Imagens/barcos/fogo/barco_dir_f.png"); //explosao direita
+	protected ImageIcon hit = new ImageIcon("Imagens/aguaHit.png");	
+	
+	
+	protected JButton[][] botao = new JButton[10][10]; //botoes do mapa esquerdo
 	
 	
 	//CONSTRUTOR
@@ -127,17 +138,10 @@ public class AtendeServidor extends Thread{
 	}
 	
 	private void initGame(){	
-		jogoFrame.getContentPane().removeAll();
-				
-		BatalhaNaval_Client.loadBackground(Jogo.getBackground());		
-		BatalhaNaval_Client.loadMenuBar();	
-		BatalhaNaval_Client.setEstado("Á espera de um novo jogo....");
-						
-		Jogo.criaMapaAdversario(400, 700);	
-		jogo.criaLabels();
-		
-		listajogadores.setVisible(true);
-		jogoFrame.getContentPane().repaint();
+
+      jogo = new Jogo(listajogadores);
+      
+      listajogadores.setVisible(true);
 		
 		
 	}
@@ -236,14 +240,7 @@ public class AtendeServidor extends Thread{
 	
 	//para imprimir o tabuleiro esquerdo (do proprio jogador) conforme os dados do tabuleiro recebido
 	public void receberTabuleiro(Mensagem msg){
-	
-		//IMAGENS (nota: apenas precisa destas imagens porque esta função só é chamada no inicio do jogo)
-		ImageIcon agua = new ImageIcon("Imagens/agua.png");
-		ImageIcon barcoEsq = new ImageIcon("Imagens/barcos/barco_esq.png");
-		ImageIcon barcoMeio = new ImageIcon("Imagens/barcos/barco_meio.png");
-		ImageIcon barcoDir = new ImageIcon("Imagens/barcos/barco_dir.png");	
-		
-		
+			
 		int x = 70;
 		int y = 70;
 			
@@ -307,12 +304,7 @@ public class AtendeServidor extends Thread{
 		
 	//actualiza o mapa (ESQUERDO) com a coordenada que foi atacada	
 	public void actualizarTabuleiro(Mensagem msg) throws IOException{
-		
-		//IMAGENS
-		ImageIcon fail = new ImageIcon("Imagens/aguaFail.png"); //agua
-		ImageIcon hitEsq = new ImageIcon("Imagens/barcos/fogo/barco_esq_f.png"); //explosao esquerda
-		ImageIcon hitMeio = new ImageIcon("Imagens/barcos/fogo/barco_meio_f.png"); //explosao meio
-		ImageIcon hitDir = new ImageIcon("Imagens/barcos/fogo/barco_dir_f.png"); //explosao direita
+			
 		
 		int coordY = msg.getLetra().getPosY() -1; //-1 para acertar a coisa
 		int coordX = msg.getNumero().getPosX() -1;
@@ -344,10 +336,7 @@ public class AtendeServidor extends Thread{
 		
 	//receber a resposta se acertou ou não num barco do inimigo
 	public void respostaAtaque(Mensagem msg) throws IOException{
-		
-		ImageIcon hit = new ImageIcon("Imagens/aguaHit.png");	
-		ImageIcon fail = new ImageIcon("Imagens/aguaFail.png");
-		
+			
 		int posX = msg.getNumero().getPosX() -1; //-1 para acertar a coisa
 		int posY = msg.getLetra().getPosY() -1;
 		
@@ -362,7 +351,7 @@ public class AtendeServidor extends Thread{
 		if(msg.getType() == Macros.MSG_ATACAR_FAIL){
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para agua
-			Jogo.getBotaoAdv(posY, posX).setIcon(fail);
+			jogo.getBotaoAdv(posY, posX).setIcon(fail);
 			return;
 		}
 		
@@ -370,7 +359,7 @@ public class AtendeServidor extends Thread{
 		if(msg.getType() == Macros.MSG_ATACAR_SUCCESS){
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para uma explosao
-			Jogo.getBotaoAdv(posY, posX).setIcon(hit);
+			jogo.getBotaoAdv(posY, posX).setIcon(hit);
 			return;
 		}
 		
