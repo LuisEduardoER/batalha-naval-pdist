@@ -128,14 +128,12 @@ public class AtendeServidor extends Thread{
 	
 	private void initGame(){	
 		jogoFrame.getContentPane().removeAll();
-		
-		String background = "Imagens/outros/background2.jpg";	
-		BatalhaNaval_Client.loadBackground(background);		
+				
+		BatalhaNaval_Client.loadBackground(Jogo.getBackground());		
 		BatalhaNaval_Client.loadMenuBar();	
 		BatalhaNaval_Client.setEstado("Á espera de um novo jogo....");
-				
-		
-		jogo.criaMapaAdversario(400, 700);	
+						
+		Jogo.criaMapaAdversario(400, 700);	
 		jogo.criaLabels();
 		
 		listajogadores.setVisible(true);
@@ -364,7 +362,7 @@ public class AtendeServidor extends Thread{
 		if(msg.getType() == Macros.MSG_ATACAR_FAIL){
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para agua
-			jogo.getBotaoAdv(posY, posX).setIcon(fail);
+			Jogo.getBotaoAdv(posY, posX).setIcon(fail);
 			return;
 		}
 		
@@ -372,7 +370,7 @@ public class AtendeServidor extends Thread{
 		if(msg.getType() == Macros.MSG_ATACAR_SUCCESS){
 			BatalhaNaval_Client.setEstado("É a vez do seu adversário jogar!");
 			//mudar o icone azul no tabuleiro para uma explosao
-			jogo.getBotaoAdv(posY, posX).setIcon(hit);
+			Jogo.getBotaoAdv(posY, posX).setIcon(hit);
 			return;
 		}
 		

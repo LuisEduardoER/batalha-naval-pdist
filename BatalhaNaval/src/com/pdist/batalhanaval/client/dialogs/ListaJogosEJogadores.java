@@ -40,14 +40,7 @@ public class ListaJogosEJogadores extends JDialog {
 	private String nomeJogador;
 	public static String nomeJogadorConvidado;
 	
-	/*private DefaultListModel<String> modelListaJogos = new DefaultListModel<String>();  //LISTA JOGOS
-	private JList<String> listaJogos = new JList<String>(modelListaJogos);  //LISTA JOGOS
-	
-	private DefaultListModel<String> modelListaJogadores = new DefaultListModel<String>();  //LISTA JOGADORES
-	private JList<String> listaJogadores = new JList<String>(modelListaJogadores); //LISTA JOGADORES*/
-	
-
-	
+		
 	public ListaJogosEJogadores(String nomeJogador) throws IOException {
 		setAlwaysOnTop(false);
 		

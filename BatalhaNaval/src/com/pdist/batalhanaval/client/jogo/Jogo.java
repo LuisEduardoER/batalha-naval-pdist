@@ -2,52 +2,44 @@ package com.pdist.batalhanaval.client.jogo;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 
 import com.pdist.batalhanaval.client.dialogs.ListaJogosEJogadores;
+import com.pdist.batalhanaval.client.listeners.JogoActionListener;
 import com.pdist.batalhanaval.client.main.AtendeServidor;
 import com.pdist.batalhanaval.client.main.BatalhaNaval_Client;
-import com.pdist.batalhanaval.client.main.SocketClient_TCP;
-import com.pdist.batalhanaval.server.controlo.Letra;
-import com.pdist.batalhanaval.server.controlo.Numero;
 import com.pdist.batalhanaval.server.macros.Macros;
-import com.pdist.batalhanaval.server.mensagens.Mensagem;
 
-public class Jogo implements ActionListener{
+
+public class Jogo{
 	
-	//private JButton[][] botao = new JButton[12][12];
-	private JButton[][] botaoAdv = new JButton[12][12];
+
+	private static JogoActionListener listener = new JogoActionListener();
+	public static JButton[][] botaoAdv = new JButton[12][12];
 	
-	private JFrame BatalhaNavalUI;
+	public static JFrame BatalhaNavalUI;
 	
 	private static JLabel lblJogador_1 = new JLabel("<nome?>"); //label JOGADOR 1
 	private static JLabel lblJogador_2 = new JLabel("<nome?>"); //laber JOGADOR 2
 	
 	//Imagens..
 	
-	private ImageIcon agua = new ImageIcon("Imagens/agua.png");
-	private ImageIcon mira = new ImageIcon("Imagens/mira.png");	
+	private static ImageIcon agua = new ImageIcon("Imagens/agua.png");
+	private static ImageIcon mira = new ImageIcon("Imagens/mira.png");	
 		//Bg2
-	private String background = "Imagens/outros/background2.jpg";	
+	public static String background = "Imagens/outros/background2.jpg";	
 		
 	
-
 
 		
 	private Thread AtendeServidor; //thread do AtendeServidor
 	
 	
-	public JButton getBotaoAdv(int y, int x){
+	public static JButton getBotaoAdv(int y, int x){
 		return botaoAdv[y][x];
 	}
 	
@@ -78,56 +70,17 @@ public class Jogo implements ActionListener{
 		
 	}
 	
-	
-	//EVENTO BOTOES
-		 public void actionPerformed(ActionEvent e) {	
-			 
-			 StringTokenizer tokens = new StringTokenizer(new String(e.getSource().toString()),",");
-			 tokens.nextToken().trim();
-			 int x = Integer.parseInt(tokens.nextToken().trim());
-		     int y = Integer.parseInt(tokens.nextToken().trim());	 
-			  
-		     for(int i=0; i<10; i++){
-				   for(int j=0; j<10; j++){	
-					   
-					   if(botaoAdv[i][j].getBounds().x == x && botaoAdv[i][j].getBounds().y == y)
-					   {				 		
-						   
-						   Letra coord_y = new Letra('a', i+1);
-						   Numero coord_x = new Numero('1', j+1);
-						   
-						   
-						   Mensagem msg = new Mensagem(Macros.MSG_ATACAR, coord_y, coord_x); //atacar, Y(letra), X(numero)
-						   try{
-							   SocketClient_TCP.getOut().flush();
-							   SocketClient_TCP.getOut().writeObject(msg);
-							   SocketClient_TCP.getOut().flush();
-						   }catch(NullPointerException exp){
-							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(NullPointer)" + exp);
-						   }catch(IOException exp){
-							   JOptionPane.showMessageDialog(BatalhaNavalUI, "ERRO a enviar a coordenada a atacar(IOException)" + exp);
-						   }
-						   
-					   
-					   }
-					   
-					   
-				   }
-		     }
-		 }
-		 
-		 
-		 
-		 
-
-		 public void criaMapaAdversario(int x,int y) //TESTE
+	 
+		 public static void criaMapaAdversario(int x,int y) 
 		 {
+			 
+			 
 			  for(int i=0; i<10; i++){
 				   for(int j=0; j<10; j++){			   
 					 
 				    botaoAdv[i][j] = new JButton(agua);		 
 				    botaoAdv[i][j].setBounds(x+(j*29), y+(i*29), Macros.TAM_X, Macros.TAM_Y);
-				    botaoAdv[i][j].addActionListener((ActionListener) this);	
+				    botaoAdv[i][j].addActionListener(listener);	
 				    botaoAdv[i][j].setRolloverIcon(mira);
 				    BatalhaNavalUI.getContentPane().add(botaoAdv[i][j]);				    
 				  
@@ -173,6 +126,86 @@ public class Jogo implements ActionListener{
 		 {
 			 lblJogador_2.setText(nome);			 
 		 }
+
+
+		public JButton[][] getBotaoAdv() {
+			return botaoAdv;
+		}
+
+
+		public void setBotaoAdv(JButton[][] botaoAdv) {
+			Jogo.botaoAdv = botaoAdv;
+		}
+
+
+		public JFrame getBatalhaNavalUI() {
+			return BatalhaNavalUI;
+		}
+
+
+		public void setBatalhaNavalUI(JFrame batalhaNavalUI) {
+			BatalhaNavalUI = batalhaNavalUI;
+		}
+
+
+		public static JLabel getLblJogador_1() {
+			return lblJogador_1;
+		}
+
+
+		public static void setLblJogador_1(JLabel lblJogador_1) {
+			Jogo.lblJogador_1 = lblJogador_1;
+		}
+
+
+		public static JLabel getLblJogador_2() {
+			return lblJogador_2;
+		}
+
+
+		public static void setLblJogador_2(JLabel lblJogador_2) {
+			Jogo.lblJogador_2 = lblJogador_2;
+		}
+
+
+		public ImageIcon getAgua() {
+			return agua;
+		}
+
+
+		public void setAgua(ImageIcon agua) {
+			Jogo.agua = agua;
+		}
+
+
+		public ImageIcon getMira() {
+			return mira;
+		}
+
+
+		public void setMira(ImageIcon mira) {
+			Jogo.mira = mira;
+		}
+
+
+		public static String getBackground() {
+			return background;
+		}
+
+
+		public static void setBackground(String background) {
+			Jogo.background = background;
+		}
+
+
+		public Thread getAtendeServidor() {
+			return AtendeServidor;
+		}
+
+
+		public void setAtendeServidor(Thread atendeServidor) {
+			AtendeServidor = atendeServidor;
+		}
 		 
 		
 	
