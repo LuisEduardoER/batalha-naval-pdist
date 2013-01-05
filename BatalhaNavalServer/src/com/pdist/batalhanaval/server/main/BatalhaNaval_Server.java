@@ -30,6 +30,8 @@ public class BatalhaNaval_Server {
 	
 	BatalhaNavalRMIService.iniciaServicoRMI(); //INICIAR O SERVIÇO DO RMI
 	
+	
+	
 	try{ 
 			
 			ss = new ServerSocket(ServerPort);
@@ -43,6 +45,8 @@ public class BatalhaNaval_Server {
 				VarsGlobais.threads.add(t);		
 				VarsGlobais.nThreads++;
 				t.start();
+				
+							
 			}
 			
 		} catch (IOException e) {

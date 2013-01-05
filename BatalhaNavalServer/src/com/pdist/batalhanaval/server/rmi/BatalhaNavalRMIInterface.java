@@ -16,6 +16,7 @@ public interface BatalhaNavalRMIInterface extends Remote{
 	public ArrayList<String> getListaJogos() throws RemoteException;
 	
 	
-	public void addObserver(BatalhaNavalObserverInterface obs) throws Exception;
+	public void addObserver(ClientObserverInterface obs) throws Exception;	
+
 	
 }

@@ -5,8 +5,10 @@ import java.rmi.RemoteException;
 
 
 
-public interface BatalhaNavalObserverInterface extends Remote{
+public interface ClientObserverInterface extends Remote{
 	
 	public void actualizarInfo() throws RemoteException;
+	
+
 	
 }

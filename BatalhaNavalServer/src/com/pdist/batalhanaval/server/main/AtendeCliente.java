@@ -9,6 +9,7 @@ import com.pdist.batalhanaval.server.controlo.Cliente;
 import com.pdist.batalhanaval.server.controlo.Jogo;
 import com.pdist.batalhanaval.server.macros.Macros;
 import com.pdist.batalhanaval.server.mensagens.Mensagem;
+import com.pdist.batalhanaval.server.rmi.BatalhaNavalRMIService;
 
 public class AtendeCliente extends Thread{
 	
@@ -50,21 +51,31 @@ public class AtendeCliente extends Thread{
 				//TODO rever a cena do tabuleiro, n vale a pena complicar muito
 				
 				Mensagem msg = (Mensagem) in.readObject();
+				
+				//Java RMI
+				
+				
+				
 				switch(msg.getType()){
 					case Macros.MSG_LOGIN_REQUEST: //utilizador pede para se logar
-						getLoginRequest(msg);	
+						getLoginRequest(msg);						
 						break;
 					case Macros.MSG_LISTA_ONLINE: //o utilizador pede a lista de jogadores
 						sendListaOnline(msg);
+						BatalhaNavalRMIService.notifyObservers(); //pede lista online.. pode ser um novo jogador ou acabou um jogo
 						break;
 					case Macros.MSG_LISTA_JOGOS: //o utilizador pede a lista de jogos a decorrer
 						sendListaJogos(msg);
+						
 						break;
 					case Macros.MSG_INICIAR_JOGO: //o utilizador faz um pedido de jogo
 						sendInvite(msg);
+						BatalhaNavalRMIService.notifyObservers();  //notify novo jogo...
+						
 						break;
 					case Macros.MSG_PEDIDO_RESPONSE: //Resposta do 2º utilizador ao pedido de jogo						
 						getResponse(msg);
+						BatalhaNavalRMIService.notifyObservers();  //notify novo jogo...
 						break;		
 					case Macros.MSG_ATACAR:
 						System.out.println("atacar?"); //so para testes
@@ -73,6 +84,7 @@ public class AtendeCliente extends Thread{
 								System.out.println("o jogo esta iniciado! ATACAAAAR!!"); //so para testes
 								setAtaque(msg);
 							}
+						BatalhaNavalRMIService.notifyObservers();  //notify novo ataque..
 						break;
 					
 				}					

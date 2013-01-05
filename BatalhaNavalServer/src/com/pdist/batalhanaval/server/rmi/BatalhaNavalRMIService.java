@@ -14,8 +14,12 @@ import com.pdist.batalhanaval.server.main.VarsGlobais;
 
 public class BatalhaNavalRMIService extends UnicastRemoteObject implements BatalhaNavalRMIInterface{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1629769723876297832L;
 	//OBSERVERS
-	protected List<BatalhaNavalObserverInterface> observers = new ArrayList<BatalhaNavalObserverInterface>(); 
+	protected static List<ClientObserverInterface> observers = new ArrayList<ClientObserverInterface>(); 
 	
 	
 	//construtor
@@ -84,7 +88,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 			return nomes;
 		}
 				
-		return nomes;
+		return nomes; //mesmo que nao va nada.. é melhor que que fazer return null
 	}
 
 	
@@ -110,15 +114,15 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 	
 	
 	@Override
-	public void addObserver(BatalhaNavalObserverInterface obs) throws Exception {
+	public void addObserver(ClientObserverInterface obs) throws Exception {
 		
-		System.out.println("Observer: Add observer");
+		System.out.println("Observer: Pedido do cliente para fazer Add observer");
 		
 		observers.add(obs);
 	}
 	
 	//NOTIFICAR OS OBSERVERS
-	protected void notifyObservers(){
+	public static void notifyObservers(){
 		
 		for(int i=0; i<observers.size(); i++){
 			try{
