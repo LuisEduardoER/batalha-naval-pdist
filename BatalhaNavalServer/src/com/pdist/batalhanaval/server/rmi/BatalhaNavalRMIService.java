@@ -30,7 +30,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 	@Override
 	public int getNumeroExplosoes(int jogo, int cliente) throws RemoteException {
 		
-		System.out.println("Observer: Pedido getNumeroExplosoes");
+		//System.out.println("Observer: Pedido getNumeroExplosoes");
 		
 		//receber o numero do jogo e o numero do cliente (1/2)
 		//se cliente > 2 ou < 1.. erro
@@ -78,7 +78,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 	@Override
 	public ArrayList<String> getJogadores() throws RemoteException {
 		
-		System.out.println("Observer: Pedido getJogadores");
+		//System.out.println("Observer: Pedido getJogadores");
 		
 		ArrayList<String> nomes = new ArrayList<String>();
 		
@@ -95,7 +95,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 	@Override
 	public ArrayList<String> getListaJogos() throws RemoteException {
 		
-		System.out.println("Observer: Pedido getListaJogos");
+		//System.out.println("Observer: Pedido getListaJogos");
 		
 		ArrayList<String> jogos = new ArrayList<String>();
 		String temp;
@@ -116,7 +116,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 	@Override
 	public void addObserver(ClientObserverInterface obs) throws Exception {
 		
-		System.out.println("Observer: Pedido do cliente para fazer Add observer");
+		//System.out.println("Observer: Pedido do cliente para fazer Add observer");
 		
 		observers.add(obs);
 	}

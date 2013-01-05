@@ -31,12 +31,14 @@ public class ClienteRMI extends UnicastRemoteObject implements ClientObserverInt
 
 	    @SuppressWarnings("unchecked")
 		public void actualizarInfo() throws RemoteException {
+	    	
+	    	int numJogos=0;
 	        
 	         System.out.println("Recebido pedido do servidor para actualizar janela...");
 	         
 	       //quantas unidades rebentadas tem o jogador 1 do jogo 0
 				
-				janela.getTextArea().append("Numero de KABOOM: " + batalhaNavalRMIService.getNumeroExplosoes(0, 1)+"\n");
+				
 				//System.out.println(batalhaNavalRMIService.getNumeroExplosoes(0, 1));
 				
 				//lista de jogadores que nao estao a jogar
@@ -56,6 +58,7 @@ public class ClienteRMI extends UnicastRemoteObject implements ClientObserverInt
 				@SuppressWarnings("rawtypes")
 				DefaultListModel listModel2 = new DefaultListModel();
 				int aux2 = batalhaNavalRMIService.getListaJogos().size();
+				numJogos = aux2;
 				if(aux2 != 0){
 					for(int i=0; i< aux2; i++){
 						listModel2.addElement(batalhaNavalRMIService.getListaJogos().get(i));
@@ -63,6 +66,16 @@ public class ClienteRMI extends UnicastRemoteObject implements ClientObserverInt
 					janela.getListaJogos().setModel(listModel2);
 				}
 				System.out.println(batalhaNavalRMIService.getListaJogos());
+				
+				  Janela.getTextArea().setText("                    Pontuações em tempo real:\n");
+				
+				for(int i=0; i< numJogos; i++){				
+								    
+				    Janela.getTextArea().append(("\nJogo["+ (i+1) +"]: \nJogador 1: " +
+				    		+ batalhaNavalRMIService.getNumeroExplosoes(i, 1)+
+				    		" | Jogador 2: "+ batalhaNavalRMIService.getNumeroExplosoes(i, 2)+
+				    		"\n-----------------------------------------------------"));
+				}
 				
 	            
 	    }
@@ -96,8 +109,10 @@ public class ClienteRMI extends UnicastRemoteObject implements ClientObserverInt
 				
 			
 		}catch(RemoteException e){
-			System.out.println("Erro remoto - " + e); //JOptionPane...
-			JOptionPane.showMessageDialog(janela.getContentPanel(),"Erro remoto - " + e);
+			System.out.println("Erro remoto - " + e); //JOptionPane...			
+			JOptionPane.showMessageDialog(janela.getContentPanel(),"Erro remoto ao ligar ao servidor!" +
+					"\nO servidor está ligado? Tente novamente mais tarde...");
+			System.exit(-1);
         }catch(NotBoundException e){
         	System.out.println("Servico remoto desconhecido - " + e); //JOptionPane...
         	JOptionPane.showMessageDialog(janela.getContentPanel(),"Servico remoto desconhecido - " + e);

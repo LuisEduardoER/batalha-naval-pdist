@@ -3,7 +3,6 @@ package com.pdist.batalhanaval.clientrmi;
 import java.awt.BorderLayout;
 import java.awt.Font;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -22,15 +21,15 @@ import javax.swing.border.EmptyBorder;
 public class Janela {
 
 	
-	private JFrame frame = new JFrame("");
-	private JPanel contentPanel = new JPanel();
+	public static JFrame frame = new JFrame("");
+	public static JPanel contentPanel = new JPanel();
 	
-	private JButton btnVerInfo = new JButton("Ver informação");
-	
+
 	private JList<String> listaJogos = new JList<String>();
 	private JList<String> listaJogadores = new JList<String>();
 	
-	private JTextArea textArea = new JTextArea();
+	public static JTextArea textArea = new JTextArea();
+	public static JScrollPane scroll;
 	
 	//construtor
 	public Janela(){}
@@ -38,13 +37,11 @@ public class Janela {
 	
 	//GETs e SETs
 	public JFrame getFrame() {return frame;}
-	public void setFrame(JFrame frame) {this.frame = frame;}
+	public void setFrame(JFrame frame) {Janela.frame = frame;}
 
 	public JPanel getContentPanel() {return contentPanel;}
-	public void setContentPanel(JPanel contentPanel) {this.contentPanel = contentPanel;}
+	public void setContentPanel(JPanel contentPanel) {Janela.contentPanel = contentPanel;}
 
-	public JButton getBtnVerInfo() {return btnVerInfo;}
-	public void setBtnVerInfo(JButton btnVerInfo) {this.btnVerInfo = btnVerInfo;}
 
 	public JList<String> getListaJogos() {return listaJogos;}
 	public void setListaJogos(JList<String> listaJogos) {this.listaJogos = listaJogos;}
@@ -52,8 +49,8 @@ public class Janela {
 	public JList<String> getListaJogadores() {return listaJogadores;}
 	public void setListaJogadores(JList<String> listaJogadores) {this.listaJogadores = listaJogadores;}
 
-	public JTextArea getTextArea() {return textArea;}
-	public void setTextArea(JTextArea textArea) {this.textArea = textArea;}
+	public static JTextArea getTextArea() {return textArea;}
+	public void setTextArea(JTextArea textArea) {Janela.textArea = textArea;}
 
 
 	public void criarJanela(){
@@ -74,13 +71,9 @@ public class Janela {
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setBounds(276, 0, 2, 300);
+		separator.setBounds(276, 0, 2, 215);
 		contentPanel.add(separator);
 		
-		
-		btnVerInfo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btnVerInfo.setBounds(350, 350, 128, 33);
-		contentPanel.add(btnVerInfo);
 		
 		JLabel lblConvidarJogadores = new JLabel("Jogadores Online:");
 		lblConvidarJogadores.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -109,15 +102,19 @@ public class Janela {
 		contentPanel.add(listaScroll2);
 		
 
-		
-		//JLabel lblInfo = new JLabel();
-		//lblInfo.setBounds(20, 300, 300, 100);
-		//lblInfo.setText("olaola man");
-		//contentPanel.add(lblInfo);
-		textArea.setBounds(20,300, 300, 100);
+	
 		textArea.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		contentPanel.add(textArea);
+		textArea.setEditable(false);
+		textArea.setFont(new Font("Verdana", Font.PLAIN, 14));
+
+		scroll = new JScrollPane(textArea);
+		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scroll.setBounds(70,215, 400, 150);
+	
+		contentPanel.add(scroll);
 		
+		
+		contentPanel.setVisible(true);
 		contentPanel.repaint();
 	}
 	
