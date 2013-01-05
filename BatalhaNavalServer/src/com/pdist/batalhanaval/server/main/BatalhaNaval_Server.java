@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.pdist.batalhanaval.server.rmi.BatalhaNavalRMIService;
+
 
 public class BatalhaNaval_Server {
 
@@ -25,6 +27,8 @@ public class BatalhaNaval_Server {
 	
 	MulticastThread multicast = new MulticastThread();
 	multicast.start();
+	
+	BatalhaNavalRMIService.iniciaServicoRMI(); //INICIAR O SERVIÇO DO RMI
 	
 	try{ 
 			
