@@ -94,11 +94,8 @@ public class BatalhaNaval_Client {
 		//ACTION LISTENER
 		mntmSair.addActionListener(menuListener);
 		mntmNovoJogo.addActionListener(menuListener);
-		mntmNovoJogo2.addActionListener(menuListener);
+		mntmNovoJogo2.addActionListener(menuListener);		
 		
-			
-		JMenu mnOpes = new JMenu("Op\u00E7\u00F5es");
-		menuBar.add(mnOpes);		
 		
 		JLabel label3 = new JLabel("Estado:");
 		label3.setFont(new Font("Tahoma", Font.BOLD, 14));

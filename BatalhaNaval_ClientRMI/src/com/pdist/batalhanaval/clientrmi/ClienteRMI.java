@@ -71,7 +71,7 @@ public class ClienteRMI extends UnicastRemoteObject implements ClientObserverInt
 				
 				for(int i=0; i< numJogos; i++){				
 								    
-				    Janela.getTextArea().append(("\nJogo["+ (i+1) +"]: \nJogador 1: " +
+				    Janela.getTextArea().append(("\nJogo ["+ (i+1) +"]: \nJogador 1: " +
 				    		+ batalhaNavalRMIService.getNumeroExplosoes(i, 1)+
 				    		" | Jogador 2: "+ batalhaNavalRMIService.getNumeroExplosoes(i, 2)+
 				    		"\n-----------------------------------------------------"));

@@ -103,7 +103,7 @@ public class BatalhaNavalRMIService extends UnicastRemoteObject implements Batal
 		if(VarsGlobais.jogos.size() > 0){
 			for(int i=0; i<VarsGlobais.jogos.size(); i++){
 				temp = VarsGlobais.jogos.get(i).getC1().getNome();
-				temp = temp + " -vs- " + VarsGlobais.jogos.get(i).getC2().getNome();
+				temp = (i+1)+") "+ temp + "  vs  " + VarsGlobais.jogos.get(i).getC2().getNome();
 				jogos.add(temp);
 			}
 			return jogos;
